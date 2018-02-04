@@ -1,11 +1,11 @@
-# pocket48-grab v2.1
+# pocket48-grab v2.2
 口袋48成员直播/录播、公演直播/录播 在线观看地址&amp;【视频源地址】获取
 
 # 测试地址
 https://xsaiting.com/pocket48/
 
 # 说明
-1、修复了了获取公演录播/直播的功能。如果使用遇到问题直接邮件联系我：xsaiting@qq.com
+1、更新了成员数据(2018-02-04)。如果使用遇到问题直接邮件联系我：xsaiting@qq.com
 
 2、直播源推荐使用VLC media player【[下载](http://www.videolan.org/)】播放，该播放器可播放m3u8文件。
 
