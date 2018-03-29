@@ -1,0 +1,17 @@
+.c-header {
+    margin-top: 3rem;
+    margin-bottom: 1rem;
+}
+.c-choose {
+    margin-bottom: 1rem;
+    padding: 1rem;
+}
+.c-table {
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.c-message {
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
+    padding-left: 1rem;
+}
