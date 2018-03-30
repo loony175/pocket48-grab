@@ -227,6 +227,14 @@ var c = (function(){
             exdate.setDate(exdate.getDate()+expiredays);
             document.cookie=c_name+ "=" +escape(value)+((expiredays==null) ? "" : ";expires="+exdate.toGMTString());
         },
+        //删除Cookies
+        delCookie: function(name){ 
+            var exp = new Date(); 
+            exp.setTime(exp.getTime() - 1); 
+            var cval=this.getCookie(name); 
+            if(cval!=null) 
+            document.cookie= name + "="+cval+";expires="+exp.toGMTString(); 
+        },
         //提交表单
         submit: function(cData){
             response=ajaxRequestJSON(formTrans(cData),cData.func);
@@ -290,6 +298,22 @@ var c = (function(){
             ajaxRequestJSON(cAjax,"login");
 
         },
+
+        //登出，删除cookie 'token'
+        logout: function(){
+            this.delCookie('token');
+        },
+
+        //获取储存的token
+        getToken: function(){
+            return this.getCookie('token');
+        },
+
+        //刷新显示的token
+        flushToken: function(){
+            $$('#c-token').html((this.getToken()||'无token'));
+        },
+
         //测试函数
         test: function(c1){
             return eval(c1);
@@ -297,12 +321,18 @@ var c = (function(){
     }
 })();
 c.printInfo();
+c.flushToken();
 //页面功能
 var page = (function(){
     //切换功能
     var cFunc = 0;
     document.getElementById('c-cfunc').addEventListener ('change.mdui.tab', function (event) {
         cFunc = event.detail.index;
+        if (cFunc==3){
+            $$('#login').show();
+        } else {
+            $$('#login').hide();
+        }
     });
 
     //切换选择成员/团体
@@ -369,6 +399,18 @@ var page = (function(){
         console.log(cData);
         c.submit(cData);
     });
+
+    //获取token
+    $$('#c-login-get').on('click', function(e){
+        c.login($$('c-login-user').val(),$$('c-login-pass').val());
+        c.flushToken();
+    });
+    //删除token
+    $$('#c-login-del').on('click', function(e){
+        c.logout();
+        c.flushToken();
+    });
+
 })();
 
 
