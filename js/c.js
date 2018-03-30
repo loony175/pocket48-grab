@@ -243,8 +243,8 @@ var c = (function(){
         handleRes: function(response,func){
             if (func=="login"){
                 //登录成功 返回token
-                console.log(response.content.token);
                 this.setCookie('token',response.content.token,15);
+                c.flushToken();
             } else {
             showResponse(response,func);
             }
@@ -403,7 +403,6 @@ var page = (function(){
     //获取token
     $$('#c-login-get').on('click', function(e){
         c.login($$('#c-login-user').val(),$$('#c-login-pass').val());
-        c.flushToken();
     });
     //删除token
     $$('#c-login-del').on('click', function(e){
