@@ -186,7 +186,7 @@ var c = (function(){
                 var isReview=(function(){
                     if (func==1) return true;
                     else return false;
-                })()
+                })();
                 $$('#function-gy'+(isReview?("lb"):("zb"))+' tbody').html(' ');
                 if(response.content.liveList) {
                     response.content.liveList.forEach(function(row,index,array){
