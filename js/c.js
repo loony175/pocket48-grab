@@ -243,8 +243,12 @@ var c = (function(){
         handleRes: function(response,func){
             if (func=="login"){
                 //登录成功 返回token
-                this.setCookie('token',response.content.token,15);
-                c.flushToken();
+                if (response.content.token) {
+                    this.setCookie('token',response.content.token,15);
+                    c.flushToken();
+                } else {
+                    mdui.snackbar("获取token失败,"+JSON.stringify(response));
+                }
             } else {
             showResponse(response,func);
             }
