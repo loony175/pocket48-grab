@@ -235,7 +235,8 @@ var c = (function(){
         handleRes: function(response,func){
             if (func=="login"){
                 //登录成功
-                this.setCookie(token,response.content.token);
+                console.log(token);
+                this.setCookie(token,response.content.token,15);
             } else {
             showResponse(response,func);
             }
