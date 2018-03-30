@@ -15,3 +15,9 @@
     margin-bottom: 0.5rem;
     padding-left: 1rem;
 }
+td {
+    padding-right: 0rem!important;
+}
+.mdui-radio{
+    padding-left: 1.2rem;
+}
