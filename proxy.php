@@ -21,7 +21,7 @@ $header=array();
 if (isset($headers['os'])) array_push($header,'os: '.$headers['os']);
 if (isset($headers['version'])) array_push($header,'version: '.$headers['version']);
 if (isset($headers['token'])) array_push($header,'token: '.$headers['token']);
-array_push($header, 'Content-type: application/json')
+array_push($header, 'Content-type: application/json');
 $ch = curl_init($api[$f]);
 curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
 curl_setopt($ch, CURLOPT_POSTFIELDS, $post);
