@@ -3,7 +3,7 @@
 	<meta charset="utf-8">
 	<title>口袋48视频、房间信息获取 v2.3 beta</title>
 	
-	<link href="./css/mdui.min.css" rel="stylesheet" />
+	<link href="https://cdn.bootcss.com/mdui/0.4.0/css/mdui.min.css" rel="stylesheet" />
 	<link href="./css/style.css" rel="stylesheet" />
 	<link id="c-link-switch" rel="stylesheet" href="./css/link-hide.css" />
 </head>
@@ -90,7 +90,7 @@
 	<!-- 成员/团体选择器 -->
 	<div id="c-member" style="display:none;">
 	<div class="mdui-row">
-		<div id="c-cgroup" class="mdui-tab mdui-tab-centered mdui-color-theme mdui-ripple-white" mdui-tab>
+		<div id="c-cgroup" class="mdui-tab mdui-tab-centered mdui-color-theme mdui-ripple-white">
 			<a id="c-cgroup-0" value="10" href="#group-SNH48" class="mdui-ripple">SNH48</a>
 			<a id="c-cgroup-1" value="11" href="#group-BEJ48" class="mdui-ripple">BEJ48</a>
 			<a id="c-cgroup-2" value="12" href="#group-GNZ48" class="mdui-ripple">GNZ48</a>
@@ -106,7 +106,7 @@
 					<i class="mdui-radio-icon"></i>
 					所有成员
 				</label>
-				<div id="memberchoose">
+				<div id="c-memberchoose">
 				<div id="group-SNH48">
 					<div class="mdui-row">
 						【Team SII】
@@ -326,10 +326,15 @@
 		</div>
 		</div>
 	</div>
+
+	<!-- footer -->
+	<div class="mdui-row mdui-m-t-3 mdui-m-b-1">
+		<p align="center">@小赛艇 xsaiting.com</p>
+	</div>
 </div>
 
 
-<script src="./js/mdui.min.js"></script>
+<script src="https://cdn.bootcss.com/mdui/0.4.0/js/mdui.min.js"></script>
 <script src="./js/c.js"></script>
 </body>
 </html>

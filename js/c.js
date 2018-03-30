@@ -1,80 +1,34 @@
 var $$ = mdui.JQ;
 
-//页面功能
-(function(){
-//切换功能
-var cFunc = 0;
-document.getElementById('c-cfunc').addEventListener('change.mdui.tab', function (event) {
-    cFunc = event.detail.index;
-});
-
-//切换选择成员/团体
-var cMember = 0;
-document.getElementById('c-cmember').addEventListener('change', function (event) {
-    if (this.checked) {
-        cMember=1;
-        $$('#c-member').show();
-    } else {
-        cMember=0;
-        $$('#c-member').hide();
-    }
-});
-
-//切换显示完整链接
-var cLink = 0;
-document.getElementById('c-clink').addEventListener('change', function (event) {
-    if (this.checked) {
-        cLink=1;
-        $$("#c-link-switch").attr('href', './css/link-show.css');
-    } else {
-        cLink=0;
-        $$("#c-link-switch").attr('href', './css/link-hide.css');
-    }
-});
-
-//切换团体
-var cGroup = 0;
-document.getElementById('c-cgroup').addEventListener('change.mdui.tab', function (event) {
-    cGroup = $$("#c-cgroup-"+event.detail.index).attr('value');
-});
-
-//提交表单
-var cData={};
-$$('#submit').on('click', function(e){
-    cData.func=cFunc;
-    if ($$('#c-ctime-now').prop('checked')) {
-        cData.lastTime=0;
-    } else {
-        cData.lastTime=1; //待完善
-    }
-    cData.limit=$$('#c-cnumber').val();
-    if (cMember) {
-        cData.groupId=cGroup;
-        cData.memberId=$$("input[name='member']:checked").val();
-    } else {
-        cData.groupId=0;
-        cData.memberId=0;
-    }
-    console.log(cData);
-    c.submit(cData);
-});
-})();
 
 //数据处理功能
 var c = (function(){
+    //口袋48api
     var api={
         live: "https://plive.48.cn/livesystem/api/live/v1/memberLivePage",
         liveOpen: "https://plive.48.cn/livesystem/api/live/v1/openLivePage",
         liveInfo: "https://plive.48.cn/livesystem/api/live/v1/getLiveOne",
+        login: "https://puser.48.cn/usersystem/api/user/v1/login/phone",
         roomView: "",
         roomMain: "https://pjuju.48.cn/imsystem/api/im/v1/member/room/message/mainpage",
         roomBoard: "https://pjuju.48.cn/imsystem/api/im/v1/member/room/message/boardpage",
-
     }
+    //api代理访问
+    var apiProxy = api = {
+        live: "./proxy.php?f=live",
+        liveOpen: "./proxy.php?f=liveOpen",
+        liveInfo: "./proxy.php?f=liveInfo",
+        login: "./proxy.php?f=login",
+        roomView: "",
+        roomMain: "./proxy.php?f=roomMain",
+        roomBoard: "./proxy.php?f=roomBoard",
+    }
+    //url前缀
     var url={
         liveShare: "https://h5.48.cn/2017appshare/memberLiveShare/index.html?id=",
         livePic: "https://source.48.cn",
     }
+    //团体、队伍、成员信息
     var info={
         //groupId: groupName
         group: {
@@ -102,23 +56,31 @@ var c = (function(){
             }
         },
     };
+
+    //将表单转化为ajax对象
     var formTrans= function(cData){
         var cAjax={};
+        //方法 POST
         cAjax.method="POST";
+        //api地址
         cAjax.url=(function(){
             switch(cData.func){
                 case 0: return api.live;
                 case 1: case 2: return api.liveOpen;
                 case 3: return api.roomMain;
+                case 4: case 5: return api.liveInfo;
             }
         })();
+        //头信息
         cAjax.headers={
             "Content-Type": "application/json",
             "version": "5.0.1",
             "os": "Android",
             "token": c.getCookie("token")
         }
+        //数据
         cAjax.data=(function(){
+            //截止时间和数量上限
             var data={
                 "lastTime": cData.lastTime,
                 "limit": cData.limit,
@@ -128,25 +90,305 @@ var c = (function(){
                 data.memberId=cData.memberId;
                 case 1: case 2:
                 data.groupId=cData.groupId;
+                if(cData.isReview) {data.isReview=cData.isReview;}
                 break;
                 case 3:
                 data.roomId=0; //待完善
                 break;
+                case 4:
+                case 5:
+                data={};
+                data.liveId=cData.liveId;
+                break;
             }
+            console.log('data',data);
             return JSON.stringify(data);
         })();
         return cAjax;
     };
+
+    //发送request请求后自动处理
+    var ajaxRequestJSON= function(request,func){
+        var response={};
+        request.success=function(data, textStatus, xhr){
+            response=JSON.parse(data);
+            c.handleRes(response,func); //处理请求结果
+        };
+        request.error=function (xhr, textStatus) {
+            mdui.snackbar("错误:"+textStatus);
+        }
+        console.log(request);
+        $$.ajax(request);
+        return response;
+    };
+
+    //处理获取到的数据
+    var showResponse= (function(){
+
+        //将一条成员直播数据处理成表格的一行
+        var print0= function(row){
+            return '<tr><td>'+info.memberId2name(row.memberId)+'</td><td>'+row.subTitle+'</td><td>'+(function(){
+                switch(row.liveType) {
+                    case 1: return "视频";
+                    case 2: return "电台";
+                    default: return row.liveType;
+                }
+            })()+'</td><td>'+(function(){
+                return new Date(row.startTime).format('yyyy-MM-dd hh:mm:ss');
+            })()+'</td><td>'+(function(){
+                var a="";
+                var b=3; //最多显示3张图片
+                row.picPath.split(",").forEach(function(picUrl){
+                    b--;
+                    if (b>=0) {a=a+'<img src="'+url.livePic+picUrl+'" style="max-width:30px; max-height:30px" />';}
+                })
+                return a;
+            })()+'</td><td class="c-link"><a href="'+url.liveShare+row.liveId+'" target="_blank">'+url.liveShare+row.liveId+'</a></td><td class="c-link"><a href="'+row.streamPath+'" target="_blank">'+row.streamPath+'</a></td><td class="c-link"><a href="'+url.livePic+row.lrcPath+'.lrc" target="_blank">'+url.livePic+row.lrcPath+'.lrc</a></td></tr>';
+        };
+
+        //将一条公演数据处理成表格的一行
+        var print1= function(row){
+            return '<tr><td>'+row.title+'</td><td>'+row.subTitle+'</td><td class="t4">'+(function(){
+                if(row.isReview) {
+                    return "录播";
+                } else {
+                    return "直播"; //待完善-正在直播
+                }
+            })()+'</td><td>'+(function(){
+                return new Date(row.startTime).format('yyyy-MM-dd hh:mm:ss');
+            })()+'</td><td><img src="'+url.livePic+row.picPath+'" style="max-width:30px; max-height:30px"></td><td class="c-link"><a href="'+row.streamPathHd+'" target="_blank">'+row.streamPathHd+'</a></td><td class="c-link"><a href="'+row.streamPathLd+'" target="_blank">'+row.streamPathLd+'</a></td><td class="c-link"><a href="'+row.streamPath+'</a></td></tr>';
+        };
+
+        //处理函数
+        return function(response,func){
+            switch (func) {
+            //成员直播数据-直接打印
+            case 0:
+                $$('#function-cyzb tbody').html(' ');
+                if(response.content.reviewList) {
+                    response.content.reviewList.forEach(function (row,index,array){
+                        content=print0(row);
+                        $$(content).prependTo('#function-cyzb tbody')  ;
+                    });
+                    $$('<tr><td colspan="8"><span style="color:Red">----------分界线，以下为录播----------</span></td></tr>').prependTo('#function-cyzb tbody');
+                }
+                if(response.content.liveList) {
+                    response.content.liveList.forEach(function (row,index,array){
+                        content=print0(row);
+                        $$(content).prependTo('#function-cyzb tbody')  ;
+                    });
+                    $$('<tr><td  colspan="8"><span style="color:Red">----------   分界线，以下为直播----------</span></td></tr>').prependTo('#function-cyzb tbody');
+                }
+            break;
+
+            //公演数据预览转化为每个请求 待完善-使用一次获取多个详情 或者先获取预览信息再获取url
+            case 1: case 2:
+                var isReview=(function(){
+                    if (func==1) return true;
+                    else return false;
+                })()
+                $$('#function-gy'+(isReview?("lb"):("zb"))+' tbody').html(' ');
+                if(response.content.liveList) {
+                    response.content.liveList.forEach(function(row,index,array){
+                        var request0=formTrans({"func": (isReview?(4):(5)),"liveId": row.liveId});
+                        console.log(request0);
+                        ajaxRequestJSON(request0,(isReview?(4):(5)));
+                    });
+                }
+            break;
+
+            //打印房间数据 待完善
+            case 3:
+            break;
+            
+            //打印每个请求的数据
+            case 4:
+            case 5:
+                var content=print1(response.content);
+                $$(content).prependTo('#function-gy'+(response.content.isReview?("lb"):("zb"))+' tbody');
+            break;
+            }
+        };
+    })();
+
+    //返回接口
     return {
+        //获取Cookies
         getCookie: function(name){
             var arr,reg=new RegExp("(^| )"+name+"=([^;]*)(;|$)");
             if(arr=document.cookie.match(reg))
             return unescape(arr[2]);
             else
-            return null;
+            return '';
         },
+        //设置Cookies
+        setCookie: function(c_name,value,expiredays){
+            var exdate=new Date();
+            exdate.setDate(exdate.getDate()+expiredays);
+            document.cookie=c_name+ "=" +escape(value)+((expiredays==null) ? "" : ";expires="+exdate.toGMTString());
+        },
+        //提交表单
         submit: function(cData){
-            console.log(formTrans(cData));
+            response=ajaxRequestJSON(formTrans(cData),cData.func);
+        },
+        //处理返回的数据
+        handleRes: function(response,func){
+            if (func=="login"){
+                //登录成功
+                this.setCookie(token,response.content.token);
+            } else {
+            showResponse(response,func);
+            }
+        },
+
+        //返回数据
+        getInfo: function(){
+            return info;
+        },
+        //打印团体/成员数据
+        printInfo: function(){
+            $$('#c-cgroup').html(' ');
+            $$('#c-memberchoose').html(' ');
+            for (var index in info.group){
+                $$('<a id="c-cgroup-'+index+'" value="'+index+'" href="#group-'+index+'" class="mdui-ripple mdui-tab-active">'+info.group[index]+'</a>').appendTo('#c-cgroup');
+                $$('<div id="group-'+index+'"></div>').appendTo('#c-memberchoose');
+            };
+            var inst = new mdui.Tab('#c-cgroup');
+            for (var index in info.team){
+                //content头部
+                var content='<div class="mdui-row">【'+info.team[index][1]+'】';
+                for (var index0 in info.member){
+                    //当成员信息status==1,且teamId满足筛选时
+                    if((info.member[index0][4]==1)&&(info.member[index0][2]==index)){
+                        content=content+'<label class="mdui-radio"><input type="radio" name="member" value="'+index0+'"><i class="mdui-radio-icon"></i>'+info.member[index0][0]+'</label>';
+                    }
+                };
+                content=content+'</div>';
+                $$(content).appendTo('#group-'+info.team[index][0]);//加入到对应的group div中
+            };
+
+        },
+
+        //登录，获取token
+        login: function(user,pass){
+            var cAjax={};
+            cAjax.url=api.login;
+            cAjax.method="POST";
+            cAjax.headers={
+                "Content-Type": "application/json",
+                "version": "5.0.1",
+                "os": "Android"
+            };
+            cAjax.data=JSON.stringify({
+                "password": user,
+                "account": pass,
+                "longitude":0,
+                "latitude":0
+            });
+            ajaxRequestJSON(cAjax,"login");
+
+        },
+        //测试函数
+        test: function(c1){
+            return eval(c1);
         }
     }
 })();
+c.printInfo();
+//页面功能
+var page = (function(){
+    //切换功能
+    var cFunc = 0;
+    document.getElementById('c-cfunc').addEventListener ('change.mdui.tab', function (event) {
+        cFunc = event.detail.index;
+    });
+
+    //切换选择成员/团体
+    var cMember = 0;
+    document.getElementById('c-cmember').addEventListener   ('change', function (event) {
+        if (this.checked) {
+            cMember=1;
+            $$('#c-member').show();
+        } else {
+            cMember=0;
+            $$('#c-member').hide();
+        }
+    });
+
+    //切换显示完整链接
+    var cLink = 0;
+    document.getElementById('c-clink').addEventListener('change',   function (event) {
+        if (this.checked) {
+            cLink=1;
+            $$("#c-link-switch").attr('href',   './css/link-show.css');
+        } else {
+            cLink=0;
+            $$("#c-link-switch").attr('href',   './css/link-hide.css');
+        }
+    });
+
+    //切换团体
+    var cGroup = 0;
+    document.getElementById('c-cgroup').addEventListener    ('change.mdui.tab', function (event) {
+        cGroup = $$('#c-c'+event.detail.id).attr('value');
+    });
+
+    //提交表单
+    var cData={};
+    $$('#submit').on('click', function(e){
+        //使用的功能
+        cData.func=cFunc;
+
+        //直播or录播
+        if (cFunc==1) {
+            cData.isReview = 1;
+        } else if (cFunc==2) {
+            cData.isReview = 0;
+        }
+
+        //截止时间
+        if ($$('#c-ctime-now').prop('checked')) {
+            cData.lastTime=0;
+        } else {
+            cData.lastTime=1; //待完善
+        }
+
+        //数量限制
+        cData.limit=parseInt($$('#c-cnumber').val());
+        
+        //成员/团体Id
+        if (cMember) {
+            cData.groupId=cGroup;
+            cData.memberId=$$("input[name='member']:checked").val();
+        } else {
+            cData.groupId=0;
+            cData.memberId=0;
+        }
+        console.log(cData);
+        c.submit(cData);
+    });
+})();
+
+
+//日期转换
+Date.prototype.format = function(format) {
+    var date = {
+           "M+": this.getMonth() + 1,
+           "d+": this.getDate(),
+           "h+": this.getHours(),
+           "m+": this.getMinutes(),
+           "s+": this.getSeconds(),
+           "q+": Math.floor((this.getMonth() + 3) / 3),
+           "S+": this.getMilliseconds()
+    };
+    if (/(y+)/i.test(format)) {
+           format = format.replace(RegExp.$1, (this.getFullYear() + '').substr(4 - RegExp.$1.length));
+    }
+    for (var k in date) {
+           if (new RegExp("(" + k + ")").test(format)) {
+                  format = format.replace(RegExp.$1, RegExp.$1.length == 1
+                         ? date[k] : ("00" + date[k]).substr(("" + date[k]).length));
+           }
+    }
+    return format;
+}
