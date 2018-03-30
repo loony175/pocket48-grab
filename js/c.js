@@ -246,8 +246,8 @@ var c = (function(){
                 if (response.status==200) {
                     this.setCookie('token',response.content.token,15);
                     c.flushToken();
-                    $$('#c-login-user').val(' ');
-                    $$('#c-login-pass').val(' ');
+                    $$('#c-login-user').val('');
+                    $$('#c-login-pass').val('');
                 } else {
                     mdui.snackbar("获取token失败,"+JSON.stringify(response));
                 }
@@ -401,6 +401,10 @@ var page = (function(){
         } else {
             cData.groupId=0;
             cData.memberId=0;
+        }
+        if (cData.groupId=0&&cData.func==3){
+            mdui.snackbar('口袋房间功能必须选择成员!');
+            return;
         }
         console.log(cData);
         c.submit(cData);
