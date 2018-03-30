@@ -282,8 +282,8 @@ var c = (function(){
                 "imei": "355637053964243",
             };
             cAjax.data=JSON.stringify({
-                "password": user,
-                "account": pass,
+                "password": pass,
+                "account": user,
                 "longitude":0,
                 "latitude":0
             });
