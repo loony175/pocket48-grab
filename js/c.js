@@ -402,7 +402,7 @@ var page = (function(){
 
     //获取token
     $$('#c-login-get').on('click', function(e){
-        c.login($$('c-login-user').val(),$$('c-login-pass').val());
+        c.login($$('#c-login-user').val(),$$('#c-login-pass').val());
         c.flushToken();
     });
     //删除token
