@@ -234,7 +234,7 @@ var c = (function(){
         //处理返回的数据
         handleRes: function(response,func){
             if (func=="login"){
-                //登录成功
+                //登录成功 返回token
                 console.log(token);
                 this.setCookie(token,response.content.token,15);
             } else {
