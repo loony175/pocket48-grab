@@ -246,6 +246,8 @@ var c = (function(){
                 if (response.status==200) {
                     this.setCookie('token',response.content.token,15);
                     c.flushToken();
+                    $$('#c-login-user').val(' ');
+                    $$('#c-login-pass').val(' ');
                 } else {
                     mdui.snackbar("获取token失败,"+JSON.stringify(response));
                 }
