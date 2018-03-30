@@ -243,7 +243,7 @@ var c = (function(){
         handleRes: function(response,func){
             if (func=="login"){
                 //登录成功 返回token
-                if (response.content.token) {
+                if (typeof response.content.token!=undefined) {
                     this.setCookie('token',response.content.token,15);
                     c.flushToken();
                 } else {
