@@ -274,9 +274,9 @@ var c = (function(){
 
             //打印房间内容
             var print3= function(row){
-                console.log('[print3] row=',row);
+                //console.log('[print3] row=',row);
                 var ext=JSON.parse(row.extInfo);
-                console.log('[extInfo] ext=',ext);
+                //console.log('[extInfo] ext=',ext);
 
                 var content='<div class="mdui-card mdui-shadow-0 c-message mdui-typo" timestamp="'+row.msgTime+'" ><div class="mdui-card-primary-subtitle">'+ext.senderName+' @'+row.msgTimeStr+((ext.phoneName)?(' 来自'+ext.phoneName):(' '))+'</div>';
 
@@ -410,6 +410,7 @@ var c = (function(){
 
                 //公演每个数据-打印
                 case 4: case 5:
+                    console.log('case 4,5 response=',response);
                     var content=print1(response.content);
                     $$(content).prependTo('#function-gy'+(response.content.isReview?("lb"):("zb"))+' tbody');
                 break;
