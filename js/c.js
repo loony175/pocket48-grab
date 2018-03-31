@@ -433,7 +433,7 @@ var c = (function(){
                     //console.log('case 4,5 request=',request);
                     var content=print5(response.content);
                     $$(content).appendTo('#c-live-'+JSON.parse(request.data).liveId);
-                    mdui.updateTables('#function-gy'+((func==4))?("lb"):("zb"))+' table');
+                    mdui.updateTables('#function-gy'+((func==4)?("lb"):("zb"))+' table');
                 break;
                 
                 //房间功能2-打印房间内容和右墙
