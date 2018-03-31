@@ -277,7 +277,7 @@ var c = (function(){
                 var ext=JSON.parse(row.extInfo);
                 //console.log('[extInfo] ext=',ext);
 
-                var content='<div class="mdui-card mdui-shadow-0 c-message mdui-typo" timestamp="'+row.msgTime+'" ><div class="mdui-card-primary-subtitle">'+ext.senderName+' @'+row.msgTimeStr+((ext.phoneName)?(' 来自'+ext.phoneName):(' '))+ext.phoneName+'</div>';
+                var content='<div class="mdui-card mdui-shadow-0 c-message mdui-typo" timestamp="'+row.msgTime+'" ><div class="mdui-card-primary-subtitle">'+ext.senderName+' @'+row.msgTimeStr+((ext.phoneName)?(' 来自'+ext.phoneName):(' '))+'</div>';
 
                 //文本信息处理
                 switch(row.msgType){
