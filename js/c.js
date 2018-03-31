@@ -149,7 +149,6 @@ var c = (function(){
                 cAjax.data=JSON.stringify({
                     "liveId": cData.liveId
                 });
-                cAjax.async=false;
             break;
 
             //房间内容功能
@@ -195,7 +194,7 @@ var c = (function(){
         request.error=function (xhr, textStatus) {
             mdui.snackbar("错误:"+textStatus);
         }
-        //console.log('[ajaxRequestJSON] request=',request);
+        console.log('[ajaxRequestJSON] request=',request);
         $$.ajax(request);
         return response;
     };
@@ -230,6 +229,7 @@ var c = (function(){
         },
         //处理返回的数据
         handleRes: function(response,func){
+            console.log('handle: response=',response);
             //将一条成员直播数据处理成表格的一行
             var print0= function(row){
                 return '<tr><td>'+info.memberId2name(row.memberId)+'</td><td>'+row.subTitle+'</td><td>'+(function(){
