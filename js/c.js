@@ -279,14 +279,63 @@ var c = (function(){
 
                 var content='<div class="mdui-card mdui-shadow-0 c-message mdui-typo" timestamp="'+row.msgTime+'" ><div class="mdui-card-primary-subtitle">'+ext.senderName+' @'+row.msgTimeStr+' 来自'+ext.phoneName+'</div>';
 
-                //翻牌功能 和 普通文本
-                if (ext.messageObject=="faipaiText"){
-                    content=content+'<blockquote><p>'+ext.messageText+'</p><footer>ID:'+ext.faipaiUserId+'</footer></blockquote>'+ext.messageText+'</div>';
-                } else {
-                    content=content+ext.text+'</div>';
+                //文本信息处理
+                switch(row.msgType){
+                    //文本信息
+                    case 0:
+                        switch(ext.messageObject){
+                            //普通文本
+                            case "text":
+                                content=content+ext.text;
+                            break;
+
+                            //翻牌信息
+                            case "faipaiText":
+                                content=content+'<blockquote><p>'+ext.messageText+'</p><footer>ID:'+ext.faipaiUserId+'</footer></blockquote>'+ext.messageText;
+                            break;
+
+                            //视频直播信息
+                            case "live":
+                                content=content+'<img style="max-width:30px; max-height:30px" src='+url.livePic+ext.referencecoverImage+' />【视频直播】<a href="'+url.liveShare+ext.referenceObjectId+'" target="_blank">'+url.liveShare+ext.referenceObjectId+'</a>'
+                            break;
+                            
+                            //电台直播信息
+                            case "diantai":
+                                content=content+'<img style="max-width:30px; max-height:30px" src='+url.livePic+ext.referencecoverImage+' />【电台直播】<a href="'+url.liveShare+ext.referenceObjectId+'" target="_blank">'+url.liveShare+ext.referenceObjectId+'</a>'
+                            break;
+
+                            case "idolFlip":
+                                content=content+ext.idolFlipTitle+'<br/>'+idolFlipContent;
+                            break;
+
+                        }
+                    break;
+
+                    //图片信息
+                    case 1:
+                        var body=JSON.parse(row.bodys);
+                        content=content+'<img src='+body.url+' />';
+                    break;
+
+                    //语音信息
+                    case 2:
+                        var body=JSON.parse(row.bodys);
+                        content=content+'<audio src='+body.url+' />';
+                    break;
+                    
+                    //视频信息
+                    case 3:
+                        var body=JSON.parse(row.bodys);
+                        content=content+'<video src='+body.url+' />';
+                    break;
+                    
+                    //其他信息
+                    default:
+                        content=content+JSON.stringify(row);
+                    break;
                 }
                 //分割线
-                content=content+'<div class="mdui-divider"></div>'
+                content=content+'</div><div class="mdui-divider"></div>'
                 return content;
             };
 
@@ -375,6 +424,7 @@ var c = (function(){
                 break;
                 case 7:
                     $$('#c-room-board').html(' ');
+                    console.log('board response',response);
                     for (var key in response.content.data){
                         var content=print4(response.content.data[key]);
                         $$(content).appendTo('#c-room-board');
