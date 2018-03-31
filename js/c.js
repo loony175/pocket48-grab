@@ -429,10 +429,10 @@ var c = (function(){
 
                 //公演每个数据-打印
                 case 4: case 5:
-                    console.log('case 4,5 response=',response);
-                    console.log('case 4,5 request=',request);
+                    //console.log('case 4,5 response=',response);
+                    //console.log('case 4,5 request=',request);
                     var content=print5(response.content);
-                    $$(content).appendTo('#c-live-'+JSON.stringify(request.data).liveId);
+                    $$(content).appendTo('#c-live-'+JSON.parse(request.data).liveId);
                 break;
                 
                 //房间功能2-打印房间内容和右墙
