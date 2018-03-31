@@ -340,18 +340,21 @@ var c = (function(){
                 //房间功能-打印房间基础信息，转化为两个房间id请求
                 case 3:
                     console.log('room response',response);
-                    if(response.content.hasOwnProperty("roomId")){
+                    if(response.content[0].hasOwnProperty("roomId")){
                         cData=c.getCData();
                         ajaxRequestJSON(formTrans({
                             "func": 6,
                             "limit": cData.limit,
-                            "lastTime": cData.lastTime
+                            "lastTime": cData.lastTime,
+                            "roomId": response.content[0].roomId
                         }),6);
                         ajaxRequestJSON(formTrans({
                             "func": 7,
                             "limit": cData.limit,
-                            "lastTime": cData.lastTime
+                            "lastTime": cData.lastTime,
+                            "roomId": response.content[0].roomId
                         }),7);
+                        print2(response.content[0]);
                     }
                 break;
 
