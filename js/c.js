@@ -245,7 +245,7 @@ var c = (function(){
                     var b=3; //最多显示3张图片
                     row.picPath.split(",").forEach(function(picUrl){
                         b--;
-                        if (b>=0) {a=a+'<img src="'+(picUrl.slice(0,4)=='http')?('')(url.livePic)+picUrl+'" style="max-width:30px; max-height:30px" />';}
+                        if (b>=0) {a=a+'<img src="'+((picUrl.slice(0,4)=='http')?('')(url.livePic))+picUrl+'" style="max-width:30px; max-height:30px" />';}
                     })
                     return a;
                 })()+'</td><td class="c-link"><a href="'+url.liveShare+row.liveId+'" target="_blank">'+url.liveShare+row.liveId+'</a></td><td class="c-link"><a href="'+row.streamPath+'" target="_blank">'+row.streamPath+'</a></td><td class="c-link"><a href="'+url.livePic+row.lrcPath+'.lrc" target="_blank">'+url.livePic+row.lrcPath+'.lrc</a></td></tr>';
