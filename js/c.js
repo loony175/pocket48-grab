@@ -9,7 +9,7 @@ var c = (function(){
         liveOpen: "https://plive.48.cn/livesystem/api/live/v1/openLivePage",
         liveInfo: "https://plive.48.cn/livesystem/api/live/v1/getLiveOne",
         login: "https://puser.48.cn/usersystem/api/user/v1/login/phone",
-        roomView: "",
+        roomId: "https://pjuju.48.cn/imsystem/api/im/room/v1/login/user/list",
         roomMain: "https://pjuju.48.cn/imsystem/api/im/v1/member/room/message/mainpage",
         roomBoard: "https://pjuju.48.cn/imsystem/api/im/v1/member/room/message/boardpage",
     }
@@ -19,7 +19,7 @@ var c = (function(){
         liveOpen: "./proxy.php?f=liveOpen",
         liveInfo: "./proxy.php?f=liveInfo",
         login: "./proxy.php?f=login",
-        roomView: "",
+        roomId: "./proxy.php?f=roomId",
         roomMain: "./proxy.php?f=roomMain",
         roomBoard: "./proxy.php?f=roomBoard",
     }
@@ -59,51 +59,127 @@ var c = (function(){
 
     //将表单转化为ajax对象
     var formTrans= function(cData){
+        /* ajax示例
+            $$.ajax({
+                method: 'POST',
+                url: './test.php',
+                headers: {
+                    'Content-Type' : 'application/json',
+                },
+                data: {
+                    key1: 'val1',
+                    key2: 'val2'
+                },
+                success: function (data) {
+                    console.log(data);
+                }
+                error: function (xhr, textStatus) {
+                    // xhr 为 XMLHttpRequest 对象
+                    // textStatus 为包含错误代码的字符串
+                }
+                statusCode: {
+                    404: function (xhr, textStatus) {
+                        alert('返回状态码为 404 时被调用');
+                    },
+                    200: function (data, textStatus, xhr) {
+                        alert('返回状态码为 200 时被调用');
+                    }
+                }
+            });
+        */
         var cAjax={};
         //方法 POST
         cAjax.method="POST";
-        //api地址
-        cAjax.url=(function(){
-            switch(cData.func){
-                case 0: return api.live;
-                case 1: case 2: return api.liveOpen;
-                case 3: return api.roomMain;
-                case 4: case 5: return api.liveInfo;
-            }
-        })();
-        //头信息
-        cAjax.headers={
-            "Content-Type": "application/json",
-            "version": "5.0.1",
-            "os": "Android",
-            "token": c.getCookie("token")
+        switch(cData.func){
+            //成员直播功能
+            case 0:
+                cAjax.url=api.live;
+                cAjax.headers={
+                    "Content-Type": "application/json",
+                    "version": "5.0.1",
+                    "os": "Android"
+                };
+                cAjax.data=JSON.stringify({
+                    "lastTime": cData.lastTime,
+                    "limit": cData.limit,
+                    "memberId": cData.memberId || 0,
+                    "groupId": cData.groupId || 0,
+                });
+            break;
+
+            //公演功能
+            case 1: case 2:
+                cAjax.url=api.liveOpen;
+                cAjax.headers={
+                    "Content-Type": "application/json",
+                    "version": "5.0.1",
+                    "os": "Android"
+                };
+                cAjax.data=JSON.stringify({
+                    "lastTime": cData.lastTime,
+                    "limit": cData.limit,
+                    "groupId": cData.groupId || 0,
+                });
+                if(cData.isReview) {
+                    cAjax.data.isReview=cData.isReview;
+                }
+            break;
+            
+            //房间id功能
+            case 3:
+                cAjax.url=api.roomId;
+                cAjax.headers={
+                    "Content-Type": "application/json",
+                    "token": c.getToken()
+                }
+                cAjax.data=JSON.stringify({
+                    "friends": [cData.memberId]
+                });
+            break;
+
+            //公演详情功能
+            case 4: case 5:
+                cAjax.url=api.liveInfo;
+                cAjax.headers={
+                    "Content-Type": "application/json",
+                    "version": "5.0.1",
+                    "os": "Android"
+                };
+                cAjax.data=JSON.stringify({
+                    "liveId": cData.liveId
+                });
+            break;
+
+            //房间内容功能
+            case 6:
+                cAjax.url= api.roomMain;
+                cAjax.headers={
+                    "Content-Type": "application/json",
+                    "token": c.getToken()
+                }
+                cAjax.data=JSON.stringify({
+                    "roomId": cData.roomId,
+                    "chatType": 0,
+                    "lastTime": cData.lastTime,
+                    "limit": cData.limit
+                });
+            break;
+
+            //房间右墙功能
+            case 7:
+                cAjax.url= api.roomBoard;
+                cAjax.headers={
+                    "Content-Type": "application/json",
+                    "token": c.getToken()
+                }
+                cAjax.data=JSON.stringify({
+                    "roomId": cData.roomId,
+                    "isFirst": true,
+                    "lastTime": cData.lastTime,
+                    "limit": cData.limit
+                });
+            break;
         }
-        //数据
-        cAjax.data=(function(){
-            //截止时间和数量上限
-            var data={
-                "lastTime": cData.lastTime,
-                "limit": cData.limit,
-            };
-            switch(cData.func){
-                case 0: 
-                data.memberId=cData.memberId;
-                case 1: case 2:
-                data.groupId=cData.groupId;
-                if(cData.isReview) {data.isReview=cData.isReview;}
-                break;
-                case 3:
-                data.roomId=0; //待完善
-                break;
-                case 4:
-                case 5:
-                data={};
-                data.liveId=cData.liveId;
-                break;
-            }
-            console.log('data',data);
-            return JSON.stringify(data);
-        })();
         return cAjax;
     };
 
@@ -122,7 +198,7 @@ var c = (function(){
         return response;
     };
 
-    //处理获取到的数据
+/*     //处理获取到的数据
     var showResponse= (function(){
 
         //将一条成员直播数据处理成表格的一行
@@ -199,6 +275,7 @@ var c = (function(){
 
             //打印房间数据 待完善
             case 3:
+
             break;
             
             //打印每个请求的数据
@@ -209,7 +286,8 @@ var c = (function(){
             break;
             }
         };
-    })();
+    })(); 
+*/
 
     //返回接口
     return {
@@ -241,18 +319,167 @@ var c = (function(){
         },
         //处理返回的数据
         handleRes: function(response,func){
-            if (func=="login"){
-                //登录成功 返回token
-                if (response.status==200) {
-                    this.setCookie('token',response.content.token,15);
-                    c.flushToken();
-                    $$('#c-login-user').val('');
-                    $$('#c-login-pass').val('');
-                } else {
-                    mdui.snackbar("获取token失败,"+JSON.stringify(response));
+            //将一条成员直播数据处理成表格的一行
+            var print0= function(row){
+                return '<tr><td>'+info.memberId2name(row.memberId)+'</td><td>'+row.subTitle+'</td><td>'+(function(){
+                    switch(row.liveType) {
+                        case 1: return "视频";
+                        case 2: return "电台";
+                        default: return row.liveType;
+                    }
+                })()+'</td><td>'+(function(){
+                    return new Date(row.startTime).format('yyyy-MM-dd hh:mm:ss');
+                })()+'</td><td>'+(function(){
+                    var a="";
+                    var b=3; //最多显示3张图片
+                    row.picPath.split(",").forEach(function(picUrl){
+                        b--;
+                        if (b>=0) {a=a+'<img src="'+url.livePic+picUrl+'" style="max-width:30px; max-height:30px" />';}
+                    })
+                    return a;
+                })()+'</td><td class="c-link"><a href="'+url.liveShare+row.liveId+'" target="_blank">'+url.liveShare+row.liveId+'</a></td><td class="c-link"><a href="'+row.streamPath+'" target="_blank">'+row.streamPath+'</a></td><td class="c-link"><a href="'+url.livePic+row.lrcPath+'.lrc" target="_blank">'+url.livePic+row.lrcPath+'.lrc</a></td></tr>';
+            };
+
+            //将一条公演数据处理成表格的一行
+            var print1= function(row){
+                return '<tr><td>'+row.title+'</td><td>'+row.subTitle+'</td><td class="t4">'+(function(){
+                    if(row.isReview) {
+                        return "录播";
+                    } else {
+                        return "直播"; //待完善-正在直播
+                    }
+                })()+'</td><td>'+(function(){
+                    return new Date(row.startTime).format('yyyy-MM-dd hh:mm:ss');
+                })()+'</td><td><img src="'+url.livePic+row.picPath+'" style="max-width:30px; max-height:30px"></td><td class="c-link"><a href="'+row.streamPathHd+'" target="_blank">'+row.streamPathHd+'</a></td><td class="c-link"><a href="'+row.streamPathLd+'" target="_blank">'+row.streamPathLd+'</a></td><td class="c-link"><a href="'+row.streamPath+'</a></td></tr>';
+            };
+
+            //打印房间头部信息
+            var print2= function(row){
+                $$('#c-room-avatar').attr('src',url.livePic+row.roomAvatar);
+                $$('#c-room-title').html(row.creatorName);
+                $$('#c-room-subtitle').html(row.comment+'@'+new Date(row.commentTimeMs).format('yyyy-MM-dd hh:mm:ss'));
+                if(row.bgPath){
+                    $$('#c-room-content').css('background','url("'+url.livePic+row.bgPath+'") no-repeat');
                 }
-            } else {
-            showResponse(response,func);
+            };
+
+            //打印房间内容
+            var print3= function(row){
+                var ext=JSON.parse(row.extInfo);
+                console.log('extInfo',ext);
+
+                var content='<div class="mdui-card mdui-shadow-0 c-message mdui-typo" timestamp="'+row.msgTime+'" ><div class="mdui-card-primary-subtitle">'+ext.senderName+' @'+row.msgTimeStr+' 来自'+ext.phoneName+'</div>';
+
+                //翻牌功能 和 普通文本
+                if (ext.messageObject=="faipaiText"){
+                    content=content+'<blockquote><p>'+ext.messageText+'</p><footer>ID:'+ext.faipaiUserId+'</footer></blockquote>'+ext.messageText+'</div>';
+                } else {
+                    content=content+ext.text+'</div>';
+                }
+                //分割线
+                content=content+'<div class="mdui-divider"></div>'
+                return content;
+            };
+
+            //打印右墙内容
+            var print4= function(row){
+                var ext=JSON.parse(row.extInfo);
+                console.log('extInfo board',ext);
+                //内容
+                var content='<li class="mdui-list-item mdui-ripple" timestamp="'+row.msgTime+'" senderId="'+row.senderId+'"><div class="mdui-list-item-avatar"><img src="'+url.livePic+ext.senderAvatar+'"/></div><div class="mdui-list-item-content"> <div class="mdui-list-item-title">'+ext.senderName+' @'+row.msgTimeStr+' 来自'+ext.phoneName+'</div><div class="mdui-list-item-text">'+ext.text+'</div></div></li>';
+                //分割线
+                content=content+'<li class="mdui-divider-inset mdui-m-y-0"></li>';
+                return content;
+            }
+
+            switch (func) {
+                //成员直播数据-直接打印
+                case 0:
+                    $$('#function-cyzb tbody').html(' ');
+                    if(response.content.reviewList) {
+                        response.content.reviewList.forEach(function (row,index,array){
+                            content=print0(row);
+                            $$(content).prependTo('#function-cyzb tbody')  ;
+                        });
+                        $$('<tr><td colspan="8"><span style="color:Red">----------分界线，以下为录播----------</span></td></tr>').prependTo('#function-cyzb tbody');
+                    }
+                    if(response.content.liveList) {
+                        response.content.liveList.forEach(function (row,index,array){
+                            content=print0(row);
+                            $$(content).prependTo('#function-cyzb tbody')  ;
+                        });
+                        $$('<tr><td  colspan="8"><span style="color:Red">----------   分界线，以下为直播----------</span></td></tr>').prependTo('#function-cyzb tbody');
+                    }
+                break;
+
+                //公演数据预览-转化为单个请求
+                case 1: case 2:
+                    var isReview=(function(){
+                        if (func==1) return true;
+                        else return false;
+                    })();
+                    $$('#function-gy'+(isReview?("lb"):("zb"))+' tbody').html(' ');
+                    if(response.content.liveList) {
+                        response.content.liveList.forEach(function(row,index,array){
+                            var request0=formTrans({"func": (isReview?(4):(5)),"liveId": row.liveId});
+                            console.log(request0);
+                            ajaxRequestJSON(request0,(isReview?(4):(5)));
+                        });
+                    }
+                break;
+                
+                //房间功能-打印房间基础信息，转化为两个房间id请求
+                case 3:
+                    if(response.content.hasOwnProperty("roomId")){
+                        cData=c.getCData();
+                        ajaxRequestJSON(formTrans({
+                            "func": 6,
+                            "limit": cData.limit,
+                            "lastTime": cData.lastTime
+                        }),6);
+                        ajaxRequestJSON(formTrans({
+                            "func": 7,
+                            "limit": cData.limit,
+                            "lastTime": cData.lastTime
+                        }),7);
+                    }
+                break;
+
+                //公演每个数据-打印
+                case 4: case 5:
+                    var content=print1(response.content);
+                    $$(content).prependTo('#function-gy'+(response.content.isReview?("lb"):("zb"))+' tbody');
+                break;
+                
+                //房间功能2-打印房间内容和右墙
+                case 6:
+                    $$('#c-room-content').html(' ');
+                    for (var key in response.content.data) {
+                        var content=print3(response.content.data[key]);
+                        //插入内容
+                        $$(content).appendTo('#c-room-content');
+                    }
+                break;
+                case 7:
+                    $$('#c-room-board').html(' ');
+                    for (var key in response.content.data){
+                        var content=print4(response.content.data[key]);
+                        $$(content).appendTo('#c-room-board');
+                    }
+                break;
+
+                //登录功能
+                case "login":
+                    if (response.status==200) {
+                        //登录成功 返回token
+                        this.setCookie('token',response.content.token,15);
+                        c.flushToken();
+                        $$('#c-login-user').val('');
+                        $$('#c-login-pass').val('');
+                    } else {
+                        mdui.snackbar("获取token失败,"+JSON.stringify(response));
+                    }
+                break;
             }
         },
 
@@ -320,6 +547,38 @@ var c = (function(){
             $$('#c-token').html((this.getToken()||'无token'));
         },
 
+        //获取当前表单信息
+        getCData : function(){
+            //使用的功能
+            cData.func=cFunc;
+    
+            //直播or录播
+            if (cFunc==1) {
+                cData.isReview = 1;
+            } else if (cFunc==2) {
+                cData.isReview = 0;
+            }
+    
+            //截止时间
+            if ($$('#c-ctime-now').prop('checked')) {
+                cData.lastTime=0;
+            } else {
+                cData.lastTime=1; //待完善
+            }
+    
+            //数量限制
+            cData.limit=parseInt($$('#c-cnumber').val());
+            
+            //成员/团体Id
+            if (cMember) {
+                cData.groupId=cGroup;
+                cData.memberId=$$("input[name='member']:checked").val();
+            } else {
+                cData.groupId=0;
+                cData.memberId=0;
+            }
+            return cData;
+        },
         //测试函数
         test: function(c1){
             return eval(c1);
@@ -375,33 +634,7 @@ var page = (function(){
     var cData={};
     $$('#submit').on('click', function(e){
         //使用的功能
-        cData.func=cFunc;
-
-        //直播or录播
-        if (cFunc==1) {
-            cData.isReview = 1;
-        } else if (cFunc==2) {
-            cData.isReview = 0;
-        }
-
-        //截止时间
-        if ($$('#c-ctime-now').prop('checked')) {
-            cData.lastTime=0;
-        } else {
-            cData.lastTime=1; //待完善
-        }
-
-        //数量限制
-        cData.limit=parseInt($$('#c-cnumber').val());
-        
-        //成员/团体Id
-        if (cMember) {
-            cData.groupId=cGroup;
-            cData.memberId=$$("input[name='member']:checked").val();
-        } else {
-            cData.groupId=0;
-            cData.memberId=0;
-        }
+        cData=c.getCData();
         if (cData.groupId=0&&cData.func==3){
             mdui.snackbar('口袋房间功能必须选择成员!');
             return;
