@@ -275,7 +275,7 @@ var c = (function(){
 
             //打印房间内容
             var print3= function(row){
-                //console.log('[print3] row=',row);
+                console.log('[print3] row=',row);
                 var ext=JSON.parse(row.extInfo);
                 //console.log('[extInfo] ext=',ext);
 
@@ -411,7 +411,7 @@ var c = (function(){
 
                 //公演每个数据-打印
                 case 4: case 5:
-                    console.log('case 4,5 response=',response);
+                    //console.log('case 4,5 response=',response);
                     var content=print1(response.content);
                     $$(content).appendTo('#function-gy'+(response.content.isReview?("lb"):("zb"))+' tbody');
                 break;
