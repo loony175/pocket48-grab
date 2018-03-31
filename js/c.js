@@ -263,10 +263,12 @@ var c = (function(){
                 return '<td>'+(function(){
                     if(row.isReview) {
                         return "录播";
+                    } else if(row.isOpen) {
+                        return "直播中";
                     } else {
-                        return "直播"; //待完善-正在直播
+                        return "直播";
                     }
-                })()+'</td><td class="c-link"><a href="'+row.streamPathHd+'" target="_blank">'+row.streamPathHd+'</a></td><td class="c-link"><a href="'+row.streamPathLd+'" target="_blank">'+row.streamPathLd+'</a></td><td class="c-link"><a href="'+row.streamPath+'</a></td>'
+                })()+'</td><td class="c-link"><a href="'+row.streamPathHd+'" target="_blank">'+row.streamPathHd+'</a></td><td class="c-link"><a href="'+row.streamPathLd+'" target="_blank">'+row.streamPathLd+'</a></td><td class="c-link"><a href="'+row.streamPath+'</a></td>';
             };
 
             //打印房间头部信息
@@ -430,7 +432,7 @@ var c = (function(){
                     console.log('case 4,5 response=',response);
                     console.log('case 4,5 request=',request);
                     var content=print5(response.content);
-                    $$(content).appendTo('#c-live-'+JSON.stringify(request.data).liveTd);
+                    $$(content).appendTo('#c-live-'+JSON.stringify(request.data).liveId);
                 break;
                 
                 //房间功能2-打印房间内容和右墙
