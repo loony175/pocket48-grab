@@ -572,7 +572,7 @@ var c = (function(){
             
             //成员/团体Id
             if (cPage.getCMember) {
-                cData.groupId=cPage.getCGroup;
+                cData.groupId=cPage.getCGroup();
                 cData.memberId=$$("input[name='member']:checked").val();
             } else {
                 cData.groupId=0;
@@ -636,7 +636,7 @@ var cPage = (function(){
     $$('#submit').on('click', function(e){
         //使用的功能
         cData=c.getCData();
-        if (cData.groupId==0&&cData.func==3){
+        if (cData.memberId==0&&cData.func==3){
             mdui.snackbar('口袋房间功能必须选择成员!');
             return;
         }
