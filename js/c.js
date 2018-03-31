@@ -45,12 +45,10 @@ var c = (function(){
                 return this.group[groupId];
             }
         },
-        groupId2color: function(groupId){
+        groupId2firstTeamId: function(groupId){
             if (this.group[groupId]){
                 for (var teamId in this.team){
-                    if(this.team[teamId][0]==groupId){
-                        return this.team[teamId][2];
-                    }
+                    return teamId;
                 }
             }
         },
@@ -69,9 +67,9 @@ var c = (function(){
                 return this.member[memberId][0];
             }
         },
-        memberId2color: function(memberId){
+        memberId2teamId: function(memberId){
             if (this.member[memberId]){
-                return this.team[this.member[memberId][2]][2];
+                return this.member[memberId][2];
             }
         },
 
@@ -252,7 +250,7 @@ var c = (function(){
             console.log('handle: response=',response);
             //将一条成员直播数据处理成表格的一行
             var print0= function(row){
-                return '<tr style="color: #'+info.memberId2color(row.memberId)+'!important"><td>'+info.memberId2name(row.memberId)+'</td><td>'+row.subTitle+'</td><td>'+(function(){
+                return '<tr class="c-team-'+memberId2teamId(row.memberId)+'"><td>'+info.memberId2name(row.memberId)+'</td><td>'+row.subTitle+'</td><td>'+(function(){
                     switch(row.liveType) {
                         case 1: return "视频";
                         case 2: return "电台";
@@ -273,7 +271,7 @@ var c = (function(){
 
             //将公演预览数据处理成表格的一行
             var print1= function(row){
-                return '<tr id="c-live-'+row.liveId+'" style="color: #'+info.groupId2color(row.groupId)+'!important"><td>'+row.title+'</td><td>'+row.subTitle+'</td><td>'+(function(){
+                return '<tr id="c-live-'+row.liveId+'" class="c-team-'+groupId2firstTeamId(row.groupId)+'"><td>'+row.title+'</td><td>'+row.subTitle+'</td><td>'+(function(){
                     if(row.isReview) {
                         return "录播";
                     } else if(row.isOpen) {
@@ -288,7 +286,7 @@ var c = (function(){
 
             //将一条公演数据处理成一行
             var print5= function(row){
-                return '<td class="c-link"><a href="'+row.streamPathHd+'" target="_blank">'+row.streamPathHd+'</a></td><td class="c-link"><a href="'+row.streamPathLd+'" target="_blank">'+row.streamPathLd+'</a></td><td class="c-link"><a href="'+row.streamPath+'</a></td>';
+                return '<td class="c-link"><a href="'+row.streamPathHd+'" target="_blank">'+row.streamPathHd+'</a></td><td class="c-link"><a href="'+row.streamPathLd+'" target="_blank">'+row.streamPathLd+'</a></td><td class="c-link"><a href="'+row.streamPath+'">'+streamPath+'</a></td>';
             };
 
             //打印房间头部信息
@@ -503,7 +501,7 @@ var c = (function(){
             var inst = new mdui.Tab('#c-cgroup');
             for (var index in info.team){
                 //content头部
-                var content='<div class="mdui-row" style="color: #'+info.team[index][2]+'!important">【'+info.team[index][1]+'】';
+                var content='<div class="mdui-row c-team-'+index+'">【'+info.team[index][1]+'】';
                 for (var index0 in info.member){
                     //当成员信息status==1,且teamId满足筛选时
                     if((info.member[index0][4]==1)&&(info.member[index0][2]==index)){
