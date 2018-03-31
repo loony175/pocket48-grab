@@ -549,6 +549,7 @@ var c = (function(){
 
         //获取当前表单信息
         getCData : function(){
+            var cData={};
             //使用的功能
             cData.func=cFunc;
     
