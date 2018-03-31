@@ -530,7 +530,8 @@ var c = (function(){
             if ($$('#c-ctime-now').prop('checked')) {
                 cData.lastTime=0;
             } else {
-                cData.lastTime=1; //待完善
+                stringTime=$$('#c-year').val()+'-'+$$('#c-month').val()+'-'+$$('#c-day').val()+' '+$$('#c-hour').val()+':0:0';
+                cData.lastTime=Date.parse(new Date(stringTime)); //待完善
             }
     
             //数量限制
