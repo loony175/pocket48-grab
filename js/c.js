@@ -483,7 +483,7 @@ var c = (function(){
             var inst = new mdui.Tab('#c-cgroup');
             for (var index in info.team){
                 //content头部
-                var content='<div class="mdui-row">【'+info.team[index][1]+'】';
+                var content='<div class="mdui-row" style="color: #'+info.team[index][2]+'">【'+info.team[index][1]+'】';
                 for (var index0 in info.member){
                     //当成员信息status==1,且teamId满足筛选时
                     if((info.member[index0][4]==1)&&(info.member[index0][2]==index)){
