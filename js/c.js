@@ -268,7 +268,7 @@ var c = (function(){
                 $$('#c-room-title').html(row.creatorName);
                 $$('#c-room-subtitle').html(row.comment+'@'+new Date(row.commentTimeMs).format('yyyy-MM-dd hh:mm:ss'));
                 if(row.bgPath){
-                    $$('#c-room-content').css('background','url("'+url.livePic+row.bgPath+'") no-repeat');
+                    $$('#c-room-content').css('background','url("'+url.livePic+row.bgPath+'") repeat-y');
                 }
             };
 
@@ -295,7 +295,7 @@ var c = (function(){
                 var ext=JSON.parse(row.extInfo);
                 console.log('extInfo board',ext);
                 //内容
-                var content='<li class="mdui-list-item mdui-ripple" timestamp="'+row.msgTime+'" senderId="'+row.senderId+'"><div class="mdui-list-item-avatar"><img src="'+url.livePic+ext.senderAvatar+'"/></div><div class="mdui-list-item-content"> <div class="mdui-list-item-title">'+ext.senderName+' @'+row.msgTimeStr+' 来自'+ext.phoneName+'</div><div class="mdui-list-item-text">'+ext.text+'</div></div></li>';
+                var content='<li class="mdui-list-item mdui-ripple" timestamp="'+row.msgTime+'" senderId="'+row.senderId+'"><div class="mdui-list-item-avatar"><img src="'+url.livePic+ext.senderAvatar+'"/></div><div class="mdui-list-item-content"> <div class="mdui-list-item-title">'+ext.senderName+' <small>@'+row.msgTimeStr+' 来自'+ext.phoneName+'</small></div><div class="mdui-list-item-text">'+ext.text+'</div></div></li>';
                 //分割线
                 content=content+'<li class="mdui-divider-inset mdui-m-y-0"></li>';
                 return content;
