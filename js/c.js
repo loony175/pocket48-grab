@@ -636,11 +636,11 @@ var cPage = (function(){
     $$('#submit').on('click', function(e){
         //使用的功能
         cData=c.getCData();
-        if (cData.groupId=0&&cData.func==3){
+        if (cData.groupId==0&&cData.func==3){
             mdui.snackbar('口袋房间功能必须选择成员!');
             return;
         }
-        console.log(cData);
+        console.log('cData',cData);
         c.submit(cData);
     });
 
