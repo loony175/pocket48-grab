@@ -49,7 +49,7 @@ var c = (function(){
             if (this.group[groupId]){
                 for (var teamId in this.team){
                     if(this.team[teamId][0]==groupId){
-                        return team[teamId][2];
+                        return this.team[teamId][2];
                     }
                 }
             }
