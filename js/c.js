@@ -551,12 +551,12 @@ var c = (function(){
         getCData : function(){
             var cData={};
             //使用的功能
-            cData.func=cFunc;
+            cData.func=cPage.getCFunc();
     
             //直播or录播
-            if (cFunc==1) {
+            if (cData.func==1) {
                 cData.isReview = 1;
-            } else if (cFunc==2) {
+            } else if (cData.func==2) {
                 cData.isReview = 0;
             }
     
@@ -571,8 +571,8 @@ var c = (function(){
             cData.limit=parseInt($$('#c-cnumber').val());
             
             //成员/团体Id
-            if (cMember) {
-                cData.groupId=cGroup;
+            if (cPage.getCMember) {
+                cData.groupId=cPage.getCGroup;
                 cData.memberId=$$("input[name='member']:checked").val();
             } else {
                 cData.groupId=0;
@@ -589,7 +589,7 @@ var c = (function(){
 c.printInfo();
 c.flushToken();
 //页面功能
-var page = (function(){
+var cPage = (function(){
     //切换功能
     var cFunc = 0;
     document.getElementById('c-cfunc').addEventListener ('change.mdui.tab', function (event) {
@@ -653,7 +653,11 @@ var page = (function(){
         c.logout();
         c.flushToken();
     });
-
+    return {
+        getCFunc: function(){return cFunc;},
+        getCMember: function(){return cMember;},
+        getCGroup: function(){return cGroup;},
+    }
 })();
 
 
