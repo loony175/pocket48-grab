@@ -492,10 +492,10 @@ var c = (function(){
         },
         //打印团体/成员数据
         printInfo: function(){
-            $$('#c-cgroup').html(' ');
-            $$('#c-memberchoose').html(' ');
+            $$('#c-cgroup').html('');
+            $$('#c-memberchoose').html('');
             for (var index in info.group){
-                $$('<a id="c-cgroup-'+index+'" value="'+index+'" href="#group-'+index+'" class="mdui-ripple mdui-tab-active">'+info.group[index]+'</a>').appendTo('#c-cgroup');
+                $$('<a id="c-cgroup-'+index+'" value="'+index+'" href="#group-'+index+'" class="mdui-ripple c-team-'+info.groupId2firstTeamId(index)+'">'+info.group[index]+'</a>').appendTo('#c-cgroup');
                 $$('<div id="group-'+index+'"></div>').appendTo('#c-memberchoose');
             };
             var inst = new mdui.Tab('#c-cgroup');
@@ -608,11 +608,16 @@ var cPage = (function(){
         } else {
             $$('#login').hide();
         }
+        if (cFunc==0||cFunc==3){
+            $$('#c-member-choose').show();
+        } else {
+            $$('#c-member-choose').hide();
+        }
     });
 
     //切换选择成员/团体
     var cMember = 0;
-    document.getElementById('c-cmember').addEventListener   ('change', function (event) {
+    document.getElementById('c-cmember').addEventListener('change', function (event) {
         if (this.checked) {
             cMember=1;
             $$('#c-member').show();
