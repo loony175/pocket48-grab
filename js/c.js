@@ -48,7 +48,7 @@ var c = (function(){
         groupId2firstTeamId: function(groupId){
             if (this.group[groupId]){
                 for (var teamId in this.team){
-                    return teamId;
+                    if(this.team[teamId][0]==groupId){return teamId;}
                 }
             }
         },
