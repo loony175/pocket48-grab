@@ -193,7 +193,7 @@ var c = (function(){
         request.error=function (xhr, textStatus) {
             mdui.snackbar("错误:"+textStatus);
         }
-        console.log(request);
+        //console.log('[ajaxRequestJSON] request=',request);
         $$.ajax(request);
         return response;
     };
@@ -275,7 +275,7 @@ var c = (function(){
             //打印房间内容
             var print3= function(row){
                 var ext=JSON.parse(row.extInfo);
-                console.log('extInfo',ext);
+                //console.log('[extInfo] ext=',ext);
 
                 var content='<div class="mdui-card mdui-shadow-0 c-message mdui-typo" timestamp="'+row.msgTime+'" ><div class="mdui-card-primary-subtitle">'+ext.senderName+' @'+row.msgTimeStr+' 来自'+ext.phoneName+'</div>';
 
@@ -343,9 +343,9 @@ var c = (function(){
             //打印右墙内容
             var print4= function(row){
                 var ext=JSON.parse(row.extInfo);
-                console.log('extInfo board',ext);
+                //console.log('[extInfo board] ext=',ext);
                 //内容
-                var content='<li class="mdui-list-item mdui-ripple" timestamp="'+row.msgTime+'" senderId="'+row.senderId+'"><div class="mdui-list-item-avatar"><img src="'+url.livePic+ext.senderAvatar+'"/></div><div class="mdui-list-item-content"> <div class="mdui-list-item-title">'+ext.senderName+' <small>@'+row.msgTimeStr+((ext.phoneName)?(' 来自'+ext.phoneName):(' '))+'</small></div><div class="mdui-list-item-text">'+((ext.text)?(ext.text):(ext.content))+'</div></div></li>';
+                var content='<li class="mdui-list-item mdui-ripple" timestamp="'+row.msgTime+'" senderId="'+row.senderId+'" contentType="'+ex.contetType+'"><div class="mdui-list-item-avatar"><img src="'+url.livePic+ext.senderAvatar+'"/></div><div class="mdui-list-item-content"> <div class="mdui-list-item-title">'+ext.senderName+' <small>@'+row.msgTimeStr+((ext.phoneName)?(' 来自'+ext.phoneName):(' '))+'</small></div><div class="mdui-list-item-text">'+((ext.text)?(ext.text):(ext.content))+'</div></div></li>';
                 //分割线
                 content=content+'<li class="mdui-divider-inset mdui-m-y-0"></li>';
                 return content;
@@ -381,7 +381,6 @@ var c = (function(){
                     if(response.content.liveList) {
                         response.content.liveList.forEach(function(row,index,array){
                             var request0=formTrans({"func": (isReview?(4):(5)),"liveId": row.liveId});
-                            console.log(request0);
                             ajaxRequestJSON(request0,(isReview?(4):(5)));
                         });
                     }
@@ -389,7 +388,7 @@ var c = (function(){
                 
                 //房间功能-打印房间基础信息，转化为两个房间id请求
                 case 3:
-                    console.log('room response',response);
+                    //console.log('[room] response=',response);
                     if(response.content[0].hasOwnProperty("roomId")){
                         cData=c.getCData();
                         ajaxRequestJSON(formTrans({
@@ -425,7 +424,7 @@ var c = (function(){
                 break;
                 case 7:
                     $$('#c-room-board').html(' ');
-                    console.log('board response',response);
+                    //console.log('[board] response=',response);
                     for (var key in response.content.data){
                         var content=print4(response.content.data[key]);
                         $$(content).appendTo('#c-room-board');
@@ -604,7 +603,7 @@ var cPage = (function(){
             mdui.snackbar('口袋房间功能必须选择成员!');
             return;
         }
-        console.log('cData',cData);
+        //console.log('cData=',cData);
         c.submit(cData);
     });
 
