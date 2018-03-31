@@ -632,6 +632,12 @@ var cPage = (function(){
         c.logout();
         c.flushToken();
     });
+    //设置token
+    $$('#c-login-set').on('click', function(e){
+        c.setToken($$('#c-token').val());
+    });
+
+
     return {
         getCFunc: function(){return cFunc;},
         getCMember: function(){return cMember;},
