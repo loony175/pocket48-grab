@@ -274,6 +274,7 @@ var c = (function(){
 
             //打印房间内容
             var print3= function(row){
+                console.log('[print3] row=',row);
                 var ext=JSON.parse(row.extInfo);
                 console.log('[extInfo] ext=',ext);
 
