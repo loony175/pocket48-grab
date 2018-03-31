@@ -115,14 +115,15 @@ var c = (function(){
                     "version": "5.0.1",
                     "os": "Android"
                 };
-                cAjax.data=JSON.stringify({
+                cAjax.data={
                     "lastTime": cData.lastTime,
                     "limit": cData.limit,
                     "groupId": cData.groupId || 0,
-                });
+                };
                 if(cData.isReview) {
                     cAjax.data.isReview=cData.isReview;
                 }
+                cAjax.data=JSON.stringify(cAjax.data);
             break;
             
             //房间id功能
