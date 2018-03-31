@@ -358,14 +358,14 @@ var c = (function(){
                 //成员直播数据-直接打印
                 case 0:
                     $$('#function-cyzb tbody').html(' ');
-                    if(response.content.reviewList) {
-                        if(response.content.liveList) {
+                    if(response.content.liveList) {
                             $$('<tr><td  colspan="8"><span style="color:Red">----------   分界线，以下为直播----------</span></td></tr>').appendTo('#function-cyzb tbody');
                             response.content.liveList.forEach(function (row,index,array){
                                 content=print0(row);
                                 $$(content).appendTo('#function-cyzb tbody')  ;
                             });
-                        }
+                    }
+                    if(response.content.reviewList) {
                         $$('<tr><td colspan="8"><span style="color:Red">----------分界线，以下为录播----------</span></td></tr>').apppendTo('#function-cyzb tbody');
                         response.content.reviewList.forEach(function (row,index,array){
                             content=print0(row);
