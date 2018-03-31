@@ -44,7 +44,7 @@
 	<div class="mdui-row">
 		<div class="mdui-card c-choose">
 			<div class="mdui-row">
-			<div class="mdui-col-sm-5 mdui-valign">
+			<div class="mdui-col-md-5 mdui-valign">
 					截止时间：
 				<label class="mdui-radio">
 					<input id="c-ctime-now" type="radio" name="time" checked/>
@@ -54,10 +54,10 @@
 				<label class="mdui-radio">
 					<input type="radio" name="time"/>
 					<i class="mdui-radio-icon"></i>
-					年、月、日、时
+					<label id="c-choose-time"><select class="mdui-select" id="c-year"> <option>2018</option> <option>2017</option> <option>2016</option> <option>2015</option> </select> <label>年</label> <select class="mdui-select" id="c-month"> <option>1</option> <option>2</option> <option>3</option> <option>4</option> <option>5</option> <option>6</option> <option>7</option> <option>8</option> <option>9</option> <option>10</option> <option>11</option> <option>12</option> </select> <label>月</label> <select class="mdui-select" id="c-day"> <option>1</option> <option>2</option> <option>3</option> <option>4</option> <option>5</option> <option>6</option> <option>7</option> <option>8</option> <option>9</option> <option>10</option> <option>11</option> <option>12</option> <option>13</option> <option>14</option> <option>15</option> <option>16</option> <option>17</option> <option>18</option> <option>19</option> <option>20</option> <option>21</option> <option>22</option> <option>23</option> <option>24</option> <option>25</option> <option>26</option> <option>27</option> <option>28</option> <option>29</option> <option>30</option> <option>31</option> </select> <label>日</label> <select class="mdui-select" id="c-hour"> <option>1</option> <option>2</option> <option>3</option> <option>4</option> <option>5</option> <option>6</option> <option>7</option> <option>8</option> <option>9</option> <option>10</option> <option>11</option> <option>12</option> <option>13</option> <option>14</option> <option>15</option> <option>16</option> <option>17</option> <option>18</option> <option>19</option> <option>20</option> <option>21</option> <option>22</option> <option>23</option> <option>24</option> </select> <label>时</label></label>
 				</label>
 			</div>
-			<div class="mdui-col-sm-2 mdui-valign">
+			<div class="mdui-col-md-2 mdui-valign">
 					<div class="mdui-col-xs-6">
 							<label>数量上限：</label>
 					</div>
@@ -65,7 +65,7 @@
 						<input id="c-cnumber" class="mdui-textfield-input" type="number" name="limit" value="50">
 					</div>
 			</div>
-			<div class="mdui-col-sm-5 mdui-valign">
+			<div class="mdui-col-md-5 mdui-valign">
 				<div class="mdui-col-md-4">
 					<button id="submit" class="mdui-btn mdui-btn-raised mdui-ripple mdui-color-theme">提交</button>
 					<button id="login" style="display:none;" mdui-dialog="{target: '#c-login'}" class="mdui-btn mdui-btn-icon mdui-btn-raised mdui-color-theme-accent mdui-ripple"><i class="mdui-icon material-icons">&#xe0da;</i></button>
