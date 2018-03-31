@@ -174,7 +174,7 @@ var c = (function(){
                 }
                 cAjax.data=JSON.stringify({
                     "roomId": cData.roomId,
-                    "isFirst": true,
+                    // "isFirst": true,
                     "lastTime": cData.lastTime,
                     "limit": cData.limit
                 });
