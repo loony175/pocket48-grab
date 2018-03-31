@@ -273,7 +273,7 @@ var c = (function(){
 
             //将公演预览数据处理成表格的一行
             var print1= function(row){
-                return '<tr id="c-live-'+row.liveId+'" style="color: #"'+info.groupId2color(row.groupId)+'><td>'+row.title+'</td><td>'+row.subTitle+'</td><td>'+(function(){
+                return '<tr id="c-live-'+row.liveId+'" style="color: #'+info.groupId2color(row.groupId)+'"><td>'+row.title+'</td><td>'+row.subTitle+'</td><td>'+(function(){
                     if(row.isReview) {
                         return "录播";
                     } else if(row.isOpen) {
