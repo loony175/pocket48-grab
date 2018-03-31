@@ -446,8 +446,7 @@ var c = (function(){
                 case "login":
                     if (response.status==200) {
                         //登录成功 返回token
-                        this.setCookie('token',response.content.token,30);
-                        c.flushToken();
+                        this.setToken(response.content.token);
                         $$('#c-login-user').val('');
                         $$('#c-login-pass').val('');
                     } else {
@@ -519,6 +518,11 @@ var c = (function(){
         //刷新显示的token
         flushToken: function(){
             $$('#c-token').html((this.getToken())?('token已获取'):('无token'));
+        },
+
+        setToken: function(token){
+            this.setCookie('token',token,30);
+            this.flushToken();
         },
 
         //获取当前表单信息
