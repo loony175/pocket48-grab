@@ -360,14 +360,14 @@ var c = (function(){
                     if(response.content.reviewList) {
                         response.content.reviewList.forEach(function (row,index,array){
                             content=print0(row);
-                            $$(content).prependTo('#function-cyzb tbody')  ;
+                            $$(content).appendTo('#function-cyzb tbody')  ;
                         });
                         $$('<tr><td colspan="8"><span style="color:Red">----------分界线，以下为录播----------</span></td></tr>').prependTo('#function-cyzb tbody');
                     }
                     if(response.content.liveList) {
                         response.content.liveList.forEach(function (row,index,array){
                             content=print0(row);
-                            $$(content).prependTo('#function-cyzb tbody')  ;
+                            $$(content).appendTo('#function-cyzb tbody')  ;
                         });
                         $$('<tr><td  colspan="8"><span style="color:Red">----------   分界线，以下为直播----------</span></td></tr>').prependTo('#function-cyzb tbody');
                     }
@@ -413,7 +413,7 @@ var c = (function(){
                 case 4: case 5:
                     console.log('case 4,5 response=',response);
                     var content=print1(response.content);
-                    $$(content).prependTo('#function-gy'+(response.content.isReview?("lb"):("zb"))+' tbody');
+                    $$(content).appendTo('#function-gy'+(response.content.isReview?("lb"):("zb"))+' tbody');
                 break;
                 
                 //房间功能2-打印房间内容和右墙
