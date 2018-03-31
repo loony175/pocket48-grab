@@ -391,6 +391,12 @@ var c = (function(){
                 //房间功能-打印房间基础信息，转化为两个房间id请求
                 case 3:
                     //console.log('[room] response=',response);
+                    if(response.status==400){
+                        mdui.snackbar('错误400: 需要token，请点击【提交】按钮右边的钥匙图标获取token');
+                    }
+                    if(response.status==401){
+                        mdui.snackbar('错误401: 授权验证失败，请尝试点击【提交】按钮右边的钥匙图标重新获取token')
+                    }
                     if(response.content[0].hasOwnProperty("roomId")){
                         cData=c.getCData();
                         ajaxRequestJSON(formTrans({
@@ -438,7 +444,7 @@ var c = (function(){
                 case "login":
                     if (response.status==200) {
                         //登录成功 返回token
-                        this.setCookie('token',response.content.token,15);
+                        this.setCookie('token',response.content.token,30);
                         c.flushToken();
                         $$('#c-login-user').val('');
                         $$('#c-login-pass').val('');
@@ -510,7 +516,7 @@ var c = (function(){
 
         //刷新显示的token
         flushToken: function(){
-            $$('#c-token').html((this.getToken()||'无token'));
+            $$('#c-token').html((this.getToken())?('token已获取'):('无token'));
         },
 
         //获取当前表单信息
@@ -531,7 +537,7 @@ var c = (function(){
                 cData.lastTime=0;
             } else {
                 stringTime=$$('#c-year').val()+'-'+$$('#c-month').val()+'-'+$$('#c-day').val()+' '+$$('#c-hour').val()+':0:0';
-                cData.lastTime=Date.parse(new Date(stringTime)); //待完善
+                cData.lastTime=Date.parse(new Date(stringTime));
             }
     
             //数量限制
@@ -650,3 +656,5 @@ Date.prototype.format = function(format) {
     }
     return format;
 }
+console.log('页面功能加载完毕');
+console.log("%c请勿分享Cookies给其他人"," text-shadow: 0 1px 0 #ccc,0 2px 0 #c9c9c9,0 3px 0 #bbb,0 4px 0 #b9b9b9,0 5px 0 #aaa,0 6px 1px rgba(0,0,0,.1),0 0 5px rgba(0,0,0,.1),0 1px 3px rgba(0,0,0,.3),0 3px 5px rgba(0,0,0,.2),0 5px 10px rgba(0,0,0,.25),0 10px 10px rgba(0,0,0,.2),0 20px 20px rgba(0,0,0,.15);font-size:5em");
