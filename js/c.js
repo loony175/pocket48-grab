@@ -430,6 +430,7 @@ var c = (function(){
                 
                 //房间功能-打印房间基础信息，转化为两个房间id请求
                 case 3:
+                    console.log('room response',response);
                     if(response.content.hasOwnProperty("roomId")){
                         cData=c.getCData();
                         ajaxRequestJSON(formTrans({
