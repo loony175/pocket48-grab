@@ -345,7 +345,7 @@ var c = (function(){
                 var ext=JSON.parse(row.extInfo);
                 //console.log('[extInfo board] ext=',ext);
                 //内容
-                var content='<li class="mdui-list-item mdui-ripple" timestamp="'+row.msgTime+'" senderId="'+row.senderId+'" contentType="'+ex.contetType+'"><div class="mdui-list-item-avatar"><img src="'+url.livePic+ext.senderAvatar+'"/></div><div class="mdui-list-item-content"> <div class="mdui-list-item-title">'+ext.senderName+' <small>@'+row.msgTimeStr+((ext.phoneName)?(' 来自'+ext.phoneName):(' '))+'</small></div><div class="mdui-list-item-text">'+((ext.text)?(ext.text):(ext.content))+'</div></div></li>';
+                var content='<li class="mdui-list-item mdui-ripple" timestamp="'+row.msgTime+'" senderId="'+row.senderId+'" contentType="'+ext.contetType+'"><div class="mdui-list-item-avatar"><img src="'+url.livePic+ext.senderAvatar+'"/></div><div class="mdui-list-item-content"> <div class="mdui-list-item-title">'+ext.senderName+' <small>@'+row.msgTimeStr+((ext.phoneName)?(' 来自'+ext.phoneName):(' '))+'</small></div><div class="mdui-list-item-text">'+((ext.text)?(ext.text):(ext.content))+'</div></div></li>';
                 //分割线
                 content=content+'<li class="mdui-divider-inset mdui-m-y-0"></li>';
                 return content;
