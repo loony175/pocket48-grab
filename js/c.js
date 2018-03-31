@@ -189,7 +189,7 @@ var c = (function(){
         var response={};
         request.success=function(data, textStatus, xhr){
             response=JSON.parse(data);
-            c.handleRes(response,func); //处理请求结果
+            c.handleRes(response,func,request); //处理请求结果
         };
         request.error=function (xhr, textStatus) {
             mdui.snackbar("错误:"+textStatus);
@@ -228,7 +228,7 @@ var c = (function(){
             response=ajaxRequestJSON(formTrans(cData),cData.func);
         },
         //处理返回的数据
-        handleRes: function(response,func){
+        handleRes: function(response,func,request){
             console.log('handle: response=',response);
             //将一条成员直播数据处理成表格的一行
             var print0= function(row){
@@ -251,17 +251,22 @@ var c = (function(){
                 })()+'</td><td class="c-link"><a href="'+url.liveShare+row.liveId+'" target="_blank">'+url.liveShare+row.liveId+'</a></td><td class="c-link"><a href="'+row.streamPath+'" target="_blank">'+row.streamPath+'</a></td><td class="c-link"><a href="'+url.livePic+row.lrcPath+'.lrc" target="_blank">'+url.livePic+row.lrcPath+'.lrc</a></td></tr>';
             };
 
-            //将一条公演数据处理成表格的一行
+            //将公演预览数据处理成表格的一行
             var print1= function(row){
-                return '<tr><td>'+row.title+'</td><td>'+row.subTitle+'</td><td class="t4">'+(function(){
+                return '<tr id="c-live-'+row.liveId+'"><td>'+row.title+'</td><td>'+row.subTitle+'</td><td>'+(function(){
+                    return new Date(row.startTime).format('yyyy-MM-dd hh:mm:ss');
+                })()+'</td><td><img src="'+url.livePic+row.picPath+'" style="max-width:30px; max-height:30px"></td></tr>';
+            };
+
+            //将一条公演数据处理成一行
+            var print5= function(row){
+                return '<td>'+(function(){
                     if(row.isReview) {
                         return "录播";
                     } else {
                         return "直播"; //待完善-正在直播
                     }
-                })()+'</td><td>'+(function(){
-                    return new Date(row.startTime).format('yyyy-MM-dd hh:mm:ss');
-                })()+'</td><td><img src="'+url.livePic+row.picPath+'" style="max-width:30px; max-height:30px"></td><td class="c-link"><a href="'+row.streamPathHd+'" target="_blank">'+row.streamPathHd+'</a></td><td class="c-link"><a href="'+row.streamPathLd+'" target="_blank">'+row.streamPathLd+'</a></td><td class="c-link"><a href="'+row.streamPath+'</a></td></tr>';
+                })()+'</td><td class="c-link"><a href="'+row.streamPathHd+'" target="_blank">'+row.streamPathHd+'</a></td><td class="c-link"><a href="'+row.streamPathLd+'" target="_blank">'+row.streamPathLd+'</a></td><td class="c-link"><a href="'+row.streamPath+'</a></td>'
             };
 
             //打印房间头部信息
@@ -386,6 +391,7 @@ var c = (function(){
                         response.content.liveList.forEach(function(row,index,array){
                             var request0=formTrans({"func": (isReview?(4):(5)),"liveId": row.liveId});
                             ajaxRequestJSON(request0,(isReview?(4):(5)));
+                            $$(print1(row)).appendTo('#function-gy'+(isReview?("lb"):("zb"))+' tbody');
                         });
                     }
                 break;
@@ -422,8 +428,8 @@ var c = (function(){
                 //公演每个数据-打印
                 case 4: case 5:
                     //console.log('case 4,5 response=',response);
-                    var content=print1(response.content);
-                    $$(content).appendTo('#function-gy'+(response.content.isReview?("lb"):("zb"))+' tbody');
+                    var content=print5(response.content);
+                    $$(content).appendTo('#c-live-'+JSON.stringify(request.data).liveTd);
                 break;
                 
                 //房间功能2-打印房间内容和右墙
