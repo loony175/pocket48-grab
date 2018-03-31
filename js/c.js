@@ -252,7 +252,7 @@ var c = (function(){
             console.log('handle: response=',response);
             //将一条成员直播数据处理成表格的一行
             var print0= function(row){
-                return '<tr style="color: #'+memberId2color(row.memberId)+'"><td>'+info.memberId2name(row.memberId)+'</td><td>'+row.subTitle+'</td><td>'+(function(){
+                return '<tr style="color: #'+info.memberId2color(row.memberId)+'"><td>'+info.memberId2name(row.memberId)+'</td><td>'+row.subTitle+'</td><td>'+(function(){
                     switch(row.liveType) {
                         case 1: return "视频";
                         case 2: return "电台";
