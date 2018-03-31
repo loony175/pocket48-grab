@@ -11,10 +11,8 @@ $api=[
     "roomMain" => "https://pjuju.48.cn/imsystem/api/im/v1/member/room/message/mainpage",
     "roomBoard" => "https://pjuju.48.cn/imsystem/api/im/v1/member/room/message/boardpage",
 ];
-foreach($_POST as $key => $value) {
-    $post=$key;
-}
-var_dump($GLOBALS['HTTP_RAW_POST_DATA']);
+$post=file_get_contents("php://input");
+var_dump(file_get_contents("php://input"));
 //var_dump(getallheaders());
 $headers=getallheaders();
 //var_dump($headers);
