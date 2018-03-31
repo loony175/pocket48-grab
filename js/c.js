@@ -149,6 +149,7 @@ var c = (function(){
                 cAjax.data=JSON.stringify({
                     "liveId": cData.liveId
                 });
+                cAjax.async=false;
             break;
 
             //房间内容功能
@@ -358,19 +359,20 @@ var c = (function(){
                 case 0:
                     $$('#function-cyzb tbody').html(' ');
                     if(response.content.reviewList) {
+                        if(response.content.liveList) {
+                            $$('<tr><td  colspan="8"><span style="color:Red">----------   分界线，以下为直播----------</span></td></tr>').appendTo('#function-cyzb tbody');
+                            response.content.liveList.forEach(function (row,index,array){
+                                content=print0(row);
+                                $$(content).appendTo('#function-cyzb tbody')  ;
+                            });
+                        }
+                        $$('<tr><td colspan="8"><span style="color:Red">----------分界线，以下为录播----------</span></td></tr>').apppendTo('#function-cyzb tbody');
                         response.content.reviewList.forEach(function (row,index,array){
                             content=print0(row);
                             $$(content).appendTo('#function-cyzb tbody')  ;
                         });
-                        $$('<tr><td colspan="8"><span style="color:Red">----------分界线，以下为录播----------</span></td></tr>').prependTo('#function-cyzb tbody');
                     }
-                    if(response.content.liveList) {
-                        response.content.liveList.forEach(function (row,index,array){
-                            content=print0(row);
-                            $$(content).appendTo('#function-cyzb tbody')  ;
-                        });
-                        $$('<tr><td  colspan="8"><span style="color:Red">----------   分界线，以下为直播----------</span></td></tr>').prependTo('#function-cyzb tbody');
-                    }
+
                 break;
 
                 //公演数据预览-转化为单个请求
@@ -550,7 +552,7 @@ var c = (function(){
             cData.limit=parseInt($$('#c-cnumber').val());
             
             //成员/团体Id
-            if (cPage.getCMember) {
+            if (cPage.getCMember()) {
                 cData.groupId=cPage.getCGroup();
                 cData.memberId=$$("input[name='member']:checked").val();
             } else {
