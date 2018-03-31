@@ -14,7 +14,7 @@ $api=[
 foreach($_POST as $key => $value) {
     $post=$key;
 }
-var_dump($_POST);
+var_dump($GLOBALS['HTTP_RAW_POST_DATA']);
 //var_dump(getallheaders());
 $headers=getallheaders();
 //var_dump($headers);
