@@ -366,7 +366,7 @@ var c = (function(){
                             });
                     }
                     if(response.content.reviewList) {
-                        $$('<tr><td colspan="8"><span style="color:Red">----------分界线，以下为录播----------</span></td></tr>').apppendTo('#function-cyzb tbody');
+                        $$('<tr><td colspan="8"><span style="color:Red">----------分界线，以下为录播----------</span></td></tr>').appendTo('#function-cyzb tbody');
                         response.content.reviewList.forEach(function (row,index,array){
                             content=print0(row);
                             $$(content).appendTo('#function-cyzb tbody')  ;
