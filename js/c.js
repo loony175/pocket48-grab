@@ -254,13 +254,6 @@ var c = (function(){
             //将公演预览数据处理成表格的一行
             var print1= function(row){
                 return '<tr id="c-live-'+row.liveId+'"><td>'+row.title+'</td><td>'+row.subTitle+'</td><td>'+(function(){
-                    return new Date(row.startTime).format('yyyy-MM-dd hh:mm:ss');
-                })()+'</td><td><img src="'+url.livePic+row.picPath+'" style="max-width:30px; max-height:30px"></td></tr>';
-            };
-
-            //将一条公演数据处理成一行
-            var print5= function(row){
-                return '<td>'+(function(){
                     if(row.isReview) {
                         return "录播";
                     } else if(row.isOpen) {
@@ -268,7 +261,14 @@ var c = (function(){
                     } else {
                         return "直播";
                     }
-                })()+'</td><td class="c-link"><a href="'+row.streamPathHd+'" target="_blank">'+row.streamPathHd+'</a></td><td class="c-link"><a href="'+row.streamPathLd+'" target="_blank">'+row.streamPathLd+'</a></td><td class="c-link"><a href="'+row.streamPath+'</a></td>';
+                })()+'</td><td>'+(function(){
+                    return new Date(row.startTime).format('yyyy-MM-dd hh:mm:ss');
+                })()+'</td><td><img src="'+url.livePic+row.picPath+'" style="max-width:30px; max-height:30px"></td></tr>';
+            };
+
+            //将一条公演数据处理成一行
+            var print5= function(row){
+                return '<td class="c-link"><a href="'+row.streamPathHd+'" target="_blank">'+row.streamPathHd+'</a></td><td class="c-link"><a href="'+row.streamPathLd+'" target="_blank">'+row.streamPathLd+'</a></td><td class="c-link"><a href="'+row.streamPath+'</a></td>';
             };
 
             //打印房间头部信息
