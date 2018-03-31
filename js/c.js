@@ -393,9 +393,11 @@ var c = (function(){
                     //console.log('[room] response=',response);
                     if(response.status==400){
                         mdui.snackbar('错误400: 需要token，请点击【提交】按钮右边的钥匙图标获取token');
+                        break;
                     }
                     if(response.status==401){
-                        mdui.snackbar('错误401: 授权验证失败，请尝试点击【提交】按钮右边的钥匙图标重新获取token')
+                        mdui.snackbar('错误401: 授权验证失败，请尝试点击【提交】按钮右边的钥匙图标重新获取token');
+                        break;
                     }
                     if(response.content[0].hasOwnProperty("roomId")){
                         cData=c.getCData();
