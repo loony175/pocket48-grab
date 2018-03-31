@@ -275,7 +275,7 @@ var c = (function(){
 
             //打印房间内容
             var print3= function(row){
-                console.log('[print3] row=',row);
+                //console.log('[print3] row=',row);
                 var ext=JSON.parse(row.extInfo);
                 //console.log('[extInfo] ext=',ext);
 
@@ -293,7 +293,7 @@ var c = (function(){
 
                             //翻牌信息
                             case "faipaiText":
-                                content=content+'<blockquote><p>'+ext.messageText+'</p><footer>ID:'+ext.faipaiUserId+'</footer></blockquote>'+ext.messageText;
+                                content=content+'<blockquote><p>'+ext.faipaiContent+'</p><footer>ID:'+ext.faipaiUserId+'</footer></blockquote>'+ext.messageText;
                             break;
 
                             //视频直播信息
