@@ -12,10 +12,9 @@ $api=[
     "roomBoard" => "https://pjuju.48.cn/imsystem/api/im/v1/member/room/message/boardpage",
 ];
 $post=file_get_contents("php://input");
-var_dump(file_get_contents("php://input"));
-//var_dump(getallheaders());
+//var_dump(file_get_contents("php://input"));
 $headers=getallheaders();
-//var_dump($headers);
+//var_dump(getallheaders());
 $header=array();
 if (isset($headers['os'])) array_push($header,'os: '.$headers['os']);
 if (isset($headers['version'])) array_push($header,'version: '.$headers['version']);
