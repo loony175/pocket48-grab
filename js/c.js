@@ -658,6 +658,9 @@ var cPage = (function(){
         c.submit(cData);
     });
 
+    //开/关进度指示器
+    var cProgress;
+
     //获取token
     $$('#c-login-get').on('click', function(e){
         c.login($$('#c-login-user').val(),$$('#c-login-pass').val());
@@ -673,10 +676,20 @@ var cPage = (function(){
     });
 
 
+
     return {
         getCFunc: function(){return cFunc;},
         getCMember: function(){return cMember;},
         getCGroup: function(){return cGroup;},
+        cPro: {
+            on: function(){
+                $$('#c-progress').show();
+            },
+            off: function(){
+                clearTimeout(cProgress);
+                cProgress=setTimeout("$$('#c-progress').hide();", 100);
+            },
+        },
     }
 })();
 
