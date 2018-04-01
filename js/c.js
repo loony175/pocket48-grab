@@ -213,7 +213,8 @@ var c = (function(){
             mdui.snackbar("错误:"+textStatus);
         }
         console.log('[ajaxRequestJSON] request=',request);
-        $$.ajax(request);
+        cPage.cPro.on();//打开进度指示器
+        $$.ajax(request);//发送请求
         return response;
     };
 
@@ -484,6 +485,9 @@ var c = (function(){
                     }
                 break;
             }
+
+            //关闭进度指示器
+            cPage.cPro.off();
         },
 
         //返回数据
