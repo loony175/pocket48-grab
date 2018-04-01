@@ -251,7 +251,7 @@ var c = (function(){
             console.log('handle: response=',response);
             //将一条成员直播数据处理成表格的一行
             var print0= function(row){
-                return '<tr class="c-team-'+info.memberId2teamId(row.memberId)+'"><td>'+info.memberId2name(row.memberId)+'</td><td>'+row.subTitle+'</td><td>'+(function(){
+                return '<tr class="c-team-'+info.memberId2teamId(row.memberId)+'" timestamp="'+row.startTime+'"><td>'+info.memberId2name(row.memberId)+'</td><td>'+row.subTitle+'</td><td>'+(function(){
                     switch(row.liveType) {
                         case 1: return "视频";
                         case 2: return "电台";
@@ -272,7 +272,7 @@ var c = (function(){
 
             //将公演预览数据处理成表格的一行
             var print1= function(row){
-                return '<tr id="c-live-'+row.liveId+'" class="c-team-'+info.groupId2firstTeamId(row.groupId)+'"><td>'+row.title+'</td><td>'+row.subTitle+'</td><td>'+(function(){
+                return '<tr id="c-live-'+row.liveId+'" class="c-team-'+info.groupId2firstTeamId(row.groupId)+'" timestamp="'+row.startTime+'" ><td>'+row.title+'</td><td>'+row.subTitle+'</td><td>'+(function(){
                     if(row.isReview) {
                         return "录播";
                     } else if(row.isOpen) {
