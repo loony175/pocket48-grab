@@ -2,7 +2,9 @@
 口袋48成员直播/录播、公演直播/录播 在线观看地址&amp;【视频源地址】获取
 
 # 测试地址
-https://xsaiting.com/pocket48/
+稳定版https://xsaiting.com/pocket48/
+
+开发版http://xsaiting.cn/pocket48/
 
 # 说明
 1、更新了成员数据(2018-02-04)。如果使用遇到问题直接邮件联系我：xsaiting@qq.com
