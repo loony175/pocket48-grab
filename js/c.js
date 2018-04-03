@@ -293,8 +293,8 @@ var c = (function(){
             //打印房间头部信息
             var print2= function(row){
                 $$('#c-room-avatar').attr('src',url.livePic+row.roomAvatar);
-                $$('#c-room-title').html(row.creatorName);
-                $$('#c-room-subtitle').html(row.comment+'@'+new Date(row.commentTimeMs).format('yyyy-MM-dd hh:mm:ss'));
+                $$('#c-room-title').html(row.creatorName+' '+row.roomName);
+                $$('#c-room-subtitle').html(row.roomTopic);
                 if(row.bgPath){
                     $$('#c-room-content').css('background','url("'+url.livePic+row.bgPath+'") repeat-y');
                 }
@@ -384,14 +384,14 @@ var c = (function(){
                 //成员直播数据-直接打印
                 case 0:
                     $$('#function-cyzb tbody').html(' ');
-                    if(response.content.liveList) {
+                    if(response.content.liveList.length!=0) {
                             $$('<tr><td  colspan="8"><span style="color:Red">----------   分界线，以下为直播----------</span></td></tr>').appendTo('#function-cyzb tbody');
                             response.content.liveList.forEach(function (row,index,array){
                                 content=print0(row);
                                 $$(content).appendTo('#function-cyzb tbody')  ;
                             });
                     }
-                    if(response.content.reviewList) {
+                    if(response.content.reviewList.length!=0) {
                         $$('<tr><td colspan="8"><span style="color:Red">----------分界线，以下为录播----------</span></td></tr>').appendTo('#function-cyzb tbody');
                         response.content.reviewList.forEach(function (row,index,array){
                             content=print0(row);
