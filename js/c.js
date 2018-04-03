@@ -293,7 +293,7 @@ var c = (function(){
             //打印房间头部信息
             var print2= function(row){
                 $$('#c-room-avatar').attr('src',url.livePic+row.roomAvatar);
-                $$('#c-room-title').html(row.creatorName+' '+row.roomName);
+                $$('#c-room-title').html(row.creatorName+' #'+row.roomName);
                 $$('#c-room-subtitle').html(row.roomTopic);
                 if(row.bgPath){
                     $$('#c-room-content').css('background','url("'+url.livePic+row.bgPath+'") repeat-y');
