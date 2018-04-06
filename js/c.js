@@ -267,7 +267,7 @@ var c = (function(){
                         if (b>=0) {a=a+'<img src="'+((picUrl.slice(0,4)=='http')?(''):(url.livePic))+picUrl+'" style="max-width:30px; max-height:30px" />';}
                     })
                     return a;
-                })()+'</td><td class="c-link"><a href="'+url.liveShare+row.liveId+'" target="_blank">'+url.liveShare+row.liveId+'</a></td><td class="c-link"><a href="'+row.streamPath+'" target="_blank">'+row.streamPath+'</a></td><td class="c-link"><a href="'+url.livePic+row.lrcPath+'.lrc" target="_blank">'+url.livePic+row.lrcPath+'.lrc</a></td></tr>';
+                })()+'</td><td class="c-link"><a href="'+url.liveShare+row.liveId+'" target="_blank">'+url.liveShare+row.liveId+'</a></td><td class="c-link"><a href="'+row.streamPath+'" target="_blank">'+row.streamPath+'</a></td><td class="c-link"><a href="'+url.livePic+row.lrc.lrcPath+'" target="_blank">'+url.livePic+row.lrcPath+'.lrc</a></td></tr>';
             };
 
             //将公演预览数据处理成表格的一行
@@ -700,17 +700,19 @@ var cPage = (function(){
 
 //日期转换
 Date.prototype.format = function(format) {
+    var timeZone=8; //设置时区,UTC+8
+    this.setTime=(this.getTime()+(timeZone*60+30)*60*1000); 
     var date = {
-           "M+": this.getMonth() + 1,
-           "d+": this.getDate(),
-           "h+": this.getHours(),
-           "m+": this.getMinutes(),
-           "s+": this.getSeconds(),
-           "q+": Math.floor((this.getMonth() + 3) / 3),
-           "S+": this.getMilliseconds()
+           "M+": this.getUTCMonth() + 1,
+           "d+": this.getUTCDate(),
+           "h+": this.getUTCHours(),
+           "m+": this.getUTCMinutes(),
+           "s+": this.getUTCSeconds(),
+           "q+": Math.floor((this.getUTCMonth() + 3) / 3),
+           "S+": this.getUTCMilliseconds()
     };
     if (/(y+)/i.test(format)) {
-           format = format.replace(RegExp.$1, (this.getFullYear() + '').substr(4 - RegExp.$1.length));
+           format = format.replace(RegExp.$1, (this.getUTCFullYear() + '').substr(4 - RegExp.$1.length));
     }
     for (var k in date) {
            if (new RegExp("(" + k + ")").test(format)) {
