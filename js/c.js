@@ -703,7 +703,7 @@ var cPage = (function(){
 //日期转换
 Date.prototype.format = function(format) {
     var timeZone=8; //设置时区,UTC+8
-    this.setTime=(this.getTime()+(timeZone*60+30)*60*1000); 
+    this.setTime(this.getTime()+(timeZone*60+30)*60*1000); 
     var date = {
            "M+": this.getUTCMonth() + 1,
            "d+": this.getUTCDate(),
