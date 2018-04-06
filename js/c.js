@@ -1,3 +1,5 @@
+// v2.3.1
+
 var $$ = mdui.JQ;
 
 
@@ -267,7 +269,7 @@ var c = (function(){
                         if (b>=0) {a=a+'<img src="'+((picUrl.slice(0,4)=='http')?(''):(url.livePic))+picUrl+'" style="max-width:30px; max-height:30px" />';}
                     })
                     return a;
-                })()+'</td><td class="c-link"><a href="'+url.liveShare+row.liveId+'" target="_blank">'+url.liveShare+row.liveId+'</a></td><td class="c-link"><a href="'+row.streamPath+'" target="_blank">'+row.streamPath+'</a></td><td class="c-link"><a href="'+url.livePic+row.lrc.lrcPath+'" target="_blank">'+url.livePic+row.lrcPath+'.lrc</a></td></tr>';
+                })()+'</td><td class="c-link"><a href="'+url.liveShare+row.liveId+'" target="_blank">'+url.liveShare+row.liveId+'</a></td><td class="c-link"><a href="'+row.streamPath+'" target="_blank">'+row.streamPath+'</a></td><td class="c-link"><a href="'+url.livePic+row.lrcPath+'" target="_blank">'+url.livePic+row.lrcPath+'.lrc</a></td></tr>';
             };
 
             //将公演预览数据处理成表格的一行
