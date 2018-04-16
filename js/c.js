@@ -1,4 +1,4 @@
-// v2.3.1
+// v2.3.3
 
 var $$ = mdui.JQ;
 
@@ -147,7 +147,8 @@ var c = (function(){
                 cAjax.url=api.roomId;
                 cAjax.headers={
                     "Content-Type": "application/json",
-                    "token": c.getToken()
+                    "token": c.getToken(),
+                    "imei": c.genIMEI(),
                 }
                 cAjax.data=JSON.stringify({
                     "friends": [cData.memberId]
@@ -172,7 +173,7 @@ var c = (function(){
                 cAjax.url= api.roomMain;
                 cAjax.headers={
                     "Content-Type": "application/json",
-                    "token": c.getToken()
+                    "token": c.getToken(),
                 }
                 cAjax.data=JSON.stringify({
                     "roomId": cData.roomId,
@@ -187,7 +188,7 @@ var c = (function(){
                 cAjax.url= api.roomBoard;
                 cAjax.headers={
                     "Content-Type": "application/json",
-                    "token": c.getToken()
+                    "token": c.getToken(),
                 }
                 cAjax.data=JSON.stringify({
                     "roomId": cData.roomId,
@@ -525,7 +526,7 @@ var c = (function(){
                 "Content-Type": "application/json",
                 "version": "5.0.1",
                 "os": "Android",
-                "imei": "355637053964243",
+                "imei": c.genIMEI(),
             };
             cAjax.data=JSON.stringify({
                 "password": pass,
@@ -591,6 +592,46 @@ var c = (function(){
             }
             return cData;
         },
+
+        //生成随机的imei
+        genIMEI: function(){
+            //生成从minNum到maxNum的随机数
+            randomNum=function(minNum,maxNum){ 
+                switch(arguments.length){ 
+                    case 1: 
+                        return parseInt(Math.random()*minNum+1,10); 
+                    break; 
+                    case 2: 
+                        return parseInt(Math.random()*(maxNum-minNum+1)+minNum,10); 
+                    break; 
+                        default: 
+                            return 0; 
+                        break; 
+                }
+            } 
+            var r1=1000000+randomNum(0,8999999);
+            var r2=1000000+randomNum(0,8999999);
+            var input=r1+""+r2;
+            var a=0;
+            var b=0;
+            for(var i=0;i<input.length;i++){
+                var tt=parseInt(input.slice(i,i+1));
+                if (i % 2 == 0) {  
+                    a=a+tt;
+                } else {
+                    var temp = tt * 2;
+                    b = b + temp / 10 + temp % 10;
+                }
+            }
+            var last = Math.round((a + b) % 10);
+            if (last == 0) {
+                last = 0;
+            } else {
+                last = 10 - last;
+            }
+            return input+""+last;
+        },
+
         //测试函数
         test: function(c1){
             return eval(c1);
