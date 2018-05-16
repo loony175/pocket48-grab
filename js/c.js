@@ -659,8 +659,8 @@ c.flushToken();
 //页面功能
 var cPage = (function(){
     //版本号显示
-    $$('#c-version').html(c.getVersion);
-    $$('title').html($$('title').html()+' v'+c.getVersion);
+    $$('#c-version').html(c.getVersion());
+    $$('title').html($$('title').html()+' v'+c.getVersion());
     
 
     //切换功能
