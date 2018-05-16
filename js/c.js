@@ -147,6 +147,9 @@ var c = (function(){
                 cAjax.url=api.roomId;
                 cAjax.headers={
                     "Content-Type": "application/json",
+                    "version": "5.0.1",
+                    "os": "Android",
+                    "build": 0,
                     "token": c.getToken(),
                     "imei": c.genIMEI(),
                 }
@@ -161,7 +164,8 @@ var c = (function(){
                 cAjax.headers={
                     "Content-Type": "application/json",
                     "version": "5.0.1",
-                    "os": "Android"
+                    "os": "Android",
+                    "build": 0,
                 };
                 cAjax.data=JSON.stringify({
                     "liveId": cData.liveId
@@ -173,6 +177,9 @@ var c = (function(){
                 cAjax.url= api.roomMain;
                 cAjax.headers={
                     "Content-Type": "application/json",
+                    "version": "5.0.1",
+                    "os": "Android",
+                    "build": 0,
                     "token": c.getToken(),
                 }
                 cAjax.data=JSON.stringify({
@@ -188,6 +195,9 @@ var c = (function(){
                 cAjax.url= api.roomBoard;
                 cAjax.headers={
                     "Content-Type": "application/json",
+                    "version": "5.0.1",
+                    "os": "Android",
+                    "build": 0,
                     "token": c.getToken(),
                 }
                 cAjax.data=JSON.stringify({
