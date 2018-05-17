@@ -734,7 +734,7 @@ var cPage = (function(){
     });
     //设置token
     $$('#c-login-set').on('click', function(e){
-        c.setToken($$('#c-token').val());
+        c.setToken($$('#c-token-input').val());
     });
 
 
