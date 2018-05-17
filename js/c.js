@@ -1,10 +1,11 @@
-// v2.3.3
-
 var $$ = mdui.JQ;
 
 
 //数据处理功能
 var c = (function(){
+    //版本号
+    var version= '2.3.4';
+
     //口袋48api
     var api={
         live: "https://plive.48.cn/livesystem/api/live/v1/memberLivePage",
@@ -147,6 +148,9 @@ var c = (function(){
                 cAjax.url=api.roomId;
                 cAjax.headers={
                     "Content-Type": "application/json",
+                    "version": "5.0.1",
+                    "os": "Android",
+                    "build": 0,
                     "token": c.getToken(),
                     "imei": c.genIMEI(),
                 }
@@ -161,7 +165,8 @@ var c = (function(){
                 cAjax.headers={
                     "Content-Type": "application/json",
                     "version": "5.0.1",
-                    "os": "Android"
+                    "os": "Android",
+                    "build": 0,
                 };
                 cAjax.data=JSON.stringify({
                     "liveId": cData.liveId
@@ -173,6 +178,9 @@ var c = (function(){
                 cAjax.url= api.roomMain;
                 cAjax.headers={
                     "Content-Type": "application/json",
+                    "version": "5.0.1",
+                    "os": "Android",
+                    "build": 0,
                     "token": c.getToken(),
                 }
                 cAjax.data=JSON.stringify({
@@ -188,6 +196,9 @@ var c = (function(){
                 cAjax.url= api.roomBoard;
                 cAjax.headers={
                     "Content-Type": "application/json",
+                    "version": "5.0.1",
+                    "os": "Android",
+                    "build": 0,
                     "token": c.getToken(),
                 }
                 cAjax.data=JSON.stringify({
@@ -631,6 +642,9 @@ var c = (function(){
             }
             return input+""+last;
         },
+        getVersion: function(){
+            return version;
+        },
 
         //测试函数
         test: function(c1){
@@ -642,6 +656,11 @@ c.printInfo();
 c.flushToken();
 //页面功能
 var cPage = (function(){
+    //版本号显示
+    $$('#c-version').html('v'+c.getVersion());
+    $$('title').html($$('title').html()+' v'+c.getVersion());
+    
+
     //切换功能
     var cFunc = 0;
     document.getElementById('c-cfunc').addEventListener ('change.mdui.tab', function (event) {
