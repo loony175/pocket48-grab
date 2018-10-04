@@ -78,7 +78,7 @@ c.pocket48.page = c.pocket48.page || (function(){
     
     //打印成员直播
     c.pocket48.page.print.live = function (data,e) {
-        if(c.d(0)){console.log('Response:',data)}
+        data=JSON.parse(data);if(c.d(0)){console.log('Response:',data)}
         if(!e){
             
             //先清空成员直播区域
@@ -138,7 +138,7 @@ c.pocket48.page = c.pocket48.page || (function(){
 
     //打印公演直播/录播
     c.pocket48.page.print.liveOpen = function (data,e,isReview) {
-        if(c.d(0)){console.log('Response:',data)}
+        data=JSON.parse(data);if(c.d(0)){console.log('Response:',data)}
         if(!e){
             //预览数据打印模板
             var printRow = function (row) {
@@ -176,7 +176,7 @@ c.pocket48.page = c.pocket48.page || (function(){
     //打印公演详情
     c.pocket48.page.print.liveOpenInfo = function (data,e) {
         //data={res,liveId,isReview}
-        if(c.d(0)){console.log('Response:',data)}
+        data=JSON.parse(data);if(c.d(0)){console.log('Response:',data)}
         if(!e){
             var printRow= function(row){
                 return '<td class="c-link"><a href="'+row.streamPathHd+'" target="_blank">'+row.streamPathHd+'</a></td><td class="c-link"><a href="'+row.streamPathLd+'" target="_blank">'+row.streamPathLd+'</a></td><td class="c-link"><a href="'+row.streamPath+'">'+row.streamPath+'</a></td>';
@@ -193,7 +193,7 @@ c.pocket48.page = c.pocket48.page || (function(){
     //打印房间基本信息，转化请求
     c.pocket48.page.print.roomInfo = function (data,e) {
         //data={res,liveId,isReview}
-        if(c.d(0)){console.log('Response:',data)}
+        data=JSON.parse(data);if(c.d(0)){console.log('Response:',data)}
         if(!e){
             var printRow = function (row) {
                 //修改房间头像
@@ -256,7 +256,7 @@ c.pocket48.page = c.pocket48.page || (function(){
 
     //打印房间内容
     c.pocket48.page.print.roomMain = function (data,e) {
-        if(c.d(0)){console.log('Response:',data)}
+        data=JSON.parse(data);if(c.d(0)){console.log('Response:',data)}
         if(!e){
 
             //每条信息的打印模板
@@ -353,7 +353,7 @@ c.pocket48.page = c.pocket48.page || (function(){
 
     //打印房间右墙
     c.pocket48.page.print.roomBoard = function (data,e) {
-        if(c.d(0)){console.log('Response:',data)}
+        data=JSON.parse(data);if(c.d(0)){console.log('Response:',data)}
         if(!e){
             var printRow = function (row) {
                 var ext=JSON.parse(row.extInfo);
@@ -380,7 +380,7 @@ c.pocket48.page = c.pocket48.page || (function(){
 
     //获取token的Callback
     c.pocket48.page.token = function (data,e) {
-        if(c.d(0)){console.log('Response:',data)}
+        data=JSON.parse(data);if(c.d(0)){console.log('Response:',data)}
         if(!e){
             if (data.status==200) {
                 c.pocket48.setToken(data.content.token);
