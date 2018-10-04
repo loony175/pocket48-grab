@@ -8,6 +8,7 @@ var c = (function(){
 
     //口袋48api
     var api={
+        sync: "https://psync.48.cn/syncsystem/api/cache/v1/update/overview",
         live: "https://plive.48.cn/livesystem/api/live/v1/memberLivePage",
         liveOpen: "https://plive.48.cn/livesystem/api/live/v1/openLivePage",
         liveInfo: "https://plive.48.cn/livesystem/api/live/v1/getLiveOne",
@@ -18,6 +19,7 @@ var c = (function(){
     }
     //api代理访问
     var apiProxy = api = {
+        sync: "./proxy.php?f=sync",
         live: "./proxy.php?f=live",
         liveOpen: "./proxy.php?f=liveOpen",
         liveInfo: "./proxy.php?f=liveInfo",
