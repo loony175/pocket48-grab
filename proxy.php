@@ -3,7 +3,7 @@ ini_set('display_errors',1);            //错误信息
 ini_set('display_startup_errors',1);    //php启动错误信息
 $f=$_GET['f'];
 $api=[
-    "sync"=> "https://psync.48.cn/syncsystem/api/cache/v1/update/overview"
+    "sync"=> "https://psync.48.cn/syncsystem/api/cache/v1/update/overview",
     "live"=> "https://plive.48.cn/livesystem/api/live/v1/memberLivePage",
     "liveOpen" => "https://plive.48.cn/livesystem/api/live/v1/openLivePage",
     "liveInfo" => "https://plive.48.cn/livesystem/api/live/v1/getLiveOne",
