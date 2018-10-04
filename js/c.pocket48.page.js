@@ -181,11 +181,9 @@ c.pocket48.page = c.pocket48.page || (function(){
             var printRow= function(row){
                 return '<td class="c-link"><a href="'+row.streamPathHd+'" target="_blank">'+row.streamPathHd+'</a></td><td class="c-link"><a href="'+row.streamPathLd+'" target="_blank">'+row.streamPathLd+'</a></td><td class="c-link"><a href="'+row.streamPath+'">'+row.streamPath+'</a></td>';
             };
-            for (var key in data.content.data) {
-            var content=printRow(data.res.content[key]);
+            var content=printRow(res.content);
             $$(content).appendTo('#c-live-'+data.liveId);
             mdui.updateTables(`#function-gy${((data.isReview)?("lb"):("zb"))} table`);
-            }
         } else {
             if(c.d(0)){console.log(e);}
             c.pocket48.page.snackbar(e);
@@ -195,7 +193,7 @@ c.pocket48.page = c.pocket48.page || (function(){
     //打印房间基本信息，转化请求
     c.pocket48.page.print.roomInfo = function (data,e) {
         //data={res,liveId,isReview}
-        var res=JSON.parse(data.res);if(c.d(0)){console.log('Response:',data.res)}
+        var res=JSON.parse(data.res);if(c.d(0)){console.log('Response:',res)}
         if(!e){
             var printRow = function (row) {
                 //修改房间头像
@@ -219,18 +217,18 @@ c.pocket48.page = c.pocket48.page || (function(){
                 return;
             }
             //打印房间基本信息
-            printRow(data.res.content[0]);
+            printRow(res.content[0]);
             //请求房间内容和右墙数据
-            if(data.res.content[0].hasOwnProperty("roomId")){
+            if(res.content[0].hasOwnProperty("roomId")){
                 //请求房间内容
                 c.pocket48.getRoomMain({
-                    'roomId': data.res.content[0].roomId,
+                    'roomId': res.content[0].roomId,
                     'lastTime': data.lastTime,
                     'limit': data.limit,
                 },c.pocket48.page.print.roomMain);
                 //请求房间右墙
                 c.pocket48.getRoomBoard({
-                    'roomId': data.res.content[0].roomId,
+                    'roomId': res.content[0].roomId,
                     'lastTime': data.lastTime,
                     'limit': data.limit,
                 },c.pocket48.page.print.roomBoard);
