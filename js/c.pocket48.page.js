@@ -181,9 +181,11 @@ c.pocket48.page = c.pocket48.page || (function(){
             var printRow= function(row){
                 return '<td class="c-link"><a href="'+row.streamPathHd+'" target="_blank">'+row.streamPathHd+'</a></td><td class="c-link"><a href="'+row.streamPathLd+'" target="_blank">'+row.streamPathLd+'</a></td><td class="c-link"><a href="'+row.streamPath+'">'+row.streamPath+'</a></td>';
             };
-            var content=printRow(data.res.content);
+            for (var key in data.content.data) {
+            var content=printRow(data.res.content[key]);
             $$(content).appendTo('#c-live-'+data.liveId);
             mdui.updateTables(`#function-gy${((data.isReview)?("lb"):("zb"))} table`);
+            }
         } else {
             if(c.d(0)){console.log(e);}
             c.pocket48.page.snackbar(e);
