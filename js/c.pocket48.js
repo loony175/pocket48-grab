@@ -134,7 +134,7 @@ c.cookie = c.cookie || (function(){
 //调试debug信息
 //c.d(level),当level<=debug等级时，返回true
 c.d = c.d || (function(){
-    var debug=5;
+    var debug=1;
     c=c||{};
     c.d=function(level){
         if (level<=debug){
