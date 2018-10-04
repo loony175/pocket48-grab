@@ -363,7 +363,7 @@ c.pocket48 = c.pocket48 || (function(){
             url: c.pocket48.api.liveInfo,
             headers: new c.pocket48.headers(),
             data: JSON.stringify({
-                "liveId": data.livdId,
+                "liveId": data.liveId,
             }),
             success: function(res){
                 var i={'res': res,'liveId': data.liveId,'isReview': data.isReview};
