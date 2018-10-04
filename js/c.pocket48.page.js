@@ -446,7 +446,7 @@ c.pocket48.page = c.pocket48.page || (function(){
                 c.pocket48.getLiveOpen(data,c.pocket48.page.print.liveOpen);
             break;
             case 2: //公演直播
-                c.pocket48.getLiveOpenInfo(data,c.pocket48.page.print.liveOpenInfo);
+                c.pocket48.getLiveOpen(data,c.pocket48.page.print.liveOpen);
             break;
             case 3: //口袋房间
                 c.pocket48.getRoomId(data,c.pocket48.page.print.roomInfo);
