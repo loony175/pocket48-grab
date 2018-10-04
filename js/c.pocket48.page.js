@@ -28,9 +28,9 @@ c.pocket48.page = c.pocket48.page || (function(){
     c.pocket48.page.updateInfo = function(){
         if(c.d(1)){console.log('c.pocket48.page.updateInfo')}
         var callback = function(res,e){
-            if(c.d(0)){console.log('Response:',res,e)}
+            if(c.d(1)){console.log('Response:',res,e)}
             //处理信息
-            c.pocket48.info=new c.pocket48.newInfo(res);
+            c.pocket48.info=new c.pocket48.newInfo(JSON.parse(res));
             //打印
             c.pocket48.page.print.info(c.pocket48.info);
         };
