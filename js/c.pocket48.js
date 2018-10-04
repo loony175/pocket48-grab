@@ -366,7 +366,8 @@ c.pocket48 = c.pocket48 || (function(){
                 "liveId": data.liveId,
             }),
             success: function(res){
-                callback(res,0);
+                var i={'res': res,'liveId': data.liveId,'isReview': data.isReview};
+                callback(i,0);
             },
             error: function(xhr, textStatus){
                 callback({},textStatus);

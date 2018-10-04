@@ -176,7 +176,7 @@ c.pocket48.page = c.pocket48.page || (function(){
     //打印公演详情
     c.pocket48.page.print.liveOpenInfo = function (data,e) {
         //data={res,liveId,isReview}
-        data=JSON.parse(data);if(c.d(0)){console.log('Response:',data)}
+        var res=JSON.parse(data.res);if(c.d(0)){console.log('Response:',res)}
         if(!e){
             var printRow= function(row){
                 return '<td class="c-link"><a href="'+row.streamPathHd+'" target="_blank">'+row.streamPathHd+'</a></td><td class="c-link"><a href="'+row.streamPathLd+'" target="_blank">'+row.streamPathLd+'</a></td><td class="c-link"><a href="'+row.streamPath+'">'+row.streamPath+'</a></td>';
@@ -193,7 +193,7 @@ c.pocket48.page = c.pocket48.page || (function(){
     //打印房间基本信息，转化请求
     c.pocket48.page.print.roomInfo = function (data,e) {
         //data={res,liveId,isReview}
-        data=JSON.parse(data);if(c.d(0)){console.log('Response:',data)}
+        var res=JSON.parse(data.res);if(c.d(0)){console.log('Response:',data.res)}
         if(!e){
             var printRow = function (row) {
                 //修改房间头像
