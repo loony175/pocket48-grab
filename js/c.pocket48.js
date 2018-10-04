@@ -184,6 +184,7 @@ c.pocket48 = c.pocket48 || (function(){
     //团体、成员、队伍信息处理
     c.pocket48.info = {};
     c.pocket48.newInfo = function(s){
+        if(c.d(1)){console.log('c.pocket48.newInfo',s)}
         //groupId: groupName
         this.group={};
         //teamId: [groupId,groupName,color]
