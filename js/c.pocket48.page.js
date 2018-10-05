@@ -466,8 +466,12 @@ c.pocket48.page = c.pocket48.page || (function(){
         //groupId
         data.groupId=c.pocket48.page.switch.groupNow || 0;
         //memberId
-        data.memberId=$$("input[name='member']:checked").val() || 0;
-
+        if(c.pocket48.page.switch.memberNow==1){
+            data.memberId=$$("input[name='member']:checked").val() || 0;
+        } else {
+            //没有选择成员时，为0
+            data.memberId=0;
+        }
         //isReview
         if (c.pocket48.page.switch.tabNow==1) {
             data.isReview=1;
