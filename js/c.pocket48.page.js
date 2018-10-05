@@ -21,20 +21,27 @@ c.pocket48.page = c.pocket48.page || (function(){
         c.pocket48.page.form();
         //设置token功能
         c.pocket48.page.token2();
+        //更新token
+        c.pocket48.page.updateToken();
         //显示提示
         console.log('页面功能加载完毕');
         console.log("%c请勿分享Cookies给其他人"," text-shadow: 0 1px 0 #ccc,0 2px 0 #c9c9c9,0 3px 0 #bbb,0 4px 0 #b9b9b9,0 5px 0 #aaa,0 6px 1px rgba(0,0,0,.1),0 0 5px rgba(0,0,0,.1),0 1px 3px rgba(0,0,0,.3),0 3px 5px rgba(0,0,0,.2),0 5px 10px rgba(0,0,0,.25),0 10px 10px rgba(0,0,0,.2),0 20px 20px rgba(0,0,0,.15);font-size:5em");
     };
 
     //更新成员信息
+    c.pocket48.page.ifUpdateInfo = false;
     c.pocket48.page.updateInfo = function(){
         if(c.d(1)){console.log('c.pocket48.page.updateInfo')}
         var callback = function(res,e){
-            if(c.d(1)){console.log('Response:',res,e)}
+            if(c.d(1)){console.log('Response:',JSON.parse(res),e)}
             //处理信息
             c.pocket48.info=new c.pocket48.newInfo(JSON.parse(res));
             //打印
             c.pocket48.page.print.info(c.pocket48.info);
+            //设置成员信息更新完毕
+            c.pocket48.page.ifUpdateInfo = true;
+            //显示消息
+            c.pocket48.page.snackbar('成员信息更新完毕!');
         };
         c.pocket48.getInfo('',callback);
     };
@@ -437,6 +444,10 @@ c.pocket48.page = c.pocket48.page || (function(){
 
     //提交表单
     c.pocket48.page.submit = function(){
+        //成员信息还未更新，返回false
+        if(c.pocket48.page.ifUpdateInfo==false) {
+            return false;
+        }
         //对不同的功能，提交到不同的c.pocket48.函数处理
         var data={};
 
