@@ -125,7 +125,7 @@ c.cookie = c.cookie || (function(){
     c.cookie.del=function(name){ 
         var exp = new Date(); 
         exp.setTime(exp.getTime() - 1); 
-        var cval=this.getCookie(name); 
+        var cval=c.cookie.get(name); 
         if(cval!=null) 
         document.cookie= name + "="+cval+";expires="+exp.toGMTString(); 
     };
