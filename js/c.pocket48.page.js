@@ -487,6 +487,10 @@ c.pocket48.page = c.pocket48.page || (function(){
                 c.pocket48.getLiveOpen(data,c.pocket48.page.print.liveOpen);
             break;
             case 3: //口袋房间
+                if (data.memberId==0||c.pocket48.page.switch.memberNow==0){
+                    c.pocket48.page.snackbar('口袋房间功能必须选择成员');
+                    return false;
+                }
                 c.pocket48.getRoomId(data,c.pocket48.page.print.roomInfo);
             break;
         }
