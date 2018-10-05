@@ -306,7 +306,7 @@ c.pocket48 = c.pocket48 || (function(){
                 callback({},textStatus);
             },
         };
-        if(c.d(0)){console.log('Request:',ajax)}
+        if(c.d(1)){console.log('Request:',ajax)}
         $$.ajax(ajax);
     };
 
