@@ -446,6 +446,7 @@ c.pocket48.page = c.pocket48.page || (function(){
     c.pocket48.page.submit = function(){
         //成员信息还未更新，返回false
         if(c.pocket48.page.ifUpdateInfo==false) {
+            c.pocket48.page.snackbar('请等待成员数据更新完毕...');
             return false;
         }
         //对不同的功能，提交到不同的c.pocket48.函数处理
