@@ -19,6 +19,8 @@ c.pocket48.page = c.pocket48.page || (function(){
         }
         //设置表单提交方式
         c.pocket48.page.form();
+        //设置token功能
+        c.pocket48.page.token2();
         //显示提示
         console.log('页面功能加载完毕');
         console.log("%c请勿分享Cookies给其他人"," text-shadow: 0 1px 0 #ccc,0 2px 0 #c9c9c9,0 3px 0 #bbb,0 4px 0 #b9b9b9,0 5px 0 #aaa,0 6px 1px rgba(0,0,0,.1),0 0 5px rgba(0,0,0,.1),0 1px 3px rgba(0,0,0,.3),0 3px 5px rgba(0,0,0,.2),0 5px 10px rgba(0,0,0,.25),0 10px 10px rgba(0,0,0,.2),0 20px 20px rgba(0,0,0,.15);font-size:5em");
@@ -402,7 +404,31 @@ c.pocket48.page = c.pocket48.page || (function(){
         //显示已有或无token
         $$('#c-token').html((c.pocket48.token())?('有token:[隐藏,可以通过c.pocket48.token()查看]'):('无token'));
     };
-
+    //设置token功能 需要init
+    c.pocket48.page.token2 = function () {
+        //获取token
+        $$('#c-login-get').on('click', function(e){
+            //获取用户名和密码
+            var d={
+                'username': $$('#c-login-user').val(),
+                'password': $$('#c-login-pass').val()
+            }
+            //传递给c.pocket48.getToken->c.pocket48.page.token
+            c.pocket48.getToken(d,c.pocket48.page.token);
+        });
+        //删除token
+        $$('#c-login-del').on('click', function(e){
+            c.pocket48.delToken();
+            c.pocket48.page.updateToken();
+            c.pocket48.page.snackbar('清除token成功');
+        });
+        //设置token
+        $$('#c-login-set').on('click', function(e){
+            c.pocket48.setToken($$('#c-token-input').val());
+            c.pocket48.page.updateToken();
+            c.pocket48.page.snackbar('设置token成功: '+$$('#c-token-input').val());
+        });
+    };
 
     //使用snackbar显示信息
     c.pocket48.page.snackbar = function (info) {
@@ -455,7 +481,7 @@ c.pocket48.page = c.pocket48.page || (function(){
         //不提交原始表单
         return false;
     };
-    //设置表单提交方式
+    //设置表单提交方式 需要在init中执行
     c.pocket48.page.form = function () {
         $$('#c-form').attr('onsubmit','return c.pocket48.page.submit()');
     }
