@@ -1,4 +1,4 @@
-# pocket48-grab v2.3.6
+# pocket48-grab v2.4.0
 口袋48成员直播、公演在线观看地址和视频源地址、口袋房间信息 在线获取工具
 
 # 测试地址
@@ -7,9 +7,9 @@
 开发版 http://xsaiting.cn/pocket48/
 
 # 说明
-1、成员数据更新时间2018-07-29。如果使用遇到问题直接邮件联系我：xsaiting@qq.com
+1、成员数据已改为实时更新。如果使用遇到问题直接邮件联系我：xsaiting@qq.com
 
-2、直播源推荐使用VLC media player【[下载](http://www.videolan.org/)】播放，该播放器可播放m3u8文件。
+2、直播源推荐使用VLC media player【[下载](http://www.videolan.org/)】播放，该播放器可播放m3u8文件。手机上可使用MXPlayer等播放器的网络串流功能播放。
 
 3、播放、录制或下载m3u8视频的方法：[点此](https://github.com/xsaiting/pocket48-grab/wiki/%E5%A6%82%E4%BD%95%E7%94%A8VLC%E6%89%93%E5%BC%80m3u8%E6%96%87%E4%BB%B6%E5%B9%B6%E4%B8%8B%E8%BD%BD%EF%BC%88%E5%BD%95%E5%88%B6%EF%BC%89%3F%5B%E5%90%8C%E6%A0%B7%E9%80%82%E7%94%A8%E4%BA%8E%E7%9B%B4%E6%92%AD%E5%BD%95%E5%88%B6%5D)
 
