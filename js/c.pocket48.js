@@ -455,7 +455,7 @@ c.pocket48 = c.pocket48 || (function(){
 
     //2 获取cookie中的token
     c.pocket48.token = function(){
-        c.cookie.get('token');
+        return c.cookie.get('token');
     };
 
     //3 删除cookie中的token
