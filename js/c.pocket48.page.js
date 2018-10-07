@@ -109,10 +109,13 @@ c.pocket48.page = c.pocket48.page || (function(){
                 })()}</td>
                 <td>${(function(){
                     var a="";
-                    var b=3; //最多显示3张图片
+                    var b=3; //最多显示3张图片,3张图片以后自动隐藏
                     row.picPath.split(",").forEach(function(picUrl){
                         b--;
                         if (b>=0) {a=a+`<img src="${((picUrl.slice(0,4)=='http')?(''):(c.pocket48.url.livePic))+picUrl}" style="max-width:30px; max-height:30px" />`;}
+                        else {
+                            a=a+`<img class="c-img-more" src="${((picUrl.slice(0,4)=='http')?(''):(c.pocket48.url.livePic))+picUrl}" style="max-width:30px; max-height:30px" />`;
+                        }
                     })
                     return a;
                 })()}</td>
@@ -549,7 +552,7 @@ c.pocket48.page = c.pocket48.page || (function(){
         });
     };
 
-    //切换 显示完整连接
+    //切换 显示完整表格
     c.pocket48.page.switch.link = function () {
         c.pocket48.page.switch.linkNow = 0;
         document.getElementById('c-clink').addEventListener('change', function (event) {
