@@ -7,3 +7,6 @@
 .c-img-more {
     display: none;
 }
+.c-img {
+    white-space: nowrap;
+}
