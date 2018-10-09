@@ -310,7 +310,7 @@ c.pocket48.page = c.pocket48.page || (function(){
 
                             //翻牌问题
                             case "idolFlip":
-                                content=content+`${ext.idolFlipTitle}<br/>${ext.idolFlipContent}<br/><div class="mdui-hidden c-idolflip" id="c-idolflip-${ext.idolFlipQuestionId}-${ext.idolFlipAnswerId}"><button class="mdui-btn mdui-btn-block mdui-color-theme-accent mdui-ripple">点此打开</button></div>`;
+                                content=content+`${ext.idolFlipTitle}<br/>${ext.idolFlipContent}<br/><div class="c-idolflip" id="c-idolflip-${ext.idolFlipQuestionId}-${ext.idolFlipAnswerId}"><button class="mdui-btn mdui-btn-block mdui-color-theme-accent mdui-ripple">点此打开</button></div>`;
                             break;
 
                             //其他信息
@@ -388,6 +388,46 @@ c.pocket48.page = c.pocket48.page || (function(){
             if(c.d(0)){console.log(e);}
             c.pocket48.page.snackbar(e);
         }
+    };
+
+    //打印翻牌消息
+    c.pocket48.page.print.flip = function (date,e) {
+        //data={res,questionId,answerId}
+        res=JSON.parse(data.res) ;if(c.d(0)){console.log('Response:',res)}
+        if(!e){
+            //#c-idolflip-123-456
+            var str=`#c-idolflip-${data.questionId}-${data.answerId}`;
+            //内容为answer
+            var content=`>>${res.content.answer}`;
+            //如果没有被点击过(隐藏)
+            if($$(str).hasClass('mdui-hidden')){
+                //在#c-idolflip前面插入内容
+                $$(str).prepend(`>>> ${content}`);
+                //设为不可见
+                $$(str).addClass('mdui-hidden');
+            } else {
+                c.pocket48.page.snackbar('已打开');
+            }
+
+        } else {
+            if(c.d(0)){console.log(e);}
+            c.pocket48.page.snackbar(e);
+        }
+    };
+
+    //设置翻牌按钮 需要init
+    c.pocket48.page.flipBotton = function () {
+        $$(document).on('click', '.c-idolflip', function (e) {
+            //c-idolflip-123-456
+            var id = $$(this).attr('id');
+            var s = id.split('-');
+            var data = {}
+            //123
+            data.questionId = s[2];
+            //456
+            data.answerId = s[3];
+            c.pocket48.getFlip(data,c.pocket48.page.print.flip);
+        });
     };
 
     //获取token的Callback

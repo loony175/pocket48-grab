@@ -92,6 +92,15 @@
     limit 数量上限
     返回：
     callback(roomBoard,e);
+9>获取翻牌消息 Flip
+    使用：
+    c.pocket48.flip(data,callback);
+    参数：
+    data={questionId,answerId}
+    questionId 问题id
+    answerId 回答id
+    返回
+    callback(flip,e);
 
 内部功能
 1 设置token
@@ -161,6 +170,7 @@ c.pocket48 = c.pocket48 || (function(){
         roomId: "https://pjuju.48.cn/imsystem/api/im/room/v1/login/user/list",
         roomMain: "https://pjuju.48.cn/imsystem/api/im/v1/member/room/message/mainpage",
         roomBoard: "https://pjuju.48.cn/imsystem/api/im/v1/member/room/message/boardpage",
+        flip: "https://ppayqa.48.cn/idolanswersystem/api/idolanswer/v1/question_answer/detail",
     };
 
     //跨域代理 api
@@ -173,6 +183,7 @@ c.pocket48 = c.pocket48 || (function(){
         roomId: "./proxy.php?f=roomId",
         roomMain: "./proxy.php?f=roomMain",
         roomBoard: "./proxy.php?f=roomBoard",
+        flip: ".proxy.php?f=flip"
     };
 
     //url前缀
@@ -439,6 +450,33 @@ c.pocket48 = c.pocket48 || (function(){
             }),
             success: function(res){
                 callback(res,0);
+            },
+            error: function(xhr, textStatus){
+                callback({},textStatus);
+            },
+        };
+        if(c.d(0)){console.log('Request:',ajax)}
+        $$.ajax(ajax);
+    };
+
+    //9 翻牌消息
+    c.pocket48.getFlip = function (data,callback) {
+        var ajax={
+            method: 'POST',
+            url: c.pocket48.api.flip,
+            headers: new c.pocket48.headers(),
+            data: JSON.stringify({
+                "idolFlipSource": 2,
+                "questionId": data.questionId,
+                "answerId": data.answerId,
+            }),
+            success: function(res){
+                var i = {
+                    'res': res,
+                    'questionId': data.questionId,
+                    'answerId': data.answerId,
+                }
+                callback(i,0);
             },
             error: function(xhr, textStatus){
                 callback({},textStatus);
