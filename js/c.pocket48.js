@@ -183,7 +183,7 @@ c.pocket48 = c.pocket48 || (function(){
         roomId: "./proxy.php?f=roomId",
         roomMain: "./proxy.php?f=roomMain",
         roomBoard: "./proxy.php?f=roomBoard",
-        flip: ".proxy.php?f=flip"
+        flip: "./proxy.php?f=flip"
     };
 
     //url前缀
