@@ -107,7 +107,7 @@ c.pocket48.page = c.pocket48.page || (function(){
                 <td>${(function(){
                     return new Date(row.startTime).format('yyyy-MM-dd hh:mm:ss');
                 })()}</td>
-                <td>${(function(){
+                <td class="c-img">${(function(){
                     var a="";
                     var b=3; //最多显示3张图片,3张图片以后自动隐藏
                     row.picPath.split(",").forEach(function(picUrl){
