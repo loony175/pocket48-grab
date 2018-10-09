@@ -421,7 +421,7 @@ c.pocket48.page = c.pocket48.page || (function(){
     c.pocket48.page.flipButton = function () {
         $$(document).on('click', '.c-idolflip button', function (e) {
             //c-idolflip-123-456
-            var id = $$(this).attr('id');
+            var id = $$(this).parent().attr('id');
             var s = id.split('-');
             var data = {}
             //123
