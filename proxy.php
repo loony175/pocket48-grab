@@ -11,6 +11,7 @@ $api=[
     "roomId" => "https://pjuju.48.cn/imsystem/api/im/room/v1/login/user/list",
     "roomMain" => "https://pjuju.48.cn/imsystem/api/im/v1/member/room/message/mainpage",
     "roomBoard" => "https://pjuju.48.cn/imsystem/api/im/v1/member/room/message/boardpage",
+    "flip" => "https://ppayqa.48.cn/idolanswersystem/api/idolanswer/v1/question_answer/detail",
 ];
 $post=file_get_contents("php://input");
 //var_dump(file_get_contents("php://input"));
