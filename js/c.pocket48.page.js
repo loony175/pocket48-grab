@@ -400,7 +400,7 @@ c.pocket48.page = c.pocket48.page || (function(){
             //#c-idolflip-123-456
             var str=`#c-idolflip-${data.questionId}-${data.answerId}`;
             //内容为answer
-            var content=`>>> ${res.content.answer}`;
+            var content=`<span>&gt;&gt;&gt; ${res.content.answer}</span>`;
             //如果没有被点击过(隐藏)
             if(!$$(str).hasClass('mdui-hidden')){
                 //在#c-idolflip前面插入内容
