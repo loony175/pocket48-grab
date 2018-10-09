@@ -393,7 +393,7 @@ c.pocket48.page = c.pocket48.page || (function(){
     };
 
     //打印翻牌消息
-    c.pocket48.page.print.flip = function (date,e) {
+    c.pocket48.page.print.flip = function (data,e) {
         //data={res,questionId,answerId}
         res=JSON.parse(data.res) ;if(c.d(0)){console.log('Response:',res)}
         if(!e){
