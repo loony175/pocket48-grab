@@ -475,7 +475,7 @@ c.pocket48 = c.pocket48 || (function(){
                     'res': res,
                     'questionId': data.questionId,
                     'answerId': data.answerId,
-                }
+                };
                 callback(i,0);
             },
             error: function(xhr, textStatus){
