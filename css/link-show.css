@@ -5,8 +5,5 @@
     max-width: none;
 }
 .c-img-more {
-    display: block;
-}
-.c-img {
-    white-space: nowrap;
+    display: "";
 }
