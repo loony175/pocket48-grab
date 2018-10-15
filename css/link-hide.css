@@ -4,3 +4,6 @@
     overflow: hidden;
     max-width: 10rem;
 }
+.c-img-more {
+    display: none;
+}
