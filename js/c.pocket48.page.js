@@ -692,7 +692,7 @@ c.pocket48.page = c.pocket48.page || (function(){
      */
     c.pocket48.page.switch.premium = function () {
         c.pocket48.page.switch.premiumNow = 0;
-        if(c.cookie.get('premium')) {
+        if(c.cookie.get('premium')==1) {
             c.pocket48.page.switch.premiumNow = 1;
         }
         //对话框对象
