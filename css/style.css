@@ -26,4 +26,6 @@ td {
 .mdui-radio{
     padding-left: 1.2rem;
 }
-
+.mdui-list-item {
+    cursor: auto;
+}

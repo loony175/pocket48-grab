@@ -99,8 +99,23 @@
     data={questionId,answerId}
     questionId 问题id
     answerId 回答id
-    返回
+    返回：
     callback(flip,e);
+10打卡  CheckIn
+    使用：
+    c.pocket48.checkIn(data,callback);
+    参数：
+    空
+    返回：
+    callback(res,e);
+11用户信息 userInfo
+    使用：
+    c.pocket48.userInfo(data,callback);
+    参数：
+    data={userId}
+    userId 口袋用户id
+    返回：
+    callback(res,e);
 
 内部功能
 1 设置token
@@ -143,7 +158,7 @@ c.cookie = c.cookie || (function(){
 //调试debug信息
 //c.d(level),当level<=debug等级时，返回true
 c.d = c.d || (function(){
-    var debug=0;
+    var debug=2;
     c=c||{};
     c.d=function(level){
         if (level<=debug){
@@ -158,7 +173,7 @@ c.d = c.d || (function(){
 c.pocket48 = c.pocket48 || (function(){
     c=c||{};c.pocket48={};
     //版本号
-    c.pocket48.version='2.4.0';
+    c.pocket48.version='2.5.0';
 
     //口袋48 api
     c.pocket48.api={
@@ -171,6 +186,8 @@ c.pocket48 = c.pocket48 || (function(){
         roomMain: "https://pjuju.48.cn/imsystem/api/im/v1/member/room/message/mainpage",
         roomBoard: "https://pjuju.48.cn/imsystem/api/im/v1/member/room/message/boardpage",
         flip: "https://ppayqa.48.cn/idolanswersystem/api/idolanswer/v1/question_answer/detail",
+        checkIn: "https://puser.48.cn/usersystem/api/user/v1/check/in",
+        userInfo: "https://puser.48.cn/usersystem/api/user/v1/show/info/",
     };
 
     //跨域代理 api
@@ -183,7 +200,9 @@ c.pocket48 = c.pocket48 || (function(){
         roomId: "./proxy.php?f=roomId",
         roomMain: "./proxy.php?f=roomMain",
         roomBoard: "./proxy.php?f=roomBoard",
-        flip: "./proxy.php?f=flip"
+        flip: "./proxy.php?f=flip",
+        checkIn: "./proxy.php?f=checkIn",
+        userInfo: "./proxy.php?f=userInfo&i=",
     };
 
     //url前缀
@@ -485,6 +504,46 @@ c.pocket48 = c.pocket48 || (function(){
         if(c.d(0)){console.log('Request:',ajax)}
         $$.ajax(ajax);
     };
+
+    //10打卡
+    c.pocket48.checkIn = function (data,callback) {
+        var ajax={
+            method: 'POST',
+            url: c.pocket48.api.checkIn,
+            headers: new c.pocket48.headers(),
+            data: JSON.stringify({}),
+            success: function(res){
+                callback(res,0);
+            },
+            error: function(xhr, textStatus){
+                callback({},textStatus);
+            },
+        };
+        if(c.d(0)){console.log('Request:',ajax)}
+        $$.ajax(ajax);
+    };
+
+    //11用户信息
+    c.pocket48.getUserInfo = function (data,callback) {
+        var ajax={
+            method: 'POST',
+            url: c.pocket48.api.userInfo+data.userId,
+            headers: new c.pocket48.headers(),
+            data: JSON.stringify({
+                "needRecommend":true,
+                "needChatInfo":true,
+                "needFriendsNum":true
+            }),
+            success: function(res){
+                callback(res,0);
+            },
+            error: function(xhr, textStatus){
+                callback({},textStatus);
+            },
+        };
+        if(c.d(0)){console.log('Request:',ajax)}
+        $$.ajax(ajax);
+    }
 
     //1 设置token
     c.pocket48.setToken = function(token){
