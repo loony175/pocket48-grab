@@ -477,7 +477,7 @@ c.pocket48.page = c.pocket48.page || (function(){
      * @param e 返回的错误信息
      */
     c.pocket48.page.print.userInfo = function (data,e) {
-        c.pocket48.page.progress(0);
+        c.pocket48.page.progressPro(0);
         data=JSON.parse(data);if(c.d(0)){console.log('Response:',data)}
         if(!e){
             if (data.status==200) {
@@ -516,7 +516,7 @@ c.pocket48.page = c.pocket48.page || (function(){
         if(c.d(2)){console.log('c.pocket48.page.userInfo2');}
         $$('#c-pro-getuserinfo').on('click', function(e){
             //传递给c.pocket48.getUserInfo->c.pocket48.page.print.userInfo
-            c.pocket48.page.progress();
+            c.pocket48.page.progressPro();
             var data={userId: $$('#c-pro-userid').val()};
             c.pocket48.getUserInfo(data,c.pocket48.page.print.userInfo);
         });
@@ -526,6 +526,7 @@ c.pocket48.page = c.pocket48.page || (function(){
             var data ={userId: id};
             //弹出对话框
             c.pocket48.page.pro.open();
+            c.pocket48.page.progressPro();
             c.pocket48.getUserInfo(data,c.pocket48.page.print.userInfo);
         });
     };
@@ -613,6 +614,13 @@ c.pocket48.page = c.pocket48.page || (function(){
             $$('#c-progress').show();
         } else {
             $$('#c-progress').hide();
+        }
+    };
+    c.pocket48.page.progressPro = function (show=true) {
+        if (show) {
+            $$('#c-pro-progress').show();
+        } else {
+            $$('#c-pro-progress').hide();
         }
     };
 
