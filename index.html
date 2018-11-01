@@ -3,12 +3,11 @@
 	<meta charset="utf-8">
 	<title>口袋48视频、房间信息获取</title>
 	
-	<link rel="stylesheet" href="//cdnjs.loli.net/ajax/libs/mdui/0.4.1/css/mdui.min.css">
+	<link rel="stylesheet" href="https://cdnjs.loli.net/ajax/libs/mdui/0.4.1/css/mdui.min.css">
 	<link href="./css/style.css" rel="stylesheet" />
 	<link id="c-link-switch" rel="stylesheet" href="./css/link-hide.css" />
-    <style id="c-team-color-css" type="text/css">
-    
-    </style>
+    <style id="c-team-color-css" type="text/css"></style>
+	<style id="c-premium-css" type="text/css"></style>
 </head>
 
 <body class="mdui-color-grey-100 mdui-theme-primary-blue mdui-theme-accent-pink">
@@ -21,6 +20,7 @@
 					<span id="c-version"></span> 稳定版本：<a href="https://xsaiting.com/pocket48">点此访问</a></small>
 				</div>
 				<p>作者 @小赛艇 | xsaiting@qq.com | GitHub地址:<a href="https://github.com/xsaiting/pocket48-grab/" target="_blank">pocket48-grab</a></p>
+				<a id="c-premium-button" mdui-tooltip="{content: '高级功能'}" mdui-dialog="{target: '#c-premium'}" class="mdui-btn mdui-btn-icon mdui-ripple"><i class="mdui-icon material-icons mdui-text-color-theme-accent">build</i></a>
 			</div>
 		</div>
 		<div class="mdui-col-md-6 mdui-card c-header">
@@ -75,7 +75,7 @@
 				<div class="mdui-col-md-4">
                     <button type="submit" id="submit" class="mdui-btn mdui-btn-raised mdui-ripple mdui-color-theme-600">提交</button>
                     <!-- 登录按钮 -->
-					<a id="login" style="display:none;" mdui-dialog="{target: '#c-login'}" class="mdui-btn mdui-btn-icon mdui-ripple"><i class="mdui-icon material-icons mdui-text-color-theme-accent">&#xe0da;</i></a>
+					<a id="login" style="display:none;" mdui-tooltip="{content: '登录与token'}" mdui-dialog="{target: '#c-login'}" class="mdui-btn mdui-btn-icon mdui-ripple"><i class="mdui-icon material-icons mdui-text-color-theme-accent">&#xe0da;</i></a>
 				</div>
 				<div class="mdui-col-md-4">
 					<label class="mdui-switch">
@@ -136,6 +136,45 @@
 		</div>
 		<div class="mdui-dialog-actions">
 			<button class="mdui-btn mdui-ripple" mdui-dialog-close>返回</button>
+		</div>
+	</div>
+
+	<!-- 高级对话框 -->
+	<div class="mdui-dialog" id="c-premium">
+		<div class="mdui-dialog-title">实验性高级功能(慎用)</div>
+		<div class="mdui-dialog-content">
+			<label class="mdui-switch">
+				开启实验性高级功能(慎用)
+				<input id="c-premium-switch" type="checkbox"/>
+				<i class="mdui-switch-icon"></i>
+			</label>
+			<div class="c-pro" style="">
+				<button id="c-pro-checkin" class="mdui-btn mdui-ripple mdui-color-theme">口袋打卡(需要token)</button>
+				<div class="mdui-textfield">
+					<input id="c-pro-userid" class="mdui-textfield-input" type="text" placeholder="口袋id"/>
+				</div>
+				<button id="c-pro-getuserinfo" class="mdui-btn mdui-ripple mdui-color-theme">查询信息(无需token)</button>
+				<div class="mdui-divider"></div>
+				<div id="c-pro-ui" class="mdui-card">
+					<div class="mdui-card-header mdui-color-theme-50">
+					  <img class="mdui-card-header-avatar" src="./img/avatar1.jpg"/>
+					  <div class="mdui-card-header-title">示例用户pro</div>
+					  <div class="mdui-card-header-subtitle">示例用户userId: 1234</div>
+					</div>
+
+					<div class="mdui-card-content">
+						<p>等级：LV2 经验值：1234 关注：48 [星沃卡用户]</p>
+						<p>性别：男/女/保密 生日：1926-08-17/不存在 地区码：101010</p>
+						<p>首推：张三 贡献：10000</p>
+						<p>二推：李四 贡献：1000</p>
+						<p>三推：王五 贡献：100</p>
+					</div>
+
+				</div>
+			</div>
+		</div>
+		<div class="mdui-dialog-actions">
+				<button class="mdui-btn mdui-ripple" mdui-dialog-close>返回</button>
 		</div>
 	</div>
 
@@ -317,7 +356,7 @@
 						<div class="mdui-card-primary-subtitle">示例成员 @2018-03-29 05:00 来自iPhone 6s Plus</div>
 						<blockquote>
 							<p>是pdk说的。</p>
-							<footer>说这句话的聚聚的id是100000</footer>
+							<footer>说这句话的聚聚的id是100000<span class="c-pro"><a class="mdui-btn mdui-btn-icon mdui-ripple mdui-btn-dense c-pro-user" userid="123456"><i class="mdui-icon material-icons mdui-text-color-theme-accent">search</i></a></span></footer>
 						</blockquote>
 						pdk说的就是真的啦？你们媒体千万要注意啊，不要“见着风，是得雨”啊。接到这些消息，你媒体本身也要判断，明白意思吗？假使这些完全……无中生有的东西，你再帮他说一遍，你等于……你也等于……你也有责任吧？
 					</div>
@@ -333,16 +372,16 @@
 					
 				</div>
 			</div>
-			<ul id="c-room-board" class="mdui-list mdui-ripple-pink">
-				<li class="mdui-list-item mdui-ripple">
+			<ul id="c-room-board" class="mdui-list">
+				<li class="mdui-list-item">
 					<div class="mdui-list-item-avatar"><img src="./img/avatar1.jpg"/></div>
 					<div class="mdui-list-item-content">
-					<div class="mdui-list-item-title">示例聚聚1 <small>@2018-03-28 12:55:18</small></div>
+					<div class="mdui-list-item-title">示例聚聚1<span class="c-pro"><a class="mdui-btn mdui-btn-icon mdui-ripple mdui-btn-dense c-pro-user" userid="123456"><i class="mdui-icon material-icons mdui-text-color-theme-accent">search</i></a></span> <small>@2018-03-28 12:55:18</small></div>
 					<div class="mdui-list-item-text">Don't need translation. I know what you said, ha ha. I'm very willing to answer these questions because Barbara Walters of BBC had asked me the same question about 10 years ago and gave me a photo. And I said this young man was not arrested and did not get hurt because the tank stopped in front of him and refused to crash him. And Barbara also gave me the name of who she believed was the young man, although I may have forgotten the specific name. but I ask people who are working with the public security agencies to use all of their networks to check out where was that young man, And after a month-long investigation, I can say for sure that this young man has not been arrested.</div>
 					</div>
 				</li>
 				<li class="mdui-divider-inset mdui-m-y-0"></li>
-				<li class="mdui-list-item mdui-ripple">
+				<li class="mdui-list-item">
 					<div class="mdui-list-item-avatar"><img src="./img/avatar1.jpg"/></div>
 					<div class="mdui-list-item-content">
 					<div class="mdui-list-item-title">示例聚聚2</div>
@@ -350,7 +389,7 @@
 					</div>
 				</li>
 				<li class="mdui-divider-inset mdui-m-y-0"></li>
-				<li class="mdui-list-item mdui-ripple">
+				<li class="mdui-list-item">
 					<div class="mdui-list-item-avatar"><img src="./img/avatar1.jpg"/></div>
 					<div class="mdui-list-item-content">
 					<div class="mdui-list-item-title">示例聚聚3</div>
@@ -369,7 +408,7 @@
 </div>
 
 
-<script src="//cdnjs.loli.net/ajax/libs/mdui/0.4.1/js/mdui.min.js"></script>
+<script src="https://cdnjs.loli.net/ajax/libs/mdui/0.4.1/js/mdui.min.js"></script>
 <script src="./js/c.pocket48.js"></script>
 <script src="./js/c.pocket48.page.js"></script>
 </body>

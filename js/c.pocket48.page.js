@@ -25,30 +25,46 @@ c.pocket48.page = c.pocket48.page || (function(){
         c.pocket48.page.updateToken();
         //设置翻牌
         c.pocket48.page.flipButton();
+        //设置打卡
+        c.pocket48.page.checkIn2();
+        //设置获取用户信息
+        c.pocket48.page.userInfo2();
         //显示提示
         console.log('页面功能加载完毕');
         console.log("%c请勿分享Cookies给其他人"," text-shadow: 0 1px 0 #ccc,0 2px 0 #c9c9c9,0 3px 0 #bbb,0 4px 0 #b9b9b9,0 5px 0 #aaa,0 6px 1px rgba(0,0,0,.1),0 0 5px rgba(0,0,0,.1),0 1px 3px rgba(0,0,0,.3),0 3px 5px rgba(0,0,0,.2),0 5px 10px rgba(0,0,0,.25),0 10px 10px rgba(0,0,0,.2),0 20px 20px rgba(0,0,0,.15);font-size:5em");
     };
+    //切换功能
+    c.pocket48.page.switch={};
 
     //更新成员信息
     c.pocket48.page.ifUpdateInfo = false;
     c.pocket48.page.updateInfo = function(){
-        if(c.d(1)){console.log('c.pocket48.page.updateInfo')}
+        if(c.d(1)){console.log('c.pocket48.page.updateInfo');}
         var callback = function(res,e){
-            if(c.d(1)){console.log('Response:',JSON.parse(res),e)}
-            //处理信息
-            c.pocket48.info=new c.pocket48.newInfo(JSON.parse(res));
-            //打印
-            c.pocket48.page.print.info(c.pocket48.info);
-            //设置成员信息更新完毕
-            c.pocket48.page.ifUpdateInfo = true;
-            //显示消息
-            c.pocket48.page.snackbar('成员信息更新完毕!');
+            if (!e&&!res){
+                if(c.d(1)){console.log('Response:',JSON.parse(res),e)}
+                //处理信息
+                c.pocket48.info=new c.pocket48.newInfo(JSON.parse(res));
+                //打印
+                c.pocket48.page.print.info(c.pocket48.info);
+                //设置成员信息更新完毕
+                c.pocket48.page.ifUpdateInfo = true;
+                //显示消息
+                c.pocket48.page.snackbar('成员信息更新完毕!');
+            } else {
+                //显示消息
+                c.pocket48.page.snackbar('成员信息加载失败> <请尝试刷新页面');
+            }
+            //关闭进度条
+            c.pocket48.page.progress(0);
         };
+        //显示进度条
+        c.pocket48.page.progress();
         c.pocket48.getInfo('',callback);
     };
     //打印成员信息
     c.pocket48.page.print.info = function(info){
+        c.pocket48.page.progress(0);
         if(c.d(1)){console.log('c.pocket48.page.print.info')}
         //先清空group和成员信息
         $$('#c-cgroup').html('');
@@ -89,6 +105,7 @@ c.pocket48.page = c.pocket48.page || (function(){
     
     //打印成员直播
     c.pocket48.page.print.live = function (data,e) {
+        c.pocket48.page.progress(0);
         data=JSON.parse(data);if(c.d(0)){console.log('Response:',data)}
         if(!e){
             
@@ -152,6 +169,7 @@ c.pocket48.page = c.pocket48.page || (function(){
 
     //打印公演直播/录播
     c.pocket48.page.print.liveOpen = function (data,e,isReview) {
+        c.pocket48.page.progress(0);
         data=JSON.parse(data);if(c.d(0)){console.log('Response:',data)}
         if(!e){
             //预览数据打印模板
@@ -222,11 +240,11 @@ c.pocket48.page = c.pocket48.page || (function(){
                 }
             };
             //返回为400时，没有token
-            if(data.status==400){
+            if(res.status==400){
                 c.pocket48.page.snackbar('400 需要token，请点击【提交】按钮右边的钥匙图标获取token');
                 return;
             }
-            if(data.status==401){
+            if(res.status==401){
                 c.pocket48.page.snackbar('401 授权验证失败，请尝试点击【提交】按钮右边的钥匙图标重新获取token');
                 return;
             }
@@ -270,6 +288,7 @@ c.pocket48.page = c.pocket48.page || (function(){
 
     //打印房间内容
     c.pocket48.page.print.roomMain = function (data,e) {
+        c.pocket48.page.progress(0);
         data=JSON.parse(data);if(c.d(0)){console.log('Response:',data)}
         if(!e){
 
@@ -297,7 +316,7 @@ c.pocket48.page = c.pocket48.page || (function(){
 
                             //翻牌信息
                             case "faipaiText":
-                                content=content+'<blockquote><p>'+ext.faipaiContent+'</p><footer>ID:'+ext.faipaiUserId+'</footer></blockquote>'+ext.messageText;
+                                content=content+'<blockquote><p>'+ext.faipaiContent+'</p><footer>ID:'+ext.faipaiUserId+'<span class="c-pro"><a class="mdui-btn mdui-btn-icon mdui-ripple mdui-btn-dense c-pro-user" userid="'+ext.faipaiUserId+'"><i class="mdui-icon material-icons mdui-text-color-theme-accent">search</i></a></span>'+'</footer></blockquote>'+ext.messageText;
                             break;
 
                             //视频直播信息
@@ -367,13 +386,14 @@ c.pocket48.page = c.pocket48.page || (function(){
 
     //打印房间右墙
     c.pocket48.page.print.roomBoard = function (data,e) {
+        c.pocket48.page.progress(0);
         data=JSON.parse(data);if(c.d(0)){console.log('Response:',data)}
         if(!e){
             var printRow = function (row) {
                 var ext=JSON.parse(row.extInfo);
                 if(c.d(2)){console.log('c.pocket48.page.print.roomBoard printRow[ext=JSON.parse(row.extInfo)]',ext);}
                 //内容
-                var content='<li class="mdui-list-item mdui-ripple" timestamp="'+row.msgTime+'" senderId="'+ext.senderId+'" contentType="'+ext.contetType+'"><div class="mdui-list-item-avatar"><img src="'+c.pocket48.url.livePic+ext.senderAvatar+'"/></div><div class="mdui-list-item-content"> <div class="mdui-list-item-title">'+ext.senderName+' <small>@'+row.msgTimeStr+((ext.phoneName)?(' 来自'+ext.phoneName):(' '))+'</small></div><div class="mdui-list-item-text">'+((ext.text)?(ext.text):(ext.content))+'</div></div></li>';
+                var content='<li class="mdui-list-item" timestamp="'+row.msgTime+'" senderId="'+ext.senderId+'" contentType="'+ext.contetType+'"><div class="mdui-list-item-avatar"><img src="'+c.pocket48.url.livePic+ext.senderAvatar+'"/></div><div class="mdui-list-item-content"> <div class="mdui-list-item-title">'+ext.senderName+'<span class="c-pro"><a class="mdui-btn mdui-btn-icon mdui-ripple mdui-btn-dense c-pro-user" userid="'+ext.senderId+'"><i class="mdui-icon material-icons mdui-text-color-theme-accent">search</i></a></span>'+' <small>@'+row.msgTimeStr+((ext.phoneName)?(' 来自'+ext.phoneName):(' '))+'</small></div><div class="mdui-list-item-text">'+((ext.text)?(ext.text):(ext.content))+'</div></div></li>';
                 //分割线
                 content=content+'<li class="mdui-divider-inset mdui-m-y-0"></li>';
                 return content;
@@ -415,6 +435,99 @@ c.pocket48.page = c.pocket48.page || (function(){
             if(c.d(0)){console.log(e);}
             c.pocket48.page.snackbar(e);
         }
+    };
+
+    
+    /**
+     * 打印打卡信息
+     * @param data 返回的内容
+     * @param e 返回的错误信息
+     */
+    c.pocket48.page.print.checkIn = function (data,e) {
+        c.pocket48.page.progress(0);
+        data=JSON.parse(data);if(c.d(0)){console.log('Response:',data)}
+        if(!e){
+            if (data.status==200) {
+                var message=`打卡成功！经验+${data.content.addEx}，鸡腿+${data.content.addMoney}，连续打卡${data.content.days}天。`;
+                c.pocket48.page.snackbar(message);
+            } else {
+                c.pocket48.page.snackbar('打卡失败: '+data.message);
+            }
+        } else {
+            if(c.d(0)){console.log(e);}
+            c.pocket48.page.snackbar(e);
+        }
+    };
+    
+    /**
+     * 设置打卡功能，需要init
+     */
+    c.pocket48.page.checkIn2 = function () {
+        if(c.d(2)){console.log('c.pocket48.page.checkIn2');}
+        $$('#c-pro-checkin').on('click', function(e){
+            //传递给c.pocket48.checkIn->c.pocket48.page.print.checkIn
+            c.pocket48.page.progress();
+            c.pocket48.checkIn({},c.pocket48.page.print.checkIn);
+        });
+    };
+
+    /**
+     * 打印用户信息
+     * @param data 返回的内容
+     * @param e 返回的错误信息
+     */
+    c.pocket48.page.print.userInfo = function (data,e) {
+        c.pocket48.page.progress(0);
+        data=JSON.parse(data);if(c.d(0)){console.log('Response:',data)}
+        if(!e){
+            if (data.status==200) {
+                var row=`<div class="mdui-card-header mdui-color-theme-50">
+                <img class="mdui-card-header-avatar" src="${c.pocket48.url.livePic+data.content.userInfo.avatar}"/>
+                <div class="mdui-card-header-title">${data.content.userInfo.nickName}</div>
+                <div class="mdui-card-header-subtitle">id:${data.content.userInfo.userId}</div>
+              </div>
+
+              <div class="mdui-card-content">
+                  <p>等级：LV${data.content.userInfo.level} 经验值：${data.content.userInfo.experience} 关注：${data.content.friendsNum} ${(data.content.userInfo.starwo)?'[星沃卡用户]':''}</p>
+                  <p>性别：${(function(g){if(g==0){return '保密'}if(g==1){return '女'}if(g==2){return '男'}})(data.content.userInfo.gender)} 生日：${(data.content.userInfo.birthday)?(data.content.userInfo.birthday):'无'} 地区码：${(data.content.userInfo.city)}</p>
+                  <p>首推：${(data.content.userRecommend.first.memberId)?c.pocket48.info.memberId2name(data.content.userRecommend.first.memberId):'无'} 贡献：${data.content.userRecommend.first.money}</p>
+                  <p>二推：${(data.content.userRecommend.second.memberId)?c.pocket48.info.memberId2name(data.content.userRecommend.second.memberId):'无'} 贡献：${data.content.userRecommend.second.money}</p>
+                  <p>三推：${(data.content.userRecommend.third.memberId)?c.pocket48.info.memberId2name(data.content.userRecommend.third.memberId):'无'} 贡献：${data.content.userRecommend.third.money}</p>
+              </div>`;
+                //清空
+                $$('#c-pro-ui').html(' ');
+                //显示
+                $$('#c-pro-ui').html(row);
+                //刷新
+                c.pocket48.page.proUpdate();
+            } else {
+                c.pocket48.page.snackbar('获取用户信息错误: '+data.message);
+            }
+        } else {
+            if(c.d(0)){console.log(e);}
+            c.pocket48.page.snackbar(e);
+        }
+    }
+
+    /**
+     * 设置获取用户信息功能，需要init
+     */
+    c.pocket48.page.userInfo2 = function () {
+        if(c.d(2)){console.log('c.pocket48.page.userInfo2');}
+        $$('#c-pro-getuserinfo').on('click', function(e){
+            //传递给c.pocket48.getUserInfo->c.pocket48.page.print.userInfo
+            c.pocket48.page.progress();
+            var data={userId: $$('#c-pro-userid').val()};
+            c.pocket48.getUserInfo(data,c.pocket48.page.print.userInfo);
+        });
+        $$(document).on('click', '.c-pro-user', function (e) {
+            //<span.c-pro><a userid="123456"></a></span>
+            var id = $$(this).attr('userid');
+            var data ={userId: id};
+            //弹出对话框
+            c.pocket48.page.pro.open();
+            c.pocket48.getUserInfo(data,c.pocket48.page.print.userInfo);
+        });
     };
 
     //设置翻牌按钮 需要init
@@ -466,6 +579,7 @@ c.pocket48.page = c.pocket48.page || (function(){
                 'password': $$('#c-login-pass').val()
             }
             //传递给c.pocket48.getToken->c.pocket48.page.token
+            c.pocket48.page.progress();
             c.pocket48.getToken(d,c.pocket48.page.token);
         });
         //删除token
@@ -482,12 +596,29 @@ c.pocket48.page = c.pocket48.page || (function(){
         });
     };
 
-    //使用snackbar显示信息
+    /**
+     * 使用snackbar显示信息
+     * @param message 需要显示的信息
+     */
     c.pocket48.page.snackbar = function (info) {
         mdui.snackbar(info);
     };
 
-    //提交表单
+    /**
+     * 显示/隐藏进度条
+     * @param show true显示,false不显示
+     */
+    c.pocket48.page.progress = function (show=true) {
+        if (show) {
+            $$('#c-progress').show();
+        } else {
+            $$('#c-progress').hide();
+        }
+    };
+
+    /**
+     * 提交页面表单
+     */
     c.pocket48.page.submit = function(){
         //成员信息还未更新，返回false
         if(c.pocket48.page.ifUpdateInfo==false) {
@@ -527,12 +658,15 @@ c.pocket48.page = c.pocket48.page || (function(){
 
         switch(c.pocket48.page.switch.tabNow) {
             case 0: //成员直播
+                c.pocket48.page.progress();
                 c.pocket48.getLive(data,c.pocket48.page.print.live);
             break;
             case 1: //公演录播
+            c.pocket48.page.progress();
                 c.pocket48.getLiveOpen(data,c.pocket48.page.print.liveOpen);
             break;
             case 2: //公演直播
+                c.pocket48.page.progress();
                 c.pocket48.getLiveOpen(data,c.pocket48.page.print.liveOpen);
             break;
             case 3: //口袋房间
@@ -540,19 +674,55 @@ c.pocket48.page = c.pocket48.page || (function(){
                     c.pocket48.page.snackbar('口袋房间功能必须选择成员');
                     return false;
                 }
+                c.pocket48.page.progress();
                 c.pocket48.getRoomId(data,c.pocket48.page.print.roomInfo);
             break;
         }
         //不提交原始表单
         return false;
     };
+
     //设置表单提交方式 需要在init中执行
     c.pocket48.page.form = function () {
         $$('#c-form').attr('onsubmit','return c.pocket48.page.submit()');
+    };
+
+    /**
+     * 切换高级功能
+     */
+    c.pocket48.page.switch.premium = function () {
+        c.pocket48.page.switch.premiumNow = 0;
+        if(c.cookie.get('premium')) {
+            c.pocket48.page.switch.premiumNow = 1;
+        }
+        //对话框对象
+        c.pocket48.page.pro = new mdui.Dialog('#c-premium');
+
+        //刷新显示/关闭显示
+        c.pocket48.page.proUpdate = function () {
+            if (c.pocket48.page.switch.premiumNow) {
+                //如果开启高级功能
+                $$('#c-premium-css').html(' ');
+            } else {
+                //未开启
+                $$('#c-premium-css').html('.c-pro {display:none;}');
+            }
+            //刷新对话框
+            c.pocket48.page.pro.handleUpdate();
+        };
+        c.pocket48.page.proUpdate();
+        document.getElementById('c-premium-switch').addEventListener('change', function (event) {
+            if (this.checked) {
+                c.pocket48.page.switch.premiumNow = 1;
+                c.cookie.set('premium',true,30);
+            } else {
+                c.pocket48.page.switch.premiumNow = 0;
+                c.cookie.set('premium',false,30);
+            }
+            c.pocket48.page.proUpdate();
+        });
     }
 
-    //切换功能
-    c.pocket48.page.switch={};
     //切换tab 成员直播 公演录播 公演直播 口袋房间
     c.pocket48.page.switch.tab = function () {
         c.pocket48.page.switch.tabNow = 0;
