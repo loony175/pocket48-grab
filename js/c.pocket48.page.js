@@ -714,10 +714,10 @@ c.pocket48.page = c.pocket48.page || (function(){
         document.getElementById('c-premium-switch').addEventListener('change', function (event) {
             if (this.checked) {
                 c.pocket48.page.switch.premiumNow = 1;
-                c.cookie.set('premium',true,30);
+                c.cookie.set('premium',1,30);
             } else {
                 c.pocket48.page.switch.premiumNow = 0;
-                c.cookie.set('premium',false,30);
+                c.cookie.set('premium',0,30);
             }
             c.pocket48.page.proUpdate();
         });
