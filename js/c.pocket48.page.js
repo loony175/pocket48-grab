@@ -86,11 +86,11 @@ c.pocket48.page = c.pocket48.page || (function(){
             //content头部
             var content=`<div class="mdui-row c-team-${teamId}">【${teamName}】`;
             //当成员在被挑选的队伍中时
-            for (var m in info.member){
-                let memberId = info.member[m].member_id;
-                let memberName = info.member[m].member_name;
-                let memberTeam = info.member[m].team;
-                let memberStatus = info.member[m].status;
+            for (var m in info.memberInfo){
+                let memberId = info.memberInfo[m].member_id;
+                let memberName = info.memberInfo[m].member_name;
+                let memberTeam = info.memberInfo[m].team;
+                let memberStatus = info.memberInfo[m].status;
                 //当成员信息status==1,且teamId满足筛选时
                 if(memberTeam==teamId){
                     content=content+`<label class="mdui-radio ${(memberStatus==1)?(''):('c-member-inactive')}"><input type="radio" name="member" value="${memberId}"><i class="mdui-radio-icon"></i>${memberName}</label>`;
