@@ -70,33 +70,45 @@ c.pocket48.page = c.pocket48.page || (function(){
         $$('#c-cgroup').html('');
         $$('#c-memberchoose').html('');
         //打印团体信息
-        for (var index in info.group){
-            $$(`<a id="c-cgroup-${index}" value="${index}" href="#group-${index}" class="mdui-ripple c-team-${info.groupId2firstTeamId(index)}">${info.group[index]}</a>`).appendTo('#c-cgroup');
-            $$(`<div id="group-${index}"></div>`).appendTo('#c-memberchoose');
+        for (var i in info.group){
+            let groupId = info.group[i].group_id;
+            let fTId = info.groupId2firstTeamId(groupId);
+            let groupName = info.group[i].group_name;
+            $$(`<a id="c-cgroup-${groupId}" value="${groupId}" href="#group-${groupId}" class="mdui-ripple c-team-${fTId}">${groupName}</a>`).appendTo('#c-cgroup');
+            $$(`<div id="group-${groupId}"></div>`).appendTo('#c-memberchoose');
         };
         var inst = new mdui.Tab('#c-cgroup');
         //打印队伍信息
-        for (var index in info.team){
+        for (var i in info.team){
+            let teamId = info.team[i].team_id;
+            let teamName = info.team[i].team_name;
+            let groupId = info.team[i].group_id;
             //content头部
-            var content=`<div class="mdui-row c-team-${index}">【${info.team[index][1]}】`;
+            var content=`<div class="mdui-row c-team-${teamId}">【${teamName}】`;
             //当成员在被挑选的队伍中时
-            for (var index0 in info.member){
+            for (var m in info.member){
+                let memberId = info.member[m].member_id;
+                let memberName = info.member[m].member_name;
+                let memberTeam = info.member[m].team;
+                let memberStatus = info.member[m].status;
                 //当成员信息status==1,且teamId满足筛选时
-                if((info.member[index0][4]==1)&&(info.member[index0][2]==index)){
-                    content=content+`<label class="mdui-radio"><input type="radio" name="member" value="${index0}"><i class="mdui-radio-icon"></i>${info.member[index0][0]}</label>`;
+                if(memberTeam==teamId){
+                    content=content+`<label class="mdui-radio ${(memberStatus==1)?(''):('c-member-inactive')}"><input type="radio" name="member" value="${memberId}"><i class="mdui-radio-icon"></i>${memberName}</label>`;
                 }
             };
             content=content+'</div>';
-            $$(content).appendTo('#group-'+info.team[index][0]);//加入到对应的group div中
+            $$(content).appendTo('#group-'+groupId);//加入到对应的group div中
         };
         //导入队伍样式
         var content='.c-team-0,.c-team-0 td,.c-team-0 a{color: #90CCEA;} a.c-team-0{background-color: #000000!important;} ';
         var css=document.getElementById('c-team-color-css');
-        for (var index in info.team) {
+        for (var i in info.team) {
             //模板： .c-team-1001,.c-team-1001 td,.c-team-1001 a{color: #90CCEA;} a.c-team-1001{background-color: #90CCEA!important;}
-            //当team不为全团，即index不为0或'0'时
-            if (!((index==0)||(index=='0'))){
-            content=content+`/*${index}*/ .c-team-${index},.c-team-${index} td,.c-team-${index} a{color: #${info.team[index][2]};} a.c-team-${index}{background-color: #${info.team[index][2]}!important;}`
+            //当team不为全团，即teamId不为0或'0'时
+            let teamId = info.team[i].team_id;
+            let teamColor = info.team[i].color;
+            if (!((teamId==0)||(teamId=='0'))){
+            content=content+`/*${teamId}*/ .c-team-${teamId},.c-team-${teamId} td,.c-team-${teamId} a{color: #${teamColor};} a.c-team-${teamId}{background-color: #${teamColor}!important;}`
             }
         }
         css.innerHTML=content;
