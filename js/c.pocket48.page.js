@@ -78,11 +78,16 @@ c.pocket48.page = c.pocket48.page || (function(){
             $$(`<div id="group-${groupId}"></div>`).appendTo('#c-memberchoose');
         };
         var inst = new mdui.Tab('#c-cgroup');
+        var hasPrinted0 = false;
         //打印队伍信息
         for (var i in info.team){
             let teamId = info.team[i].team_id;
             let teamName = info.team[i].team_name;
             let groupId = info.team[i].group_id;
+            if (teamId==0) {
+                if (hasPrinted0) {continue;} else {hasPrinted0 = true};
+                groupId = 0;
+            }
             //content头部
             var content=`<div class="mdui-row c-team-${teamId}">【${teamName}】`;
             //当成员在被挑选的队伍中时
