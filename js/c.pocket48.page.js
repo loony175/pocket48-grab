@@ -102,6 +102,7 @@ c.pocket48.page = c.pocket48.page || (function(){
                 }
             };
             content=content+'</div>';
+            console.debug(teamId, teamName, groupId);
             $$(content).appendTo('#group-'+groupId);//加入到对应的group div中
         };
         //导入队伍样式
