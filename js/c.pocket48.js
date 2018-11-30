@@ -223,6 +223,7 @@ c.pocket48.newInfo = function(s){
                 return this.team[i].team_id
             }
         }
+        return 0;
     };
     this.teamId2name = function(teamId, groupId = null){
         for (var i in this.team) {
