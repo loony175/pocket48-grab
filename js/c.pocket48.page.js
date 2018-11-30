@@ -666,7 +666,7 @@ c.pocket48.page = c.pocket48.page || (function(){
         data.limit=parseInt($$('#c-cnumber').val());
 
         //groupId
-        data.groupId=c.pocket48.page.switch.groupNow || 0;
+        data.groupId=(c.pocket48.page.switch.memberNow==1)?(c.pocket48.page.switch.groupNow || 0):0;
         //memberId
         if(c.pocket48.page.switch.memberNow==1){
             data.memberId=$$("input[name='member']:checked").val() || 0;
