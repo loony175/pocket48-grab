@@ -88,7 +88,7 @@ c.pocket48.page = c.pocket48.page || (function(){
             //当成员在被挑选的队伍中时
             for (var m in info.memberInfo){
                 let memberId = info.memberInfo[m].member_id;
-                let memberName = info.memberInfo[m].member_name;
+                let memberName = info.memberInfo[m].real_name;
                 let memberTeam = info.memberInfo[m].team;
                 let memberStatus = info.memberInfo[m].status;
                 //当成员信息status==1,且teamId满足筛选时
