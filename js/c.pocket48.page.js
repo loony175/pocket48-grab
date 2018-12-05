@@ -163,13 +163,14 @@ c.pocket48.page.print.live = function (data,e) {
             </tr>`;
         }
         //先打印直播
+        var content = '';
         if(data.content.liveList.length!=0) {
-            $$('<section class="c-liveplay"><tr><td  colspan="8"><span style="color:Red">----------   分界线，以下为直播----------</span></td></tr>').appendTo('#function-cyzb tbody');
+            content+='<section class="c-liveplay"><tr><td  colspan="8"><span style="color:Red">----------   分界线，以下为直播----------</span></td></tr>'
             data.content.liveList.forEach(function (row,index,array){
-                content=printRow(row);
-                $$(content).appendTo('#function-cyzb tbody')  ;
+                content+=printRow(row);
             });
-            $$('</section>').appendTo('#function-cyzb tbody');
+            content+='</section>'
+            $$(content).appendTo('#function-cyzb tbody');
         }
         //再打印录播
         if(data.content.reviewList.length!=0) {
