@@ -165,12 +165,11 @@ c.pocket48.page.print.live = function (data,e) {
         //先打印直播
         var content = '';
         if(data.content.liveList.length!=0) {
-            content+='<t class="c-liveplay"><tr><td  colspan="8"><span style="color:Red">----------   分界线，以下为直播----------</span></td></tr>'
+            $$('<tr><td  colspan="8"><span style="color:Red">----------   分界线，以下为直播----------</span></td></tr>').appendTo('#function-cyzb tbody');
             data.content.liveList.forEach(function (row,index,array){
-                content+=printRow(row);
+                content=printRow(row);
+                $$(content).appendTo('#function-cyzb tbody')  ;
             });
-            content+='</t>'
-            $$(content).appendTo('#function-cyzb tbody');
         }
         //再打印录播
         if(data.content.reviewList.length!=0) {
@@ -531,7 +530,7 @@ c.pocket48.page.userInfo2 = function () {
  * 设置liveplay功能，需要init
  */
 c.pocket48.page.liveplay = function () {
-    $$(document).on('click', '.c-liveplay button.c-live-button', function (e) {
+    $$(document).on('click', 'button.c-live-button', function (e) {
         var live = {
             type: $$(this).parent('tr').attr('type'), //1视频 2电台
             room: $$(this).parent('tr').attr('roomid'), //roomId
