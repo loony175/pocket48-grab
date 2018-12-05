@@ -28,6 +28,8 @@ c.pocket48.page.init = function(){
     c.pocket48.page.checkIn2();
     //设置获取用户信息
     c.pocket48.page.userInfo2();
+    //设置弹出直播按钮 liveplay
+    c.pocket48.page.liveplay();
     //显示提示
     console.log('页面功能加载完毕');
     console.log("%c请勿分享Cookies给其他人"," text-shadow: 0 1px 0 #ccc,0 2px 0 #c9c9c9,0 3px 0 #bbb,0 4px 0 #b9b9b9,0 5px 0 #aaa,0 6px 1px rgba(0,0,0,.1),0 0 5px rgba(0,0,0,.1),0 1px 3px rgba(0,0,0,.3),0 3px 5px rgba(0,0,0,.2),0 5px 10px rgba(0,0,0,.25),0 10px 10px rgba(0,0,0,.2),0 20px 20px rgba(0,0,0,.15);font-size:5em");
@@ -130,7 +132,7 @@ c.pocket48.page.print.live = function (data,e) {
         //打印成表格一行的函数
         var printRow=function(row,type){
             return `
-            <tr class="c-team-${c.pocket48.info.memberId2teamId(row.memberId)}" timestamp="${row.startTime}" roomid="${row.roomId}" type="${row.liveType}" url="${row.streamPath}" membername="${c.pocket48.info.memberId2name(row.memberId)} liveid="row.liveId">
+            <tr class="c-team-${c.pocket48.info.memberId2teamId(row.memberId)}" timestamp="${row.startTime}" roomid="${row.roomId}" type="${row.liveType}" url="${row.streamPath}" membername="${c.pocket48.info.memberId2name(row.memberId)}" liveid="row.liveId">
             <td>${c.pocket48.info.memberId2name(row.memberId)}</td><td>${row.subTitle}</td>
             <td>
             ${(function(){
