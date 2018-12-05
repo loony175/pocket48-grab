@@ -140,7 +140,7 @@ c.pocket48.page.print.live = function (data,e) {
                     default: return row.liveType;
                 }
             })()}
-            ${type?(<button class="c-live-button mdui-btn mdui-btn-icon mdui-btn-dense mdui-color-theme-accent mdui-ripple"><i class="mdui-icon material-icons">play_arrow</i></button>):('')}
+            ${type?('<button class="c-live-button mdui-btn mdui-btn-icon mdui-btn-dense mdui-color-theme-accent mdui-ripple"><i class="mdui-icon material-icons">play_arrow</i></button>'):('')}
             </td>
             <td>${(function(){
                 return new Date(row.startTime).format('yyyy-MM-dd hh:mm:ss');
