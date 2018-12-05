@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>xxx的直播间 - 成员直播播放器</title>
+    <style>
+        body {
+            margin: 0 0;
+            background-color: #f0f0f0;
+            line-height:0%;
+            overflow: hidden;
+        }
+        div.c-container {
+            background-color: #f0f0f0;
+            height: 100%;
+            overflow: hidden;
+            margin: 0 auto;
+            text-align: center;
+        }
+        div.c-container-in {
+            height: 100%;
+            position: relative;
+            left: 50%;
+        }
+        div.c-content {
+            position: relative;
+            left: -50%;
+            top: 0;
+            display: inline-block;
+            line-height:0;
+        }
+        video#c-flv-player {
+            /* height: 50rem; */
+            max-height: 100%;
+            max-width: 100%;
+        }
+        #c-video {
+            position: relative;
+            top: 0;
+            display: inline-block;
+            padding: 0 0;
+            line-height:0;
+
+            width: 100%;
+        }
+        #c-danmu {
+            position: absolute;
+            bottom : 30px;
+            line-height: 1.15rem;
+
+            width: 100%;
+            height: 30%;
+            font-size: 14px;
+            overflow: auto;
+            opacity: 0.6;
+            text-align: left;
+        }
+        #c-send {
+            background-color:white;
+            position: absolute;
+            bottom : 0;
+            
+            width: 100%;
+            height: 30px;
+        }
+        .c-danmu-text {
+            background-color:white;
+        }
+        .c-gift {
+            max-width: 0.9rem;
+            max-height: 0.9rem;
+        }
+        .c-send-name {
+            float: left;
+            width: 20%;
+            height: 100%;
+        }
+        .c-send-text {
+            float: left;
+            width: 60%;
+            height: 100%;
+        }
+        .c-send-submit {
+            float: left;
+            width: 20%;
+            height: 100%;
+        }
+        input {
+            height: 80%;
+            max-width: 90%;
+            margin: 0 auto;
+            vertical-align:middle;
+            border: 1px solid #ccc;
+            border-radius:9px;
+            box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+            outline: none;
+            font-size: 12px;
+
+        }
+        input#c-name {
+            text-indent: 10px;
+        }
+        input#c-text {
+            text-indent: 10px;
+            width: 100%;
+        }
+        input#c-submit {
+            height: 90%;
+        }
+    </style>
+
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/video.js/7.3.0/video-js.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="c-container">
+        <div class="c-container-in">
+                <div class="c-content">
+                        <div id="c-video">
+                            <video id="c-flv-player" autoplay="autoplay" controls="controls">
+                            
+                            </video>
+                        </div>
+                        <div id="c-danmu">
+                            <div class="c-danmu-content" timestamp="1543376727919" style="display:none">
+                                <span class="c-danmu-text"><b>Test</b>
+                                The quick fox jumps over a lazy dog.</span>
+                            </div>
+                        </div>
+                        <div id="c-send">
+                            <form style= "height: 100%;" onsubmit="return c.pocket48.liveplay.sendSubmit();">
+                                <div class="c-send-name">
+                                    <input type="text" id="c-name" placeholder="输入id..."></input>
+                                </div>
+                                <div class="c-send-text">
+                                    <input type="text" id="c-text" placeholder="输入弹幕...回车发送"></input>
+                                </div>
+                                <div class="c-send-submit">
+                                    <input type="submit" id="c-submit"></input>
+                                </div>
+                            </form>
+                        </div>
+                    </div>  
+        </div>
+    </div>
+    
+    <script src="https://cdn.bootcss.com/flv.js/1.4.2/flv.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/video.js/7.3.0/video.min.js"></script>
+    <script src="http://zhibo.ckg48.com/Public/js/Web_SDK_Base_v2.8.0.js"></script>
+    <script src="http://zhibo.ckg48.com/Public/js/Web_SDK_NIM_v2.8.0.js"></script>
+    <script src="http://zhibo.ckg48.com/Public/js/Web_SDK_Chatroom_v2.8.0.js"></script>
+    <script src="./js/c.pocket48.cr.js"></script>
+    <script src="./js/c.pocket48.liveplay.js"></script>
+    <script>
+        //debug用
+        function add(n) {
+            /* console.log(danmu.scrollTop);
+            console.log(danmu.scrollHeight);
+            console.log(danmu.offsetHeight); */
+            //顶部: scrollTop=0
+            //底部: scrollTop=scrollHeight-offsetHeight;
+            let danmu = c.pocket48.liveplay.danmu;
+            let s = false; //锁定底部
+            if (danmu.scrollTop+danmu.offsetHeight==danmu.scrollHeight) {
+                s = true; //在底部时锁定底部
+            }
+            for (let i=1;i<n;i++){
+                let html = `
+                <div class="c-danmu-content" timestamp="1543376727919">
+                    <b>${Math.random().toString(36).substr(2)}</b>
+                    Do yo u like thi s ??? ${Math.random()}
+                </div>
+                `
+                danmu.insertAdjacentHTML("beforeend",html);
+            }
+            if (s) {
+                danmu.scrollTop=danmu.scrollHeight;
+            }
+        }
+        function play(){
+            let url = 'http://liveplaylk.lvb.eastmoney.com/live/2519_3677115.flv';
+            c.pocket48.liveplay.videoEle.setAttribute ('src', url);
+            c.pocket48.liveplay.videoEle.load();
+            c.pocket48.liveplay.videoEle.play();
+            //c.pocket48.liveplay.videoEle.style.visibility = 'hidden';
+            let to;
+            let editPosition = function () {
+                if(c.pocket48.liveplay.videoEle.readyState) {
+                    c.pocket48.liveplay.danmu.style.marginLeft = - c.pocket48.liveplay.videoEle.width;
+                    console.log(c.pocket48.liveplay.videoEle.videoWidth);
+                    clearTimeout(to);
+                }
+            }
+            to = setInterval(1000,editPosition());
+            
+        }
+        function nw(){
+            let url =`./liveplay.html?room=${c.pocket48.liveplay.video.room}&name=${c.pocket48.liveplay.video.name}&type=${c.pocket48.liveplay.video.type}&url=${c.pocket48.liveplay.video.url}`;
+            window.open (url, "newwindow", "height=660, width=375, top=0, left=0, toolbar=no, menubar=no, scrollbars=no, resizable=no,location=no, status=no");
+        }
+    </script>
+</body>
+</html>
