@@ -130,7 +130,7 @@ c.pocket48.page.print.live = function (data,e) {
         //打印成表格一行的函数
         var printRow=function(row,type){
             return `
-            <tr class="c-team-${c.pocket48.info.memberId2teamId(row.memberId)}" timestamp="${row.startTime}" roomid="${row.roomId}" type="${row.liveType}" url="${row.streamPath}" membername="${c.pocket48.info.memberId2name(row.memberId)}">
+            <tr class="c-team-${c.pocket48.info.memberId2teamId(row.memberId)}" timestamp="${row.startTime}" roomid="${row.roomId}" type="${row.liveType}" url="${row.streamPath}" membername="${c.pocket48.info.memberId2name(row.memberId)} liveid="row.liveId">
             <td>${c.pocket48.info.memberId2name(row.memberId)}</td><td>${row.subTitle}</td>
             <td>
             ${(function(){
