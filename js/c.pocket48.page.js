@@ -133,7 +133,6 @@ c.pocket48.page.print.live = function (data,e) {
             <tr class="c-team-${c.pocket48.info.memberId2teamId(row.memberId)}" timestamp="${row.startTime}" roomid="${row.roomId}" type="${row.liveType}" url="${row.streamPath}" membername="${c.pocket48.info.memberId2name(row.memberId)}">
             <td>${c.pocket48.info.memberId2name(row.memberId)}</td><td>${row.subTitle}</td>
             <td>
-            <a href="#" class="c-live-type">
             ${(function(){
                 switch(row.liveType) {
                     case 1: return "视频";
@@ -141,7 +140,7 @@ c.pocket48.page.print.live = function (data,e) {
                     default: return row.liveType;
                 }
             })()}
-            </a>
+            <button class="c-live-button mdui-btn mdui-btn-icon mdui-btn-dense mdui-color-theme-accent mdui-ripple"><i class="mdui-icon material-icons">play_arrow</i></button>
             </td>
             <td>${(function(){
                 return new Date(row.startTime).format('yyyy-MM-dd hh:mm:ss');
@@ -165,12 +164,12 @@ c.pocket48.page.print.live = function (data,e) {
         }
         //先打印直播
         if(data.content.liveList.length!=0) {
-            $$('<div class="c-liveplay"><tr><td  colspan="8"><span style="color:Red">----------   分界线，以下为直播----------</span></td></tr>').appendTo('#function-cyzb tbody');
+            $$('<section class="c-liveplay"><tr><td  colspan="8"><span style="color:Red">----------   分界线，以下为直播----------</span></td></tr>').appendTo('#function-cyzb tbody');
             data.content.liveList.forEach(function (row,index,array){
                 content=printRow(row);
                 $$(content).appendTo('#function-cyzb tbody')  ;
             });
-            $$('</div>').appendTo('#function-cyzb tbody');
+            $$('</section>').appendTo('#function-cyzb tbody');
         }
         //再打印录播
         if(data.content.reviewList.length!=0) {
@@ -531,13 +530,14 @@ c.pocket48.page.userInfo2 = function () {
  * 设置liveplay功能，需要init
  */
 c.pocket48.page.liveplay = function () {
-    $$(document).on('click', '.c-liveplay a.c-live-type', function (e) {
+    $$(document).on('click', '.c-liveplay button.c-live-button', function (e) {
         var live = {
             type: $$(this).parent('tr').attr('type'), //1视频 2电台
             room: $$(this).parent('tr').attr('roomid'), //roomId
             url: $$(this).parent('tr').attr('url'), //flvUrl
             name: $$(this).parent('tr').attr('membername'), //直播间名
         };
+        console.log('liveplay',live);
         var url =`./liveplay.html?room=${live.room}&name=${live.name}&type=${live.type}&url=${live.url}`;
         window.open (url, "newwindow", "height=660, width=375, top=0, left=0, toolbar=no, menubar=no, scrollbars=no, resizable=no,location=no, status=no");
     });
