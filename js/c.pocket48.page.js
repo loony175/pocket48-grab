@@ -128,7 +128,7 @@ c.pocket48.page.print.live = function (data,e) {
         //先清空成员直播区域
         $$('#function-cyzb tbody').html(' ');
         //打印成表格一行的函数
-        var printRow=function(row){
+        var printRow=function(row,type){
             return `
             <tr class="c-team-${c.pocket48.info.memberId2teamId(row.memberId)}" timestamp="${row.startTime}" roomid="${row.roomId}" type="${row.liveType}" url="${row.streamPath}" membername="${c.pocket48.info.memberId2name(row.memberId)}">
             <td>${c.pocket48.info.memberId2name(row.memberId)}</td><td>${row.subTitle}</td>
@@ -140,7 +140,7 @@ c.pocket48.page.print.live = function (data,e) {
                     default: return row.liveType;
                 }
             })()}
-            <button class="c-live-button mdui-btn mdui-btn-icon mdui-btn-dense mdui-color-theme-accent mdui-ripple"><i class="mdui-icon material-icons">play_arrow</i></button>
+            ${type?(<button class="c-live-button mdui-btn mdui-btn-icon mdui-btn-dense mdui-color-theme-accent mdui-ripple"><i class="mdui-icon material-icons">play_arrow</i></button>):('')}
             </td>
             <td>${(function(){
                 return new Date(row.startTime).format('yyyy-MM-dd hh:mm:ss');
@@ -167,7 +167,7 @@ c.pocket48.page.print.live = function (data,e) {
         if(data.content.liveList.length!=0) {
             $$('<tr><td  colspan="8"><span style="color:Red">----------   分界线，以下为直播----------</span></td></tr>').appendTo('#function-cyzb tbody');
             data.content.liveList.forEach(function (row,index,array){
-                content=printRow(row);
+                content=printRow(row,1);
                 $$(content).appendTo('#function-cyzb tbody')  ;
             });
         }
@@ -175,7 +175,7 @@ c.pocket48.page.print.live = function (data,e) {
         if(data.content.reviewList.length!=0) {
             $$('<tr><td colspan="8"><span style="color:Red">----------分界线，以下为录播----------</span></td></tr>').appendTo('#function-cyzb tbody');
             data.content.reviewList.forEach(function (row,index,array){
-            content=printRow(row);
+            content=printRow(row,0);
             $$(content).appendTo('#function-cyzb tbody')  ;
             });
         }
@@ -532,10 +532,10 @@ c.pocket48.page.userInfo2 = function () {
 c.pocket48.page.liveplay = function () {
     $$(document).on('click', 'button.c-live-button', function (e) {
         var live = {
-            type: $$(this).parent('tr').attr('type'), //1视频 2电台
-            room: $$(this).parent('tr').attr('roomid'), //roomId
-            url: $$(this).parent('tr').attr('url'), //flvUrl
-            name: $$(this).parent('tr').attr('membername'), //直播间名
+            type: $$(this).parent().parent().attr('type'), //1视频 2电台
+            room: $$(this).parent().parent().attr('roomid'), //roomId
+            url: $$(this).parent().parent().attr('url'), //flvUrl
+            name: $$(this).parent().parent().attr('membername'), //直播间名
         };
         console.log('liveplay',live);
         var url =`./liveplay.html?room=${live.room}&name=${live.name}&type=${live.type}&url=${live.url}`;
