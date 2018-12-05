@@ -29,3 +29,9 @@ td {
 .mdui-list-item {
     cursor: auto;
 }
+.c-live-button {
+    display:none;
+}
+.c-liveplay .c-live-button {
+    display: "";
+}
