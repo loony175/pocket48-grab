@@ -11,10 +11,10 @@
     display: none;
 }
 #c-room-content {
-    max-height: 100%;
+    max-height: 80%;
     overflow: scroll;
 }
 #c-room-board {
-    max-height: 100%;
+    max-height: 80%;
     overflow: scroll;
 }
