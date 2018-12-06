@@ -10,3 +10,11 @@
 .c-member-inactive {
     display: none;
 }
+#c-room-content {
+    max-width: 100%;
+    overflow: scroll;
+}
+#c-room-board {
+    max-width: 100%;
+    overflow: scroll;
+}
