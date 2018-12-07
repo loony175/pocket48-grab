@@ -541,7 +541,7 @@ c.pocket48.page.liveplay = function () {
         };
         if(c.d(1)){console.log('liveplay',live);}
         var url =`./liveplay.html?room=${live.room}&name=${live.name}&type=${live.type}&url=${live.url}`;
-        window.open (url, "newwindow", "height=660, width=375, top=0, left=0, toolbar=no, menubar=no, scrollbars=no, resizable=no,location=no, status=no");
+        window.open (url, "_blank", "height=660, width=375, top=0, left=0, toolbar=no, menubar=no, scrollbars=no, resizable=no,location=no, status=no");
     });
 }
 
