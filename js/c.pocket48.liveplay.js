@@ -9,6 +9,16 @@ if (typeof c.pocket48.liveplay === 'undefined') {
     c.pocket48.liveplay = {};
 }
 
+//调试
+c.debug=2;
+c.d = function(level){
+    if (level<=c.debug){
+        return true
+    } else {
+        return false
+    }
+};
+
 c.pocket48.liveplay.version = '1.0.1';
 
 //初始化
