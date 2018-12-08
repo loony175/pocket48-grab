@@ -150,55 +150,8 @@
     <script src="http://zhibo.ckg48.com/Public/js/Web_SDK_Base_v2.8.0.js"></script>
     <script src="http://zhibo.ckg48.com/Public/js/Web_SDK_NIM_v2.8.0.js"></script>
     <script src="http://zhibo.ckg48.com/Public/js/Web_SDK_Chatroom_v2.8.0.js"></script>
+    <script src="./js/c.pocket48.js"></script>
     <script src="./js/c.pocket48.cr.js"></script>
     <script src="./js/c.pocket48.liveplay.js"></script>
-    <script>
-        //debug用
-        function add(n) {
-            /* console.log(danmu.scrollTop);
-            console.log(danmu.scrollHeight);
-            console.log(danmu.offsetHeight); */
-            //顶部: scrollTop=0
-            //底部: scrollTop=scrollHeight-offsetHeight;
-            let danmu = c.pocket48.liveplay.danmu;
-            let s = false; //锁定底部
-            if (danmu.scrollTop+danmu.offsetHeight==danmu.scrollHeight) {
-                s = true; //在底部时锁定底部
-            }
-            for (let i=1;i<n;i++){
-                let html = `
-                <div class="c-danmu-content" timestamp="1543376727919">
-                    <b>${Math.random().toString(36).substr(2)}</b>
-                    Do yo u like thi s ??? ${Math.random()}
-                </div>
-                `
-                danmu.insertAdjacentHTML("beforeend",html);
-            }
-            if (s) {
-                danmu.scrollTop=danmu.scrollHeight;
-            }
-        }
-        function play(){
-            let url = 'http://liveplaylk.lvb.eastmoney.com/live/2519_3677115.flv';
-            c.pocket48.liveplay.videoEle.setAttribute ('src', url);
-            c.pocket48.liveplay.videoEle.load();
-            c.pocket48.liveplay.videoEle.play();
-            //c.pocket48.liveplay.videoEle.style.visibility = 'hidden';
-            let to;
-            let editPosition = function () {
-                if(c.pocket48.liveplay.videoEle.readyState) {
-                    c.pocket48.liveplay.danmu.style.marginLeft = - c.pocket48.liveplay.videoEle.width;
-                    console.log(c.pocket48.liveplay.videoEle.videoWidth);
-                    clearTimeout(to);
-                }
-            }
-            to = setInterval(1000,editPosition());
-            
-        }
-        function nw(){
-            let url =`./liveplay.html?room=${c.pocket48.liveplay.video.room}&name=${c.pocket48.liveplay.video.name}&type=${c.pocket48.liveplay.video.type}&url=${c.pocket48.liveplay.video.url}`;
-            window.open (url, "newwindow", "height=660, width=375, top=0, left=0, toolbar=no, menubar=no, scrollbars=no, resizable=no,location=no, status=no");
-        }
-    </script>
 </body>
 </html>

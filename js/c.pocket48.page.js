@@ -40,6 +40,11 @@ c.pocket48.page.switch={};
 c.pocket48.page.ifUpdateInfo = false;
 c.pocket48.page.updateInfo = function(){
     if(c.d(1)){console.log('c.pocket48.page.updateInfo');}
+    //先读取缓存，如果有直接设置更新完毕
+    if (localStorage.getItem('info')) {
+        c.pocket48.info = JSON.parse (localStorage.getItem('info'));
+        c.pocket48.page.ifUpdateInfo = true;
+    }
     var callback = function(res,e){
         if (!e&&!(JSON.stringify(res)=="{}")){
             if(c.d(1)){console.log('Response:',JSON.parse(res),e)}
@@ -49,6 +54,8 @@ c.pocket48.page.updateInfo = function(){
             c.pocket48.page.print.info(c.pocket48.info);
             //设置成员信息更新完毕
             c.pocket48.page.ifUpdateInfo = true;
+            //储存至localStorage
+            localStorage.setItem('info',JSON.stringify(c.pocket48.info));
             //显示消息
             c.pocket48.page.snackbar('成员信息更新完毕!');
         } else {
@@ -540,7 +547,7 @@ c.pocket48.page.liveplay = function () {
             name: $$(this).parent().parent().attr('membername'), //直播间名
         };
         if(c.d(1)){console.log('liveplay',live);}
-        var url =`./liveplay.html?room=${live.room}&name=${live.name}&type=${live.type}&url=${live.url}`;
+        var url =`./liveplay.html?${window.btoa(JSON.stringify(live))}`;
         window.open (url, "_blank", "height=660, width=375, top=0, left=0, toolbar=no, menubar=no, scrollbars=no, resizable=no,location=no, status=no");
     });
 }

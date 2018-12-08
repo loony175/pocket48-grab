@@ -9,24 +9,8 @@ if (typeof c.pocket48.liveplay === 'undefined') {
     c.pocket48.liveplay = {};
 }
 
-//获取get参数
-var $_GET = (function(){
-    var url = window.document.location.href.toString();
-    var u = url.split("?");
-    if(typeof(u[1]) == "string"){
-        u = u[1].split("&");
-        var get = {};
-        for(var i in u){
-            var j = u[i].split("=");
-            get[j[0]] = j[1];
-        }
-        return get;
-    } else {
-        return {};
-    }
-})();
-
 c.pocket48.liveplay.version = '1.0.1';
+
 //初始化
 c.pocket48.liveplay.init = function () {
     //设置标题
@@ -35,15 +19,25 @@ c.pocket48.liveplay.init = function () {
     c.pocket48.liveplay.playVideo();
     //连接房间
     setTimeout(c.pocket48.liveplay.loadChatroom(),100);
-}
+};
 
-c.pocket48.liveplay.video = {
+c.pocket48.liveplay.video = (function () {
+    var url = window.document.location.href.toString();
+    var u = url.split('?');
+    if(typeof(u[1]) == 'string'){
+        return JSON.parse(window.atob(u[1]));
+    } else {
+        return {};
+    }
+})();
+/* c.pocket48.liveplay.video = {
     type: $_GET['type'], //1视频 2电台
     room: $_GET['room'], //roomId
     url: $_GET['url'], //flvUrl
     name: decodeURIComponent($_GET['name']), //直播间名
-};
-console.log(c.pocket48.liveplay.video);
+}; */
+
+if(c.d(1)){console.log(c.pocket48.liveplay.video);}
 
 //设置基本元素变量
 c.pocket48.liveplay.videoDiv = document.querySelector('#c-video');
@@ -85,9 +79,9 @@ c.pocket48.liveplay.print = function (msgs) {
         let danmu = c.pocket48.liveplay.danmu;
         let s = (danmu.scrollTop+danmu.offsetHeight+3 >= danmu.scrollHeight); //滚动至底部时锁定
         let msg = msgs[i];
-        console.debug ('msg',msg);
+        if(c.d(1)){console.debug ('msg',msg);}
         if (typeof msg.custom === 'undefined'){
-            console.log('undefinedmsg:',msg);
+            if(c.d(0)){console.debug('undefinedmsg:',msg);}
             continue;
         }
         let custom = JSON.parse(msg.custom);
@@ -191,17 +185,17 @@ c.pocket48.liveplay.sendText = function (name,text) {
     let content = { 
         "senderId": 0,
         "senderName": name,
-        "senderLevel": 7, //发送者等级
-        "senderAvatar": '/mediasource/avatar/20181203/1543794435621s90c95F844.png', //发送者头像
-        "senderRole": 0, //发送者角色 0聚聚, 1成员
-        "source": "member_live", //来源 juju聚聚房间, open_live公演, member_live成员直播
-        "content": text, //发送内容
-        "contentType": 1, //内容 1:用户消息 3:表情|礼物
-        "platform": "ios", //发送平台 pc, Android, ios
+        "senderLevel": 7,
+        "senderAvatar": '/mediasource/avatar/20181203/1543794435621s90c95F844.png',
+        "senderRole": 0,
+        "source": "member_live",
+        "content": text,
+        "contentType": 1,
+        "platform": "ios",
         "sync_danmu": true,
         "fromApp": 2,
-        "sourceId": 0, //直播id或房间id
-        "isBarrage": isBarrage //是否为20鸡腿弹幕, 反斜杠开头则是
+        "sourceId": 0,
+        "isBarrage": isBarrage
     }
     try {
     c.pocket48.liveplay.video.cr.sendText({
@@ -210,7 +204,7 @@ c.pocket48.liveplay.sendText = function (name,text) {
         done: function (e,o) {
             c.pocket48.liveplay.print([o]);
             document.querySelector('#c-text').value = '';
-            console.log('发送:',o);
+            if(c.d(1)){console.log('发送:',o);}
         }
     });
     } catch (e) {console.debug(e);}
