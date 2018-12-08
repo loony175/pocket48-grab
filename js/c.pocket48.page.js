@@ -547,7 +547,7 @@ c.pocket48.page.liveplay = function () {
             name: $$(this).parent().parent().attr('membername'), //直播间名
         };
         if(c.d(1)){console.log('liveplay',live);}
-        var url =`./liveplay.html?${window.btoa(escape(JSON.stringify(live)))}`;
+        var url =`./liveplay.html?${window.btoa(encodeURIComponent(JSON.stringify(live)))}`;
         window.open (url, "_blank", "height=660, width=375, top=0, left=0, toolbar=no, menubar=no, scrollbars=no, resizable=no,location=no, status=no");
     });
 }
