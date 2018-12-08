@@ -25,7 +25,7 @@ c.pocket48.liveplay.video = (function () {
     var url = window.document.location.href.toString();
     var u = url.split('?');
     if(typeof(u[1]) == 'string'){
-        return JSON.parse(window.atob(u[1]));
+        return JSON.parse(unescape(window.atob(u[1])));
     } else {
         return {};
     }
