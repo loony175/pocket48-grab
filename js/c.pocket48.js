@@ -1,4 +1,5 @@
 /*
+依赖mdui.js $$.ajax()
 功能
 1>获得Token
     使用：
