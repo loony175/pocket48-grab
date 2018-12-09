@@ -1,4 +1,3 @@
-//ChatRoom界面
 if (typeof c === 'undefined') {
     c = {};
 }
@@ -15,9 +14,8 @@ c.pocket48.getPicUrl = c.pocket48.getPicUrl || function (url) {
     }
 };
 
-c.pocket48.cr.account = '48web';
-c.pocket48.cr.token = '48web';
-//连接chatroom, 设置打印函数crPrint, 状态函数crStatus
+c.pocket48.cr.account = '48webAdfgrhtr';
+c.pocket48.cr.token = '48webAdfgrhtr';
 c.pocket48.cr.connect = function (crId,crPrint,crStatus) {
     let chatroom = new Chatroom ({
         appKey:'632feff1f4c838541ab75195d1ceb3fa',

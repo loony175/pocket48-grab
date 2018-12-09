@@ -157,7 +157,7 @@ c.cookie.del=function(name){
 
 //调试debug信息
 //c.d(level),当level<=c.debug等级时，返回true
-c.debug=2;
+c.debug=0;
 c.d = function(level){
     if (level<=c.debug){
         return true
@@ -167,7 +167,7 @@ c.d = function(level){
 };
 
 //版本号
-c.pocket48.version='2.5.2.alpha';
+c.pocket48.version='2.5.2.beta';
 //口袋48 api
 c.pocket48.api={
     sync: "https://psync.48.cn/syncsystem/api/cache/v1/update/overview",
