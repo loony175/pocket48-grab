@@ -42,7 +42,7 @@ c.pocket48.page.updateInfo = function(){
     if(c.d(1)){console.log('c.pocket48.page.updateInfo');}
     //先读取缓存，如果有直接设置更新完毕
     if (localStorage.getItem('info')) {
-        c.pocket48.info = JSON.parse (localStorage.getItem('info'));
+        c.pocket48.info = new c.pocket48.newInfo(JSON.parse(localStorage.getItem('info')));
         c.pocket48.page.ifUpdateInfo = true;
     }
     var callback = function(res,e){
@@ -55,7 +55,7 @@ c.pocket48.page.updateInfo = function(){
             //设置成员信息更新完毕
             c.pocket48.page.ifUpdateInfo = true;
             //储存至localStorage
-            localStorage.setItem('info',JSON.stringify(c.pocket48.info));
+            localStorage.setItem('info', res);
             //显示消息
             c.pocket48.page.snackbar('成员信息更新完毕!');
         } else {
