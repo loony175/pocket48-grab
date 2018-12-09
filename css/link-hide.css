@@ -7,3 +7,14 @@
 .c-img-more {
     display: none;
 }
+.c-member-inactive {
+    display: none;
+}
+#c-room-content {
+    max-height: 80%;
+    overflow: scroll;
+}
+#c-room-board {
+    max-height: 80%;
+    overflow: scroll;
+}

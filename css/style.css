@@ -26,4 +26,9 @@ td {
 .mdui-radio{
     padding-left: 1.2rem;
 }
-
+.mdui-list-item {
+    cursor: auto;
+}
+#function-kdfj img {
+    max-height: 15rem;
+}
