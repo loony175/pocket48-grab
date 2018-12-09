@@ -42,9 +42,14 @@ c.pocket48.page.updateInfo = function(){
     if(c.d(1)){console.log('c.pocket48.page.updateInfo');}
     //先读取缓存，如果有直接设置更新完毕
     if (localStorage.getItem('info')) {
-        c.pocket48.info = new c.pocket48.newInfo(JSON.parse(localStorage.getItem('info')));
-        c.pocket48.page.print.info(c.pocket48.info);
-        c.pocket48.page.ifUpdateInfo = true;
+        try{
+            c.pocket48.info = new c.pocket48.newInfo(JSON.parse(localStorage.getItem('info')));
+            c.pocket48.page.print.info(c.pocket48.info);
+            c.pocket48.page.ifUpdateInfo = true;
+        } catch(e) {
+            console.error(e);
+            localStorage.removeItem('info');
+        }
     }
     var callback = function(res,e){
         if (!e&&!(JSON.stringify(res)=="{}")){
