@@ -43,6 +43,7 @@ c.pocket48.page.updateInfo = function(){
     //先读取缓存，如果有直接设置更新完毕
     if (localStorage.getItem('info')) {
         c.pocket48.info = new c.pocket48.newInfo(JSON.parse(localStorage.getItem('info')));
+        c.pocket48.page.print.info(c.pocket48.info);
         c.pocket48.page.ifUpdateInfo = true;
     }
     var callback = function(res,e){
