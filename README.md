@@ -1,8 +1,6 @@
 # pocket48-grab v2.5.2
 口袋48视频与房间等信息获取。支持获取 成员直播/回放、公演直播/回放、口袋房间内容/留言、成员直播在线观看+发送弹幕。
 
-联系我: E-mail xsaiting@qq.com, QQ 3369306939.
-
 # 测试地址
 稳定版 https://xsaiting.com/pocket48/
 

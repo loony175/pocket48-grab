@@ -10,7 +10,7 @@ if (typeof c.pocket48.liveplay === 'undefined') {
 }
 
 //调试
-c.debug=2;
+c.debug=0;
 c.d = function(level){
     if (level<=c.debug){
         return true

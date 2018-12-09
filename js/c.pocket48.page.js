@@ -780,7 +780,7 @@ c.pocket48.page.switch.group = function () {
         c.pocket48.page.switch.groupNow = $$('#c-c'+event.detail.id).attr('value');
     });
 };
-//切换 显示完整表格
+//切换 显示完整内容
 c.pocket48.page.switch.link = function () {
     c.pocket48.page.switch.linkNow = 0;
     document.getElementById('c-clink').addEventListener('change', function (event) {
