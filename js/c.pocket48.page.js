@@ -68,11 +68,7 @@ c.pocket48.page.updateInfo = function(){
             //显示消息
             c.pocket48.page.snackbar('成员信息加载失败> <请尝试刷新页面');
         }
-        //关闭进度条
-        c.pocket48.page.progress(0);
     };
-    //显示进度条
-    c.pocket48.page.progress();
     c.pocket48.getInfo('',callback);
 };
 //打印成员信息
