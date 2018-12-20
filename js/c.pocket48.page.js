@@ -42,8 +42,14 @@ c.pocket48.page.updateInfo = function(){
     if(c.d(1)){console.log('c.pocket48.page.updateInfo');}
     //先读取缓存，如果有直接设置更新完毕
     if (localStorage.getItem('info')) {
-        c.pocket48.info = JSON.parse (localStorage.getItem('info'));
-        c.pocket48.page.ifUpdateInfo = true;
+        try{
+            c.pocket48.info = new c.pocket48.newInfo(JSON.parse(localStorage.getItem('info')));
+            c.pocket48.page.print.info(c.pocket48.info);
+            c.pocket48.page.ifUpdateInfo = true;
+        } catch(e) {
+            console.error(e);
+            localStorage.removeItem('info');
+        }
     }
     var callback = function(res,e){
         if (!e&&!(JSON.stringify(res)=="{}")){
@@ -55,18 +61,14 @@ c.pocket48.page.updateInfo = function(){
             //设置成员信息更新完毕
             c.pocket48.page.ifUpdateInfo = true;
             //储存至localStorage
-            localStorage.setItem('info',JSON.stringify(c.pocket48.info));
+            localStorage.setItem('info', res);
             //显示消息
             c.pocket48.page.snackbar('成员信息更新完毕!');
         } else {
             //显示消息
             c.pocket48.page.snackbar('成员信息加载失败> <请尝试刷新页面');
         }
-        //关闭进度条
-        c.pocket48.page.progress(0);
     };
-    //显示进度条
-    c.pocket48.page.progress();
     c.pocket48.getInfo('',callback);
 };
 //打印成员信息
