@@ -11,17 +11,14 @@
     white-space: nowrap;
 }
 .c-message {
-    margin-top: 0.5rem;
-    margin-bottom: 0.5rem;
+    margin-top: 0.2rem;
+    margin-bottom: 0.2rem;
     padding-left: 1rem;
     background-color: rgba(255, 255, 255, 0.8);
     border-radius: 0.5rem;
 }
 .c-room-content{
     background-size: cover;
-}
-td {
-    padding-right: 0rem!important;
 }
 .mdui-radio{
     padding-left: 1.2rem;
@@ -31,4 +28,13 @@ td {
 }
 #function-kdfj img {
     max-height: 15rem;
+}
+.mdui-list-item-content {
+    padding-top: 0.2rem;
+    padding-bottom: 0.2rem;
+}
+.mdui-table td {
+    padding-right: 0rem!important;
+    padding-top: 0.4rem!important;
+    padding-bottom: 0.4rem!important;
 }
