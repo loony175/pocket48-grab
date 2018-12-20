@@ -201,7 +201,7 @@ c.pocket48.liveplay.sendText = function (name,text) {
         "source": "member_live",
         "content": text,
         "contentType": 1,
-        "platform": "ios",
+        "platform": "iOs",
         "sync_danmu": true,
         "fromApp": 2,
         "sourceId": 0,
