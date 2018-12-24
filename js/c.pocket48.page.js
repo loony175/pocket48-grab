@@ -336,7 +336,7 @@ c.pocket48.page.print.roomMain = function (data,e) {
                         break;
                         //翻牌信息
                         case "faipaiText":
-                            content=content+'<blockquote><p>'+ext.faipaiContent+'</p><footer>'+ext.faipaiName+'<span class="c-pro"><a class="mdui-btn mdui-btn-icon mdui-ripple mdui-btn-dense c-pro-user" userid="'+ext.faipaiUserId+'"><i class="mdui-icon material-icons mdui-text-color-theme-accent">search</i></a></span>'+'</footer></blockquote>'+ext.messageText;
+                            content=content+'<blockquote><p>'+ext.faipaiContent+'</p><footer>ID:'+ext.faipaiUserId+'<span class="c-pro"><a class="mdui-btn mdui-btn-icon mdui-ripple mdui-btn-dense c-pro-user" userid="'+ext.faipaiUserId+'"><i class="mdui-icon material-icons mdui-text-color-theme-accent">search</i></a></span>'+'</footer></blockquote>'+ext.messageText;
                         break;
                         //视频直播信息
                         case "live":
