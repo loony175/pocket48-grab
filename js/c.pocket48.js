@@ -167,9 +167,9 @@ c.d = function(level){
 };
 
 //版本号
-c.pocket48.version='2.5.3.3';
+c.pocket48.version='2.5.3.2';
 //口袋48 api
-c.pocket48.api = c.pocket48.apiCross  = {
+c.pocket48.api={
     sync: "https://psync.48.cn/syncsystem/api/cache/v1/update/overview",
     live: "https://plive.48.cn/livesystem/api/live/v1/memberLivePage",
     liveOpen: "https://plive.48.cn/livesystem/api/live/v1/openLivePage",
@@ -183,7 +183,7 @@ c.pocket48.api = c.pocket48.apiCross  = {
     userInfo: "https://puser.48.cn/usersystem/api/user/v1/show/info/",
 };
 //跨域代理 api
-c.pocket48.api = c.pocket48.apiProxy = {
+c.pocket48.apiProxy = c.pocket48.api = {
     sync: "./proxy.php?f=sync",
     live: "./proxy.php?f=live",
     liveOpen: "./proxy.php?f=liveOpen",
@@ -257,6 +257,7 @@ c.pocket48.newInfo = function(s){
 }
 //通用headers
 c.pocket48.headers = function(){
+    this['Content-Type'] = 'application/json';
     this.version = '5.3.2';
     this.os = 'Android';
     this.build = 0;
@@ -269,7 +270,6 @@ c.pocket48.getToken = function(data,callback){
         method: 'POST',
         url: c.pocket48.api.login,
         headers: new c.pocket48.headers(),
-        contentType: 'application/json',
         data: JSON.stringify({
             "password": data.password,
             "account": data.username,
@@ -292,7 +292,6 @@ c.pocket48.getInfo = function(data,callback){
         method: 'POST',
         url: c.pocket48.api.sync,
         headers: new c.pocket48.headers(),
-        contentType: 'application/json',
         data: JSON.stringify({
             "videoTypeUtime": "2010-03-24 15:59:11",
             "musicAlbumUtime": "2010-04-18 14:45:37",
@@ -323,7 +322,6 @@ c.pocket48.getLive = function(data,callback){
         method: 'POST',
         url: c.pocket48.api.live,
         headers: new c.pocket48.headers(),
-        contentType: 'application/json',
         data: JSON.stringify({
             "lastTime": data.lastTime,
             "limit": data.limit,
@@ -346,7 +344,6 @@ c.pocket48.getLiveOpen = function(data,callback){
         method: 'POST',
         url: c.pocket48.api.liveOpen,
         headers: new c.pocket48.headers(),
-        contentType: 'application/json',
         data: JSON.stringify({
             "isReview": data.isReview,
             "lastTime": data.lastTime,
@@ -369,7 +366,6 @@ c.pocket48.getLiveOpenInfo = function(data,callback){
         method: 'POST',
         url: c.pocket48.api.liveInfo,
         headers: new c.pocket48.headers(),
-        contentType: 'application/json',
         data: JSON.stringify({
             "liveId": data.liveId,
         }),
@@ -390,7 +386,6 @@ c.pocket48.getRoomId = function(data,callback){
         method: 'POST',
         url: c.pocket48.api.roomId,
         headers: new c.pocket48.headers(),
-        contentType: 'application/json',
         data: JSON.stringify({
             "friends": [data.memberId],
         }),
@@ -415,7 +410,6 @@ c.pocket48.getRoomMain = function(data,callback){
         method: 'POST',
         url: c.pocket48.api.roomMain,
         headers: new c.pocket48.headers(),
-        contentType: 'application/json',
         data: JSON.stringify({
             "roomId": data.roomId,
             "chatType": 0,
@@ -438,7 +432,6 @@ c.pocket48.getRoomBoard = function(data,callback){
         method: 'POST',
         url: c.pocket48.api.roomBoard,
         headers: new c.pocket48.headers(),
-        contentType: 'application/json',
         data: JSON.stringify({
             "roomId": data.roomId,
             "isFirst": false,
@@ -461,7 +454,6 @@ c.pocket48.getFlip = function (data,callback) {
         method: 'POST',
         url: c.pocket48.api.flip,
         headers: new c.pocket48.headers(),
-        contentType: 'application/json',
         data: JSON.stringify({
             "idolFlipSource": 2,
             "questionId": data.questionId,
@@ -488,7 +480,6 @@ c.pocket48.checkIn = function (data,callback) {
         method: 'POST',
         url: c.pocket48.api.checkIn,
         headers: new c.pocket48.headers(),
-        contentType: 'application/json',
         data: JSON.stringify({}),
         success: function(res){
             callback(res,0);
@@ -506,7 +497,6 @@ c.pocket48.getUserInfo = function (data,callback) {
         method: 'POST',
         url: c.pocket48.api.userInfo+data.userId,
         headers: new c.pocket48.headers(),
-        contentType: 'application/json',
         data: JSON.stringify({
             "needRecommend":true,
             "needChatInfo":true,

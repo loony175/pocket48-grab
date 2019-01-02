@@ -8,8 +8,6 @@ c.pocket48.page.print = c.pocket48.page.print || {};
 c.pocket48.page.init = function(){
     //打印版本号
     c.pocket48.page.print.version(c.pocket48.version);
-    //跨域检测
-    c.pocket48.page.crossCheck();
     //更新成员信息
     if(!c.d(5)){
     c.pocket48.page.updateInfo();
@@ -538,29 +536,6 @@ c.pocket48.page.userInfo2 = function () {
     });
 };
 
-/**
- * 跨域检测，需要init
- */
-c.pocket48.page.crossCheck = function () {
-    $$.ajax({
-        method: 'GET',
-        async: false,
-        url: c.pocket48.apiCross.sync,
-        headers: new c.pocket48.headers(),
-        contentType: 'application/json',
-        data: '',
-        success: function (res) {
-            //允许跨域
-            console.log('已设置跨域');
-            c.pocket48.api = c.pocket48.apiCross;
-        },
-        error: function (xhr, textStatus) {
-            //不允许跨域
-            console.log('不允许跨域, 使用代理');
-            c.pocket48.api = c.pocket48.apiProxy;
-        }
-    });
-}
 
 /**
  * 设置liveplay功能，需要init
