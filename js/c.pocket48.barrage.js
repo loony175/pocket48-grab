@@ -56,16 +56,19 @@ br.AssTime = function (time) {
             s += '.';
         }
         while (s.length <= rs + 2) {
-            s += '0';
+            s = '0'+s;
         }
         return s;
+    }
+    function add0(num, length) {
+        return (Array(length).join('0') + num).slice(-length);
     }
     this.ms = parseInt(ts[0])*3600+parseInt(ts[1])*60+parseFloat(ts[2]);
     this.st = () => {
         var h = Math.floor(this.ms/3600);
         var m = Math.floor((this.ms-h*3600)/60);
         var s = this.ms-h*3600-m*60;
-        return `${h}:${m}:${toDecimal2(s)}`;
+        return `${add0(h,2)}:${add0(m,2)}:${add0(toDecimal2(s),5)}`;
     }
 }
 br.submit = function () {
