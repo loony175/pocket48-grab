@@ -56,7 +56,7 @@ br.AssTime = function (time) {
             s += '.';
         }
         while (s.length <= rs + 2) {
-            s = '0'+s;
+            s += '0';
         }
         return s;
     }
