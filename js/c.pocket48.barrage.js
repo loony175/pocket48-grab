@@ -6,6 +6,8 @@ br.download = function (content, fileName = 'default') {
     aEle.href = URL.createObjectURL(blob);
     aEle.click();
 }
+
+//将lrc文件转为ass
 br.lrc2ass = function (lrc,fileName = 'default') {
     var barrages = lrc.split('\n[');
     barrages[0] = barrages[0].slice(1);
@@ -61,7 +63,7 @@ br.AssTime = function (time) {
     this.ms = parseInt(ts[0])*3600+parseInt(ts[1])*60+parseFloat(ts[2]);
     this.st = () => {
         var h = Math.floor(this.ms/3600);
-        var m = Math.floor((this.ms-h*60)/60);
+        var m = Math.floor((this.ms-h*3600)/60);
         var s = this.ms-h*3600-m*60;
         return `${h}:${m}:${toDecimal2(s)}`;
     }
