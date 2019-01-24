@@ -2,6 +2,7 @@
 //ini_set('display_errors',1);            //错误信息  
 //ini_set('display_startup_errors',1);    //php启动错误信息
 $f=$_GET['f'];
+$i=0;
 if (isset($_GET['i'])) $i=$_GET['i'];
 //var_dump($i);
 $api=[

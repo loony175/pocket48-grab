@@ -8,7 +8,7 @@ br.download = function (content, fileName = 'default') {
 }
 
 //将lrc文件转为ass
-br.lrc2ass = function (lrc,fileName = 'default') {
+br.lrc2ass = function (lrc,fileName = 'default',timeint=10) {
     var barrages = lrc.split('\n[');
     barrages[0] = barrages[0].slice(1);
     var assBarrages = [];
@@ -40,7 +40,7 @@ Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
             content: content,
         });
         var assT = new br.AssTime(time);
-        assT.ms += 10;
+        assT.ms += parseInt(timeint);
         ass += `Dialogue: 0,${time},${assT.st()},Default,,0,0,0,,{\\fad(200,200)}【${name}】 ${content}\n`;
     });
     return ass;
@@ -109,9 +109,10 @@ br.fileTrans = function(files) {
             reader.readAsText(file);
             reader.onload = function () {
                 var lrc = this.result;
+                var timeint = document.querySelector('#c-danmu-timeint').value;
                 var ass;
                 try {
-                    ass = br.lrc2ass(lrc,fileName);
+                    ass = br.lrc2ass(lrc,fileName,timeint);
                 } catch (e) {
                     console.log('出错',e);
                     return false;
