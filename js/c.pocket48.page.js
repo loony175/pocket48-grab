@@ -131,7 +131,8 @@ c.pocket48.page.print.info = function(info){
     
 };
 
-//修复一直播链接
+// 修复一直播链接
+// See: https://github.com/xsaiting/pocket48-grab/issues/35
 function isYizhiboHost(host) {
     return host.toLowerCase() === 'alcdn.hls.xiaoka.tv'
 }
