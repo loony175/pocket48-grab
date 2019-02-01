@@ -38,3 +38,12 @@
     padding-top: 0.4rem!important;
     padding-bottom: 0.4rem!important;
 }
+
+.c-link.c-link-fixed {
+    white-space: normal;
+}
+
+.c-link.c-link-fixed .link-tip {
+    color: #333333;
+    text-decoration: none;
+} 
