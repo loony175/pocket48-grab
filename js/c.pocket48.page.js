@@ -71,6 +71,7 @@ c.pocket48.page.updateInfo = function(){
     };
     c.pocket48.getInfo('',callback);
 };
+
 //打印成员信息
 c.pocket48.page.print.info = function(info){
     c.pocket48.page.progress(0);
@@ -130,6 +131,38 @@ c.pocket48.page.print.info = function(info){
     
 };
 
+// 修复一直播链接
+// See: https://github.com/xsaiting/pocket48-grab/issues/35
+function isYizhiboHost(host) {
+    return host.toLowerCase() === 'alcdn.hls.xiaoka.tv'
+}
+
+function renderStreamPath(row) {
+    var dateObj = new Date(row.startTime)
+    var actualDate = `${dateObj.getFullYear()}${dateObj.getMonth() + 1}${dateObj.getDate()}`
+
+    var streamPath = row.streamPath.replace(/^(http|https):\/\/([^\/]+)\/(\d+)/, function(pathPrefix, protocol, host, date) {
+        // 不是一直播或者日期正确则直接使用给的链接
+        if (!isYizhiboHost(host) || actualDate === date) {
+            return pathPrefix
+        }
+
+        return `${protocol}://${host}/${actualDate}`
+    })
+
+    var nodeClassNames = ['c-link']
+    var nodeInner = [`<a href="${row.streamPath}" target="_blank">${row.streamPath}</a>`]
+
+    if (streamPath !== row.streamPath) {
+        // 需要修正url
+        nodeInner.push(`<p><a class="link-tip" href="https://github.com/xsaiting/pocket48-grab/issues/35" target="_blank">上方链接有误？请尝试使用下方链接</a></p>`)
+        nodeInner.push(`<a href="${streamPath}" target="_blank">${streamPath}</a>`)
+        nodeClassNames.push('c-link-fixed')
+    }
+
+    return `<td class="${nodeClassNames.join(' ')}">${nodeInner.join('\n')}</td>`
+}
+
 //打印成员直播
 c.pocket48.page.print.live = function (data,e) {
     c.pocket48.page.progress(0);
@@ -169,7 +202,7 @@ c.pocket48.page.print.live = function (data,e) {
                 return a;
             })()}</td>
             <td class="c-link"><a href="${c.pocket48.url.liveShare+row.liveId}" target="_blank">${c.pocket48.url.liveShare+row.liveId}</a></td>
-            <td class="c-link"><a href="${row.streamPath}" target="_blank">${row.streamPath}</a></td>
+            ${renderStreamPath(row)}
             <td class="c-link"><a href="${c.pocket48.url.livePic+row.lrcPath}" target="_blank">${c.pocket48.url.livePic+row.lrcPath}.lrc</a></td>
             </tr>`;
         }
