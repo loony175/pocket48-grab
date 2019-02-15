@@ -121,12 +121,12 @@ c.pocket48.page.print.info = function(info){
     for (var i in info.team) {
         //模板： .c-team-1001,.c-team-1001 td,.c-team-1001 a{color: #90CCEA;} a.c-team-1001{background-color: #90CCEA!important;}
         //当team不为全团，即teamId不为0或'0'时
-        let teamId = info.team[i].team_id;
-        let teamColor = info.team[i].color;
+        var teamId = info.team[i].team_id;
+        var teamColor = info.team[i].color;
 
         //FFFFFF无法显示
-        if (teamColor = 'FFFFFF') {
-            teamColor = '000000'
+        if (teamColor == 'FFFFFF') {
+            teamColor = '000000';
         }
         if (!((teamId==0)||(teamId=='0'))){
         content=content+`/*${teamId}*/ .c-team-${teamId},.c-team-${teamId} td,.c-team-${teamId} a{color: #${teamColor};} a.c-team-${teamId}{background-color: #${teamColor}!important;}`
