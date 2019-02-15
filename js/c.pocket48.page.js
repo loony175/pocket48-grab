@@ -123,6 +123,11 @@ c.pocket48.page.print.info = function(info){
         //当team不为全团，即teamId不为0或'0'时
         let teamId = info.team[i].team_id;
         let teamColor = info.team[i].color;
+
+        //FFFFFF无法显示
+        if (teamColor = 'FFFFFF') {
+            teamColor = '000000'
+        }
         if (!((teamId==0)||(teamId=='0'))){
         content=content+`/*${teamId}*/ .c-team-${teamId},.c-team-${teamId} td,.c-team-${teamId} a{color: #${teamColor};} a.c-team-${teamId}{background-color: #${teamColor}!important;}`
         }
