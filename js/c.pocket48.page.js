@@ -705,6 +705,10 @@ c.pocket48.page.submit = function(){
         //没有选择成员时，为0
         data.memberId=0;
     }
+    //memberId 不为0 时, 取消groupId选项, 可以获得移籍成员往日直播
+    if (data.memberId != 0) {
+        data.groupId = 0;
+    }
     //isReview
     if (c.pocket48.page.switch.tabNow==1) {
         data.isReview=1;
