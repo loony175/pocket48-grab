@@ -71,6 +71,7 @@ c.pocket48.page.updateInfo = function(){
     };
     c.pocket48.getInfo('',callback);
 };
+
 //打印成员信息
 c.pocket48.page.print.info = function(info){
     c.pocket48.page.progress(0);
@@ -120,8 +121,13 @@ c.pocket48.page.print.info = function(info){
     for (var i in info.team) {
         //模板： .c-team-1001,.c-team-1001 td,.c-team-1001 a{color: #90CCEA;} a.c-team-1001{background-color: #90CCEA!important;}
         //当team不为全团，即teamId不为0或'0'时
-        let teamId = info.team[i].team_id;
-        let teamColor = info.team[i].color;
+        var teamId = info.team[i].team_id;
+        var teamColor = info.team[i].color;
+
+        //FFFFFF无法显示
+        if (teamColor == 'FFFFFF') {
+            teamColor = '000000';
+        }
         if (!((teamId==0)||(teamId=='0'))){
         content=content+`/*${teamId}*/ .c-team-${teamId},.c-team-${teamId} td,.c-team-${teamId} a{color: #${teamColor};} a.c-team-${teamId}{background-color: #${teamColor}!important;}`
         }
@@ -129,6 +135,38 @@ c.pocket48.page.print.info = function(info){
     css.innerHTML=content;
     
 };
+
+// 修复一直播链接
+// See: https://github.com/xsaiting/pocket48-grab/issues/35
+function isYizhiboHost(host) {
+    return host.toLowerCase() === 'alcdn.hls.xiaoka.tv'
+}
+
+function renderStreamPath(row) {
+    var dateObj = new Date(row.startTime)
+    var actualDate = `${dateObj.getFullYear()}${dateObj.getMonth() + 1}${dateObj.getDate()}`
+
+    var streamPath = row.streamPath.replace(/^(http|https):\/\/([^\/]+)\/(\d+)/, function(pathPrefix, protocol, host, date) {
+        // 不是一直播或者日期正确则直接使用给的链接
+        if (!isYizhiboHost(host) || actualDate === date) {
+            return pathPrefix
+        }
+
+        return `${protocol}://${host}/${actualDate}`
+    })
+
+    var nodeClassNames = ['c-link']
+    var nodeInner = [`<a href="${row.streamPath}" target="_blank">${row.streamPath}</a>`]
+
+    if (streamPath !== row.streamPath) {
+        // 需要修正url
+        nodeInner.push(`<p><a class="link-tip" href="https://github.com/xsaiting/pocket48-grab/issues/35" target="_blank">上方链接有误？请尝试使用下方链接</a></p>`)
+        nodeInner.push(`<a href="${streamPath}" target="_blank">${streamPath}</a>`)
+        nodeClassNames.push('c-link-fixed')
+    }
+
+    return `<td class="${nodeClassNames.join(' ')}">${nodeInner.join('\n')}</td>`
+}
 
 //打印成员直播
 c.pocket48.page.print.live = function (data,e) {
@@ -169,7 +207,7 @@ c.pocket48.page.print.live = function (data,e) {
                 return a;
             })()}</td>
             <td class="c-link"><a href="${c.pocket48.url.liveShare+row.liveId}" target="_blank">${c.pocket48.url.liveShare+row.liveId}</a></td>
-            <td class="c-link"><a href="${row.streamPath}" target="_blank">${row.streamPath}</a></td>
+            ${renderStreamPath(row)}
             <td class="c-link"><a href="${c.pocket48.url.livePic+row.lrcPath}" target="_blank">${c.pocket48.url.livePic+row.lrcPath}.lrc</a></td>
             </tr>`;
         }
@@ -671,6 +709,10 @@ c.pocket48.page.submit = function(){
     } else {
         //没有选择成员时，为0
         data.memberId=0;
+    }
+    //memberId 不为0 时, 取消groupId选项, 可以获得移籍成员往日直播
+    if (data.memberId != 0) {
+        data.groupId = 0;
     }
     //isReview
     if (c.pocket48.page.switch.tabNow==1) {

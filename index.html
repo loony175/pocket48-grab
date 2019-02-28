@@ -1,8 +1,8 @@
 <html>
 <head>
 	<meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>口袋48视频、房间信息获取</title>
-	
 	<link rel="stylesheet" href="https://cdnjs.loli.net/ajax/libs/mdui/0.4.1/css/mdui.min.css">
 	<link href="./css/style.css" rel="stylesheet" />
 	<link id="c-link-switch" rel="stylesheet" href="./css/link-hide.css" />
@@ -27,7 +27,7 @@
 			<div class="mdui-card-content">
 				<p>说明</p>
 				<p>1、使用遇到任何问题/有任何建议请联系xsaiting@qq.com</p>
-				<p>2、成员直播可以使用本站播放器播放，支持弹幕互动。<b>请勿滥用！</b> 成员录播+弹幕播放方法参考：<a target="_blank" href="https://github.com/xsaiting/pocket48-grab/wiki/%E5%A6%82%E4%BD%95%E6%92%AD%E6%94%BE%E5%BD%95%E6%92%AD%E8%A7%86%E9%A2%91-%E5%BC%B9%E5%B9%95%EF%BC%9F">点此</a></p>
+				<p>2、成员直播可以使用本站播放器播放(对于xiaoka.tv的视频源不可播放，Chrome解决方法：<a href="https://github.com/xsaiting/pocket48-grab/wiki/Chrome-Chromium%E8%B7%A8%E5%9F%9F%E6%8F%92%E4%BB%B6%E5%AE%89%E8%A3%85(%E7%9C%8B%E6%9C%89%E4%BA%9B%E6%97%A0%E6%B3%95%E4%BD%BF%E7%94%A8%E6%B5%8F%E8%A7%88%E5%99%A8%E7%9C%8B%E7%9A%84%E7%9B%B4%E6%92%AD)" target="_blank">点此</a>)，支持弹幕互动。<b>请勿滥用！</b> 成员录播+弹幕播放方法参考：<a target="_blank" href="https://github.com/xsaiting/pocket48-grab/wiki/%E5%A6%82%E4%BD%95%E6%92%AD%E6%94%BE%E5%BD%95%E6%92%AD%E8%A7%86%E9%A2%91-%E5%BC%B9%E5%B9%95%EF%BC%9F">点此</a>。弹幕lrc文件转ass视频字幕文件: <a href="./barrage.html" target="_blank" rel="noopener noreferrer">点此</a></p>
 				<p>3、在线播放说明：任何格式均可使用VLC media player【<a target="_blank" href="http://www.videolan.org/">下载</a>】或KMPlayer【<a target="_blank" href="http://kmplayer.com/">下载</a>】在线播放，移动端可以使用MXPlayer的网络串流功能播放。</p>
 				<p>4、下载说明：mp4格式或flv格式可以直接用下载工具(迅雷、idm、浏览器)下载/录制，公演回放和小部分成员直播为m3u8格式，下载/录制m3u8视频的方法参考：<a target="_blank" href="https://github.com/xsaiting/pocket48-grab/wiki/%E5%A6%82%E4%BD%95%E7%94%A8VLC%E6%89%93%E5%BC%80m3u8%E6%96%87%E4%BB%B6%E5%B9%B6%E4%B8%8B%E8%BD%BD%EF%BC%88%E5%BD%95%E5%88%B6%EF%BC%89%3F%5B%E5%90%8C%E6%A0%B7%E9%80%82%E7%94%A8%E4%BA%8E%E7%9B%B4%E6%92%AD%E5%BD%95%E5%88%B6%5D">点此</a></p>
 			</div>
@@ -59,7 +59,7 @@
 				<label class="mdui-radio">
 					<input type="radio" name="time"/>
 					<i class="mdui-radio-icon"></i>
-					<label id="c-choose-time"><select class="mdui-select" id="c-year"> <option>2018</option> <option>2017</option> <option>2016</option> <option>2015</option> </select> <label>年</label> <select class="mdui-select" id="c-month"> <option>1</option> <option>2</option> <option>3</option> <option>4</option> <option>5</option> <option>6</option> <option>7</option> <option>8</option> <option>9</option> <option>10</option> <option>11</option> <option>12</option> </select> <label>月</label> <select class="mdui-select" id="c-day"> <option>1</option> <option>2</option> <option>3</option> <option>4</option> <option>5</option> <option>6</option> <option>7</option> <option>8</option> <option>9</option> <option>10</option> <option>11</option> <option>12</option> <option>13</option> <option>14</option> <option>15</option> <option>16</option> <option>17</option> <option>18</option> <option>19</option> <option>20</option> <option>21</option> <option>22</option> <option>23</option> <option>24</option> <option>25</option> <option>26</option> <option>27</option> <option>28</option> <option>29</option> <option>30</option> <option>31</option> </select> <label>日</label> <select class="mdui-select" id="c-hour"> <option>1</option> <option>2</option> <option>3</option> <option>4</option> <option>5</option> <option>6</option> <option>7</option> <option>8</option> <option>9</option> <option>10</option> <option>11</option> <option>12</option> <option>13</option> <option>14</option> <option>15</option> <option>16</option> <option>17</option> <option>18</option> <option>19</option> <option>20</option> <option>21</option> <option>22</option> <option>23</option> <option>24</option> </select> <label>时</label></label>
+					<label id="c-choose-time"><select class="mdui-select" id="c-year"> <option>2019</option> <option>2018</option> <option>2017</option> <option>2016</option> </select> <label>年</label> <select class="mdui-select" id="c-month"> <option>1</option> <option>2</option> <option>3</option> <option>4</option> <option>5</option> <option>6</option> <option>7</option> <option>8</option> <option>9</option> <option>10</option> <option>11</option> <option>12</option> </select> <label>月</label> <select class="mdui-select" id="c-day"> <option>1</option> <option>2</option> <option>3</option> <option>4</option> <option>5</option> <option>6</option> <option>7</option> <option>8</option> <option>9</option> <option>10</option> <option>11</option> <option>12</option> <option>13</option> <option>14</option> <option>15</option> <option>16</option> <option>17</option> <option>18</option> <option>19</option> <option>20</option> <option>21</option> <option>22</option> <option>23</option> <option>24</option> <option>25</option> <option>26</option> <option>27</option> <option>28</option> <option>29</option> <option>30</option> <option>31</option> </select> <label>日</label> <select class="mdui-select" id="c-hour"> <option>1</option> <option>2</option> <option>3</option> <option>4</option> <option>5</option> <option>6</option> <option>7</option> <option>8</option> <option>9</option> <option>10</option> <option>11</option> <option>12</option> <option>13</option> <option>14</option> <option>15</option> <option>16</option> <option>17</option> <option>18</option> <option>19</option> <option>20</option> <option>21</option> <option>22</option> <option>23</option> <option>24</option> </select> <label>时</label></label>
 				</label>
 			</div>
 			<div class="mdui-col-md-2 mdui-valign">
@@ -341,7 +341,7 @@
 
 	<!-- 口袋房间功能展示 -->
 	<div id="function-kdfj" class="mdui-row">
-		<div class="mdui-col-xs-7">
+		<div class="mdui-col-sm-7">
 			<div class="mdui-card">
 				<div id="c-room-header" class="mdui-card-header mdui-color-theme-400">
 					<img id="c-room-avatar" class="mdui-card-header-avatar" src="./img/avatar1.jpg"/>
@@ -366,7 +366,7 @@
 			</div>
 
 		</div>
-		<div class="mdui-col-xs-5">
+		<div class="mdui-col-sm-5">
 			<div class="mdui-card mdui-color-theme-50">
 			<div class="mdui-card-primary">
 				<div class="mdui-card-primary-title">

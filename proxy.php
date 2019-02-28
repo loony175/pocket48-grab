@@ -2,6 +2,7 @@
 //ini_set('display_errors',1);            //错误信息  
 //ini_set('display_startup_errors',1);    //php启动错误信息
 $f=$_GET['f'];
+$i=0;
 if (isset($_GET['i'])) $i=$_GET['i'];
 //var_dump($i);
 $api=[
@@ -32,6 +33,8 @@ array_push($header, 'Content-type: application/json');
 $ch = curl_init($api[$f]);
 curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
 curl_setopt($ch, CURLOPT_POSTFIELDS, $post);
+curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false); //取消SSL验证
+curl_setopt($ch, CURLOPT_SSL_VERIFYHOST,false); //取消SSL验证
 curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
 $result = curl_exec($ch);
