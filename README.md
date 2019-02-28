@@ -1,13 +1,23 @@
-# pocket48-grab v2.5.3
-口袋48视频与房间等信息获取。支持获取 成员直播/回放、公演直播/回放、口袋房间内容/留言、成员直播在线观看+发送弹幕。
+# pocket48-grab v2.5.5
+口袋48视频、房间、信息获取工具。
 
 # 测试地址
 稳定版 https://xsaiting.com/pocket48/
 
 开发版 http://xsaiting.cn/pocket48/
 
+# 功能
+1. 成员直播/回放
+2. 成员直播在线观看+发送弹幕
+3. 公演直播/回放
+4. 口袋房间内容/留言
+5. ~~成员信息/昵称/缩写查询~~(暂未实现)
+6. 口袋用户信息查询
+7. ~~口袋屏蔽词查询~~(暂未实现)
+8. 口袋登录与签到
+
 # 说明
-1、使用遇到任何问题/有任何建议请联系xsaiting@qq.com
+1、遇到问题/如有建议请联系 xsaiting@qq.com
 
 2、成员直播可以使用本站播放器播放(对于xiaoka.tv的视频源不可播放，Chrome解决方法：[点此](https://github.com/xsaiting/pocket48-grab/wiki/Chrome-Chromium%E8%B7%A8%E5%9F%9F%E6%8F%92%E4%BB%B6%E5%AE%89%E8%A3%85(%E7%9C%8B%E6%9C%89%E4%BA%9B%E6%97%A0%E6%B3%95%E4%BD%BF%E7%94%A8%E6%B5%8F%E8%A7%88%E5%99%A8%E7%9C%8B%E7%9A%84%E7%9B%B4%E6%92%AD)))，支持弹幕互动。**请勿滥用！** 成员录播+弹幕播放方法参考：[点此](https://github.com/xsaiting/pocket48-grab/wiki/%E5%A6%82%E4%BD%95%E6%92%AD%E6%94%BE%E5%BD%95%E6%92%AD%E8%A7%86%E9%A2%91-%E5%BC%B9%E5%B9%95%EF%BC%9F)。弹幕lrc文件转ass视频字幕文件: [点此](./barrage.html)
 
