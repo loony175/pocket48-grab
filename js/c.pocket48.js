@@ -167,7 +167,7 @@ c.d = function(level){
 };
 
 //版本号
-c.pocket48.version='2.5.4.1';
+c.pocket48.version='2.5.5';
 //口袋48 api
 c.pocket48.api={
     sync: "https://psync.48.cn/syncsystem/api/cache/v1/update/overview",
