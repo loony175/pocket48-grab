@@ -121,6 +121,7 @@ c.pocket48.liveplay.print = function (msgs) {
 
 //连接房间
 c.pocket48.liveplay.loadChatroom = function () {
+    let cookieUrl = 'https://live.48.cn/Server/do_ajax_setcookie';
     if(c.pocket48.liveplay.video.room){
         //setcookie
         let cookie_val = Math.random().toString(36).substr(2);
@@ -138,11 +139,11 @@ c.pocket48.liveplay.loadChatroom = function () {
                     c.pocket48.cr.account = c.pocket48.cr.token = cookie_val;
                     c.pocket48.liveplay.video.cr = c.pocket48.cr.connect(c.pocket48.liveplay.video.room, c.pocket48.liveplay.print, c.pocket48.liveplay.status);            
                 };
-                xmlhttp2.open('POST','http://zhibo.ckg48.com/Server/do_ajax_setcookie',true);
+                xmlhttp2.open('POST',cookieUrl,true);
                 xmlhttp2.setRequestHeader('Content-type','application/x-www-form-urlencoded');
                 xmlhttp2.send(`timestamp=1542977135000&cookie_val=${cookie_val}&type=2`);
             };
-            xmlhttp.open('POST','http://zhibo.ckg48.com/Server/do_ajax_setcookie',true);
+            xmlhttp.open('POST',cookieUrl,true);
             xmlhttp.setRequestHeader('Content-type','application/x-www-form-urlencoded');
             xmlhttp.send(`timestamp=1542977135000&cookie_val=${cookie_val}&type=2`);}
         catch (e){
