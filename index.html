@@ -1,417 +1,53 @@
+<!DOCTYPE html>
 <html>
+
 <head>
-	<meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>口袋48视频、房间信息获取</title>
-	<link rel="stylesheet" href="https://cdnjs.loli.net/ajax/libs/mdui/0.4.1/css/mdui.min.css">
-	<link href="./css/style.css" rel="stylesheet" />
-	<link id="c-link-switch" rel="stylesheet" href="./css/link-hide.css" />
-    <style id="c-team-color-css" type="text/css"></style>
-	<style id="c-premium-css" type="text/css"></style>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <title>口袋48视频、房间、信息获取工具 - 成员直播|公演|视频源地址|口袋房间|屏蔽词 - 小赛艇</title>
+  <link href="https://cdn.bootcss.com/mdui/0.4.2/css/mdui.min.css" rel="stylesheet">
+  <!-- vue.js -->
+  <script src="https://cdn.bootcss.com/vue/2.6.8/vue.min.js"></script>
+  <!-- vue-router.js -->
+  <script src="https://cdn.bootcss.com/vue-router/3.0.2/vue-router.min.js"></script>
 </head>
 
-<body class="mdui-color-grey-100 mdui-theme-primary-blue mdui-theme-accent-pink">
-<div class="mdui-container">
-	<!-- 标题及说明 -->
-	<div class="mdui-row">
-		<div class="mdui-col-md-6 c-header">
-			<div class="c-header">
-				<div class="mdui-typo-title"><h1 class="mdui-text-color-theme">口袋48视频、房间信息获取</h1>
-					<span id="c-version"></span> 稳定版本：<a href="https://xsaiting.com/pocket48">点此访问</a></small>
-				</div>
-				<p>作者 @小赛艇 | xsaiting@qq.com | GitHub地址:<a href="https://github.com/xsaiting/pocket48-grab/" target="_blank">pocket48-grab</a></p>
-				<a id="c-premium-button" mdui-tooltip="{content: '更多功能'}" mdui-dialog="{target: '#c-premium'}" class="mdui-btn mdui-btn-icon mdui-ripple"><i class="mdui-icon material-icons mdui-text-color-theme-accent">build</i></a>
-			</div>
-		</div>
-		<div class="mdui-col-md-6 mdui-card c-header">
-			<div class="mdui-card-content">
-				<p>说明</p>
-				<p>1、使用遇到任何问题/有任何建议请联系xsaiting@qq.com</p>
-				<p>2、成员直播可以使用本站播放器播放(对于xiaoka.tv的视频源不可播放，Chrome解决方法：<a href="https://github.com/xsaiting/pocket48-grab/wiki/Chrome-Chromium%E8%B7%A8%E5%9F%9F%E6%8F%92%E4%BB%B6%E5%AE%89%E8%A3%85(%E7%9C%8B%E6%9C%89%E4%BA%9B%E6%97%A0%E6%B3%95%E4%BD%BF%E7%94%A8%E6%B5%8F%E8%A7%88%E5%99%A8%E7%9C%8B%E7%9A%84%E7%9B%B4%E6%92%AD)" target="_blank">点此</a>)，支持弹幕互动。<b>请勿滥用！</b> 成员录播+弹幕播放方法参考：<a target="_blank" href="https://github.com/xsaiting/pocket48-grab/wiki/%E5%A6%82%E4%BD%95%E6%92%AD%E6%94%BE%E5%BD%95%E6%92%AD%E8%A7%86%E9%A2%91-%E5%BC%B9%E5%B9%95%EF%BC%9F">点此</a>。弹幕lrc文件转ass视频字幕文件: <a href="./barrage.html" target="_blank" rel="noopener noreferrer">点此</a></p>
-				<p>3、在线播放说明：任何格式均可使用VLC media player【<a target="_blank" href="http://www.videolan.org/">下载</a>】或KMPlayer【<a target="_blank" href="http://kmplayer.com/">下载</a>】在线播放，移动端可以使用MXPlayer的网络串流功能播放。</p>
-				<p>4、下载说明：mp4格式或flv格式可以直接用下载工具(迅雷、idm、浏览器)下载/录制，公演回放和小部分成员直播为m3u8格式，下载/录制m3u8视频的方法参考：<a target="_blank" href="https://github.com/xsaiting/pocket48-grab/wiki/%E5%A6%82%E4%BD%95%E7%94%A8VLC%E6%89%93%E5%BC%80m3u8%E6%96%87%E4%BB%B6%E5%B9%B6%E4%B8%8B%E8%BD%BD%EF%BC%88%E5%BD%95%E5%88%B6%EF%BC%89%3F%5B%E5%90%8C%E6%A0%B7%E9%80%82%E7%94%A8%E4%BA%8E%E7%9B%B4%E6%92%AD%E5%BD%95%E5%88%B6%5D">点此</a></p>
-			</div>
-		</div>
-	</div>
-
-	<!-- 功能切换 -->
-	<div class="mdui-row">
-		<div id="c-cfunc" class="mdui-tab mdui-tab-centered mdui-color-theme-800" mdui-tab>
-			<a href="#function-cyzb" class="mdui-ripple">成员直播</a>
-			<a href="#function-gylb" class="mdui-ripple">公演录播</a>
-			<a href="#function-gyzb" class="mdui-ripple">公演直播</a>
-			<a href="#function-kdfj" class="mdui-ripple">口袋房间</a>
-		</div>
-	</div>
-
-    <!-- 表单 -->
-    <form id="c-form" action="" method="">
-	<div class="mdui-row">
-		<div class="mdui-card c-choose">
-			<div class="mdui-row">
-			<div class="mdui-col-md-5 mdui-valign">
-					截止时间：
-				<label class="mdui-radio">
-					<input id="c-ctime-now" type="radio" name="time" checked/>
-					<i class="mdui-radio-icon"></i>
-					当前
-				</label>
-				<label class="mdui-radio">
-					<input type="radio" name="time"/>
-					<i class="mdui-radio-icon"></i>
-					<label id="c-choose-time"><select class="mdui-select" id="c-year"> <option>2019</option> <option>2018</option> <option>2017</option> <option>2016</option> </select> <label>年</label> <select class="mdui-select" id="c-month"> <option>1</option> <option>2</option> <option>3</option> <option>4</option> <option>5</option> <option>6</option> <option>7</option> <option>8</option> <option>9</option> <option>10</option> <option>11</option> <option>12</option> </select> <label>月</label> <select class="mdui-select" id="c-day"> <option>1</option> <option>2</option> <option>3</option> <option>4</option> <option>5</option> <option>6</option> <option>7</option> <option>8</option> <option>9</option> <option>10</option> <option>11</option> <option>12</option> <option>13</option> <option>14</option> <option>15</option> <option>16</option> <option>17</option> <option>18</option> <option>19</option> <option>20</option> <option>21</option> <option>22</option> <option>23</option> <option>24</option> <option>25</option> <option>26</option> <option>27</option> <option>28</option> <option>29</option> <option>30</option> <option>31</option> </select> <label>日</label> <select class="mdui-select" id="c-hour"> <option>1</option> <option>2</option> <option>3</option> <option>4</option> <option>5</option> <option>6</option> <option>7</option> <option>8</option> <option>9</option> <option>10</option> <option>11</option> <option>12</option> <option>13</option> <option>14</option> <option>15</option> <option>16</option> <option>17</option> <option>18</option> <option>19</option> <option>20</option> <option>21</option> <option>22</option> <option>23</option> <option>24</option> </select> <label>时</label></label>
-				</label>
-			</div>
-			<div class="mdui-col-md-2 mdui-valign">
-					<div class="mdui-col-xs-6">
-							<label>数量上限：</label>
-					</div>
-					<div class="mdui-col-xs-6">
-						<input id="c-cnumber" class="mdui-textfield-input" type="number" name="limit" value="50">
-					</div>
-			</div>
-			<div class="mdui-col-md-5 mdui-valign">
-				<div class="mdui-col-md-4">
-                    <button type="submit" id="submit" class="mdui-btn mdui-btn-raised mdui-ripple mdui-color-theme-600">提交</button>
-                    <!-- 登录按钮 -->
-					<a id="login" style="display:none;" mdui-tooltip="{content: '登录与token'}" mdui-dialog="{target: '#c-login'}" class="mdui-btn mdui-btn-icon mdui-ripple"><i class="mdui-icon material-icons mdui-text-color-theme-accent">&#xe0da;</i></a>
-				</div>
-				<div class="mdui-col-md-4">
-					<label class="mdui-switch">
-							选择成员/团体
-							<input id="c-cmember" type="checkbox"/>
-							<i class="mdui-switch-icon"></i>
-					</label>
-				</div>
-				<div class="mdui-col-md-4">
-					<label class="mdui-switch">
-							显示所有内容
-							<input id="c-clink" type="checkbox"/>
-							<i class="mdui-switch-icon"></i>
-					</label>
-				</div>
-			</div>
-			</div>
-		</div>
-    </div>
-    </form>
-
-	<!-- 登录框 -->
-	<div class="mdui-dialog" id="c-login">
-		<div class="mdui-dialog-title">登录获取Token功能</div>
-		<div class="mdui-dialog-content">
-			<div class="row">
-				说明：【口袋房间】功能将会使用您的账号和密码获取口袋48 token(其他功能不需要)，并将其保存在您的浏览器cookies中，本程序保证不会储存您的账号、密码及token，但也不保证您输入账号和密码所带来的账户安全问题，请酌情使用此功能！
-				<b>请不要将token分享给他人！</b>
-			</div>
-			<div class="row mdui-typo">
-				<strong>【当前token】</strong><code id="c-token">示例token aE$TESTDRGWQ#CQ#$FERTB</code>
-			</div>
-			<div class="row">
-				<div class="mdui-col-md-6">
-					<div class="mdui-textfield">
-						<input id="c-login-user" class="mdui-textfield-input" type="text" placeholder="口袋48用户名(手机)"/>
-					</div>
-				</div>
-				<div class="mdui-col-md-6">
-					<div class="mdui-textfield">
-						<input id="c-login-pass" class="mdui-textfield-input" type="password" placeholder="密码"/>
-					</div>
-				</div>
-			</div>
-			<div class="row">
-				<button id="c-login-get" class="mdui-btn mdui-ripple mdui-color-theme">获取token</button>
-				<button id="c-login-del"  class="mdui-btn mdui-ripple mdui-color-theme">删除token</button>
-				<div class="mdui-card mdui-color-theme-50">
-					<div class="mdui-card-content">
-						<b>手动设置token(高级)</b>
-					<div class="mdui-textfield">
-						<input id="c-token-input" class="mdui-textfield-input" type="text" placeholder="输入Token..."/>
-					</div>
-					<button id="c-login-set"  class="mdui-btn mdui-ripple mdui-color-theme">设置token</button>
-					</div>
-				</div>
-			</div>
-		</div>
-		<div class="mdui-dialog-actions">
-			<button class="mdui-btn mdui-ripple" mdui-dialog-close>返回</button>
-		</div>
-	</div>
-
-	<!-- 高级对话框 -->
-	<div class="mdui-dialog" id="c-premium">
-		<div class="mdui-dialog-title">更多功能</div>
-		<div class="mdui-dialog-content">
-			<label class="mdui-switch">
-				开启实验性高级功能(慎用)
-				<input id="c-premium-switch" type="checkbox"/>
-				<i class="mdui-switch-icon"></i>
-			</label>
-			<div class="c-pro">
-				<div id="c-pro-progress" class="mdui-progress" style="display: none;">
-					<div class="mdui-progress-indeterminate"></div>
-				</div>
-				<button id="c-pro-checkin" class="mdui-btn mdui-ripple mdui-color-theme">口袋打卡(需要token)</button>
-				<div class="mdui-textfield">
-					<input id="c-pro-userid" class="mdui-textfield-input" type="text" placeholder="口袋id"/>
-				</div>
-				<button id="c-pro-getuserinfo" class="mdui-btn mdui-ripple mdui-color-theme">查询信息(无需token)</button>
-				<div class="mdui-divider"></div>
-				<div id="c-pro-ui" class="mdui-card">
-					<div class="mdui-card-header mdui-color-theme-50">
-					  <img class="mdui-card-header-avatar" src="./img/avatar1.jpg"/>
-					  <div class="mdui-card-header-title">示例用户pro</div>
-					  <div class="mdui-card-header-subtitle">示例用户userId: 1234</div>
-					</div>
-
-					<div class="mdui-card-content">
-						<p>等级：LV2 经验值：1234 关注：48 [星沃卡用户]</p>
-						<p>性别：男/女/保密 生日：1926-08-17/不存在 地区码：101010</p>
-						<p>首推：张三 贡献：10000</p>
-						<p>二推：李四 贡献：1000</p>
-						<p>三推：王五 贡献：100</p>
-					</div>
-
-				</div>
-			</div>
-		</div>
-		<div class="mdui-dialog-actions">
-				<button class="mdui-btn mdui-ripple" mdui-dialog-close>返回</button>
-		</div>
-	</div>
-
-	<!-- 成员/团体选择器 -->
-	<div id="c-member" style="display:none;">
-	<div class="mdui-row">
-		<div id="c-cgroup" class="mdui-tab mdui-tab-centered mdui-color-grey-50 mdui-text-color-white mdui-ripple-black">
-			<a id="c-cgroup-0" value="10" href="#group-SNH48" class="mdui-ripple">示例1</a>
-			<a id="c-cgroup-1" value="11" href="#group-BEJ48" class="mdui-ripple">示例2</a>
-			<a id="c-cgroup-2" value="12" href="#group-GNZ48" class="mdui-ripple">示例3</a>
-			<a id="c-cgroup-3" value="13" href="#group-SHY48" class="mdui-ripple">示例4</a>
-			<a id="c-cgroup-4" value="14" href="#group-CKG48" class="mdui-ripple">示例5</a>
-		</div>
-	</div>
-	<div id="c-member-choose" class="mdui-row mdui-m-b-2">
-		<div class="mdui-card">
-			<div class="mdui-card-content">
-				<label class="mdui-radio">
-					<input type="radio" name="member" value="0" checked/>
-					<i class="mdui-radio-icon"></i>
-					所有成员
-				</label>
-				<div id="c-memberchoose">
-				<div id="group-SNH48">
-					<div class="mdui-row">
-						【示例Team】
-						<label class="mdui-radio">
-								<input type="radio" name="member" value="1"/>
-								<i class="mdui-radio-icon"></i>
-								示例成员1
-						</label>
-						<label class="mdui-radio">
-								<input type="radio" name="member" value="3"/>
-								<i class="mdui-radio-icon"></i>
-								示例成员2
-						</label>
-					</div>
-				</div>
-				<div id="group-BEJ48">
-						<div class="mdui-row">
-							【示例Team2】
-							<label class="mdui-radio">
-									<input type="radio" name="member" value="1"/>
-									<i class="mdui-radio-icon"></i>
-									示例成员3
-							</label>
-							<label class="mdui-radio">
-									<input type="radio" name="member" value="3"/>
-									<i class="mdui-radio-icon"></i>
-									示例成员4
-							</label>
-							<label class="mdui-radio">
-									<input type="radio" name="member" value="1"/>
-									<i class="mdui-radio-icon"></i>
-									示例成员5
-							</label>
-						</div>
-				</div>
-			</div>
-			</div>
-		</div>
-	</div>
-	</div>
-
-	<!-- 进度条 -->
-	<div id="c-progress" class="mdui-progress" style="display: none;">
-		<div class="mdui-progress-indeterminate"></div>
-	</div>
-	<!-- 成员直播功能展示 -->
-	<div id="function-cyzb" class="mdui-row mdui">
-		<div class="mdui-table-fluid">
-			<table class="mdui-table mdui-table-hoverable c-table">
-				<thead>
-					<tr>
-						<th>成员姓名</th>
-						<th>直播副标题</th>
-						<th>类型</th>
-						<th>开播时间</th>
-						<th>配图</th>
-						<th>在线观看</th>
-						<th>视频源地址</th>
-						<th>弹幕源地址</th>
-					</tr>
-				</thead>
-				<tbody>
-					<tr>
-							<td>成员示例</td>
-							<td>副标题示例</td>
-							<td>类型示例</td>
-							<td>2018-03-29 00:44:33</td>
-							<td><img src="https://source.48.cn/mediasource/live/1522255473087c6451m61Eq.jpg" style="max-width:30px; max-height:30px"><img src="https://source.48.cn/mediasource/live/1522255473301a11dXTl29p.jpg" style="max-width:30px; max-height:30px"><img src="https://source.48.cn/mediasource/live/1522255473444m2e1o3mmH2.jpg" style="max-width:30px; max-height:30px"></td>
-							<td class="c-link"><a href="https://h5.48.cn/2017appshare/memberLiveShare/index.html?id=" target="_blank">https://h5.48.cn/2017appshare/memberLiveShare/index.html?id=</a></td>
-							<td class="c-link"><a href="https://mp4.48.cn/live/.mp4" target="_blank">https://mp4.48.cn/live/.mp4</a></td>
-							<td class="c-link"><a href="https://source.48.cn/mediasource/live/lrc/.lrc" target="_blank">https://source.48.cn/mediasource/live/lrc/.lrc</a></td>
-					</tr>
-				</tbody>
-			</table>
-		</div>
-	</div>
-
-	<!-- 公演录播功能展示 -->
-	<div id="function-gylb" class="mdui-row">
-			<div class="mdui-table-fluid">
-				<table class="mdui-table mdui-table-hoverable c-table">
-					<thead>
-						<tr>
-							<th>公演标题</th>
-							<th>副标题</th>
-							<th>类型</th>
-							<th>开播时间</th>
-							<th>配图</th>
-							<th>超清源地址</th>
-							<th>高清源地址</th>
-							<th>流畅源地址</th>
-						</tr>
-					</thead>
-					<tbody>
-						<tr>
-							<td>《公演名称》示例</td>
-							<td>副标题示例</td><td class="t4">录播</td>
-							<td>2018-03-28 19:15:00</td>
-							<td><img src="https://source.48.cn/mediasource/live/1521776670497KtDZSPEKjK.jpg" style="max-width:30px; max-height:30px"></td>
-							<td class="c-link"><a href="http://ts.snh48.com/chaoqing/9999/.m3u8?beginTime=20180328193000&amp;endTime=20180328215600" target="_blank">http://ts.snh48.com/chaoqing/9999/.m3u8?beginTime=20180328193000&amp;endTime=20180328215600</a></td>
-							<td class="c-link"><a href="http://ts.snh48.com/gaoqing/9999/.m3u8?beginTime=20180328193000&amp;endTime=20180328215600" target="_blank">http://ts.snh48.com/gaoqing/9999/.m3u8?beginTime=20180328193000&amp;endTime=20180328215600</a></td>
-							<td class="c-link"><a href="http://ts.snh48.com/liuchang/9999/.m3u8?beginTime=20180328193000&amp;endTime=20180328215600" target="_blank">http://ts.snh48.com/liuchang/9999/.m3u8?beginTime=20180328193000&amp;endTime=20180328215600</a></td>
-						</tr>
-					</tbody>
-				</table>
-			</div>
-	</div>
-	
-	<!-- 公演直播功能展示 -->
-	<div id="function-gyzb" class="mdui-row">
-			<div class="mdui-table-fluid">
-				<table class="mdui-table mdui-table-hoverable c-table">
-					<thead>
-						<tr>
-							<th>公演标题</th>
-							<th>副标题</th>
-							<th>类型</th>
-							<th>开播时间</th>
-							<th>配图</th>
-							<th>超清源地址</th>
-							<th>高清源地址</th>
-							<th>流畅源地址</th>
-						</tr>
-					</thead>
-					<tbody>
-						<tr>
-							<td>《公演名称》示例</td>
-							<td>副标题示例 直播</td><td class="t4">直播</td>
-							<td>2018-03-28 19:15:00</td>
-							<td><img src="https://source.48.cn/mediasource/live/1521776670497KtDZSPEKjK.jpg" style="max-width:30px; max-height:30px"></td>
-							<td class="c-link"><a href="http://ts.snh48.com/chaoqing/9999/.m3u8?beginTime=20180328193000&amp;endTime=20180328215600" target="_blank">http://ts.snh48.com/chaoqing/9999/.m3u8?beginTime=20180328193000&amp;endTime=20180328215600</a></td>
-							<td class="c-link"><a href="http://ts.snh48.com/gaoqing/9999/.m3u8?beginTime=20180328193000&amp;endTime=20180328215600" target="_blank">http://ts.snh48.com/gaoqing/9999/.m3u8?beginTime=20180328193000&amp;endTime=20180328215600</a></td>
-							<td class="c-link"><a href="http://ts.snh48.com/liuchang/9999/.m3u8?beginTime=20180328193000&amp;endTime=20180328215600" target="_blank">http://ts.snh48.com/liuchang/9999/.m3u8?beginTime=20180328193000&amp;endTime=20180328215600</a></td>
-						</tr>
-					</tbody>
-				</table>
-			</div>
-	</div>
-
-	<!-- 口袋房间功能展示 -->
-	<div id="function-kdfj" class="mdui-row">
-		<div class="mdui-col-sm-7">
-			<div class="mdui-card">
-				<div id="c-room-header" class="mdui-card-header mdui-color-theme-400">
-					<img id="c-room-avatar" class="mdui-card-header-avatar" src="./img/avatar1.jpg"/>
-					<div id="c-room-title" class="mdui-card-header-title">示例成员的房间</div>
-					<div id="c-room-subtitle" class="mdui-card-header-subtitle">我只是一个普通的副标题</div>
-				</div>
-				<div id="c-room-content" class="mdui-card-content c-room-content">
-					<div class="mdui-card mdui-shadow-0 c-message">
-						<div class="mdui-card-primary-subtitle">示例成员 @2018-03-29 11:00 来自iPhone 6s Plus</div>
-							我是一句话，由示例成员说的。
-					</div>
-					<div class="mdui-divider"></div>
-					<div class="mdui-card mdui-shadow-0 c-message mdui-typo">
-						<div class="mdui-card-primary-subtitle">示例成员 @2018-03-29 05:00 来自iPhone 6s Plus</div>
-						<blockquote>
-							<p>是pdk说的。</p>
-							<footer>说这句话的聚聚的id是100000<span class="c-pro"><a class="mdui-btn mdui-btn-icon mdui-ripple mdui-btn-dense c-pro-user" userid="123456"><i class="mdui-icon material-icons mdui-text-color-theme-accent">search</i></a></span></footer>
-						</blockquote>
-						pdk说的就是真的啦？你们媒体千万要注意啊，不要“见着风，是得雨”啊。接到这些消息，你媒体本身也要判断，明白意思吗？假使这些完全……无中生有的东西，你再帮他说一遍，你等于……你也等于……你也有责任吧？
-					</div>
-				</div>
-			</div>
-
-		</div>
-		<div class="mdui-col-sm-5">
-			<div class="mdui-card mdui-color-theme-50">
-			<div class="mdui-card-primary">
-				<div class="mdui-card-primary-title">
-					<div style="text-align: center;">消息列表</div>
-					
-				</div>
-			</div>
-			<ul id="c-room-board" class="mdui-list">
-				<li class="mdui-list-item">
-					<div class="mdui-list-item-avatar"><img src="./img/avatar1.jpg"/></div>
-					<div class="mdui-list-item-content">
-					<div class="mdui-list-item-title">示例聚聚1<span class="c-pro"><a class="mdui-btn mdui-btn-icon mdui-ripple mdui-btn-dense c-pro-user" userid="123456"><i class="mdui-icon material-icons mdui-text-color-theme-accent">search</i></a></span> <small>@2018-03-28 12:55:18</small></div>
-					<div class="mdui-list-item-text">Don't need translation. I know what you said, ha ha. I'm very willing to answer these questions because Barbara Walters of BBC had asked me the same question about 10 years ago and gave me a photo. And I said this young man was not arrested and did not get hurt because the tank stopped in front of him and refused to crash him. And Barbara also gave me the name of who she believed was the young man, although I may have forgotten the specific name. but I ask people who are working with the public security agencies to use all of their networks to check out where was that young man, And after a month-long investigation, I can say for sure that this young man has not been arrested.</div>
-					</div>
-				</li>
-				<li class="mdui-divider-inset mdui-m-y-0"></li>
-				<li class="mdui-list-item">
-					<div class="mdui-list-item-avatar"><img src="./img/avatar1.jpg"/></div>
-					<div class="mdui-list-item-content">
-					<div class="mdui-list-item-title">示例聚聚2</div>
-					<div class="mdui-list-item-text">Well, I know what you are driving at, but what I want to emphasize is that we fully respect people's rights to freely express their wishes and desires. But I do not favor any flagrant opposition for the government measures during an extortionary situation. The tank stopped, and did not run over the young man. Even under extortionary circumstances, our troops remain very rational and reasonable.</div>
-					</div>
-				</li>
-				<li class="mdui-divider-inset mdui-m-y-0"></li>
-				<li class="mdui-list-item">
-					<div class="mdui-list-item-avatar"><img src="./img/avatar1.jpg"/></div>
-					<div class="mdui-list-item-content">
-					<div class="mdui-list-item-title">示例聚聚3</div>
-					<div class="mdui-list-item-text">And in fact, when I was having my very first meeting with President Clinton in 1993, I quote a Chinese line, "to have a grand sight, you must scale a great height." And when vice president Gore travelled to China, I also quoted some lines from the Song Dynasty. It goes, "I do not fear the floating clouds might block my view, because I am standing on the highest peak." The United States is a much younger country compared with China, so may be you have fewer historical burdens. And your people demonstrate an innovate inspiration spirit.</div>
-					</div>
-				</li>
-			</ul>
-		</div>
-		</div>
-	</div>
-
-	<!-- footer -->
-	<div class="mdui-row mdui-m-t-3 mdui-m-b-1">
-		<p align="center">@小赛艇 xsaiting.com</p>
-	</div>
-</div>
-
-
-<script src="https://cdnjs.loli.net/ajax/libs/mdui/0.4.1/js/mdui.min.js"></script>
-<script src="./js/c.pocket48.js"></script>
-<script src="./js/c.pocket48.page.js"></script>
+<body class="mdui-appbar-with-toolbar mdui-drawer-body-left">
+  <div id="app">
+    <p>口袋48视频、房间、信息获取工具</p>
+    <p>功能:</p>
+    <ul>
+      <li>1. 成员直播/回放
+      </li>
+      <li>2. 成员直播在线观看+发送弹幕
+      </li>
+      <li>3. 公演直播/回放
+      </li>
+      <li>4. 口袋房间内容/留言
+      </li>
+      <li>5. 成员信息/昵称/缩写查询
+      </li>
+      <li>6. 口袋用户信息查询
+      </li>
+      <li>7. 口袋屏蔽词查询
+      </li>
+      <li>8. 口袋登录与签到</li>
+    </ul>
+    
+    <p><b>如果你看到此信息,说明页面正在加载中 或您的浏览器版本过低, 建议使用Chrome</b></p>
+  </div>
+  <!-- built files will be auto injected -->
+  <script src="https://cdn.bootcss.com/mdui/0.4.2/js/mdui.min.js"></script>
+  <!-- 统计代码 -->
+  <script>
+    var _hmt = _hmt || [];
+    (function () {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?5fbc77d59cf58e654ce40d4e1b7fabfa";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
 </body>
+
 </html>
