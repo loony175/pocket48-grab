@@ -55,6 +55,8 @@
 
 # 项目使用与开发
 
+
+
 本地开发
 
 ```
@@ -71,7 +73,7 @@ npm run dev
 
 ```
 npm install
-npm build
+npm run build
 ```
 
 dist/ 上传到服务器即可
