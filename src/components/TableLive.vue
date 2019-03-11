@@ -62,7 +62,7 @@ tr.c-table-live td a {
                 <el-tooltip v-if="renderStreamPath(row)!=row.streamPath" effect="light">
                   <i class="el-icon-info"/>
                   <span slot="content" style="white-space: normal;">
-                    被更正的原地址:
+                    可能错误的原地址:
                     <a :href="row.streamPath" target="_blank">{{row.streamPath}}</a>
                   </span>
                 </el-tooltip>

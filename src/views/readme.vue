@@ -56,7 +56,7 @@
         4. 下载说明：mp4格式或flv格式可以直接用下载工具(迅雷、idm、浏览器)下载/录制，公演回放和小部分成员直播为m3u8格式，下载/录制m3u8视频的方法参考：
         <a
           target="_blank"
-          href="https://github.com/xsaiting/pocket48-grab/wiki/%E5%A6%82%E4%BD%95%E7%94%A8VLC%E6%89%93%E5%BC%80m3u8%E6%96%87%E4%BB%B6%E5%B9%B6%E4%B8%8B%E8%BD%BD%EF%BC%88%E5%BD%95%E5%88%B6%EF%BC%89%3F%5B%E5%90%8C%E6%A0%B7%E9%80%82%E7%94%A8%E4%BA%8E%E7%9B%B4%E6%92%AD%E5%BD%95%E5%88%B6%5D"
+          href="https://github.com/xsaiting/pocket48-grab/wiki/%E5%A6%82%E4%BD%95%E7%94%A8VLC%E6%89%93%E5%BC%80m3u8%E6%96%87%E4%BB%B6%E5%B9%B6%E4%B8%8B%E8%BD%BD%EF%BC%88%E5%BD%95%E5%88%B6%EF%BC%89%3F"
         >点此</a>
       </p>
       <p>5. 口袋房间功能需要token，可通过账号密码获取，本程序保证不会储存您的账号、密码及token，但也不保证您的账户安全问题，建议使用小号</p>
