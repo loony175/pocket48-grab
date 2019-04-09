@@ -310,38 +310,39 @@ GLOBAL.renderColorG = function(groupId) {
  */
 GLOBAL.sta = function(name, data) {
   if (_hmt) {
-    /* 百度自定义统计
-    _hmt.push(['_setCustomVar', index, name, value, opt_scope]);
+    /* 百度事件统计
+    _hmt.push(['_trackEvent', category, action, opt_label, opt_value]);
     */
-    var index, value, opt_scope;
+    var index, value, opt_value;
     if (name == "liveREQ") {
       index = 1;
       value = `${data.groupId}(${GLOBAL.groupId2name(data.groupId)});${
         data.memberId
       }(${GLOBAL.memberId2name(data.memberId)});${data.lastTime};${data.limit}`;
-      opt_scope = 3;
+      opt_value = data.memberId;
     }
     if (name == "openREQ") {
       index = 2;
       value = `${data.groupId}(${GLOBAL.groupId2name(data.groupId)});${
         data.isReview
       };${data.lastTime};${data.limit}`;
-      opt_scope = 3;
+      opt_value = data.groupId;
     }
     if (name == "roomREQ") {
       index = 3;
       value = `${data.memberId}(${GLOBAL.memberId2name(data.memberId)});${
         data.lastTime
       };${data.limit}`;
-      opt_scope = 3;
+      opt_value = data.memberId;
     }
     if (name == 'loginRES') {
       index = 4;
       value = `${data.content.userInfo.userId}(${data.content.userInfo.nickName});${data.content.userInfo.experience}`;
-      opt_scope = 2;
+      opt_value = data.content.userInfo.userId;
     }
     //console.log(index, name, value, opt_scope);
-    _hmt.push(["_setCustomVar", index, name, value, opt_scope]);
+    //_hmt.push(['_trackEvent', category, action, opt_label, opt_value]);
+    _hmt.push(['_trackEvent', name, 'R', value, opt_value]);
   }
 };
 
