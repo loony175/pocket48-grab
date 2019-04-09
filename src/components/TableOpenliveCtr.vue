@@ -55,6 +55,8 @@ export default {
         limit: 50
       }
     ) {
+      /* 统计openlive */
+      this.GLOBAL.sta('openREQ',req);
       /* 请求 获取公演 */
       axios({
         url: this.GLOBAL.api.liveOpen,

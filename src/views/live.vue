@@ -11,7 +11,7 @@
     <cDivider/>
 
     <TableLiveCtr ref="TableLiveCtr"/>
-    <cDivider/>
+    
     <el-alert v-if="GLOBAL.debug" type="success" :closable="false">
       最终提交:
       timeChoose: {{ timeChoose }}

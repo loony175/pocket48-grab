@@ -102,6 +102,8 @@ export default {
         });
     },
     upToken(res, req) {
+      /* 统计 登录用户 */
+      this.GLOBAL.sta('loginRES',res);
       /* 回调 登录获取token */
       this.account = res.content;
       this.upAccount();

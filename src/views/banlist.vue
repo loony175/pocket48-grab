@@ -34,7 +34,7 @@
 </template>
 <script>
 import cDivider from "@/components/cDivider";
-import banlist from "static/banlist.js";
+import banlist from "static/js/banlist.js";
 export default {
   name: "banlist",
   data() {

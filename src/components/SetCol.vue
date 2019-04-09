@@ -11,14 +11,16 @@ export default {
   name: "SetCol",
   data() {
     return {
-      isCol: this.GLOBAL.config.isCol
+      sharedState: {GLOBAL: this.GLOBAL}
     };
   },
-  methods: {},
-  watch: {
+  computed: {
     isCol: {
-      handler: function(newVal, oldVal) {
-        this.$set(this.GLOBAL.config, "isCol", newVal);
+      get(){
+        return this.sharedState.GLOBAL.config.isCol
+      },
+      set(newVal) {
+        this.sharedState.GLOBAL.config.isCol = newVal;
         this.GLOBAL.saveConfig();
       }
     }

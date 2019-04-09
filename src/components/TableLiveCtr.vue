@@ -6,13 +6,13 @@
     <!-- Live表格 -->
     <div v-show="liveList.length>0&&dLive">
       <h3>直播</h3>
-      <TableLive :list="liveList" :isCol="isCol"/>
+      <TableLive :list="liveList" :isLive="true" :isCol="GLOBAL.config.isCol"/>
     </div>
 
     <!-- Review表格 -->
     <div v-show="reviewList.length>0&&dReview">
       <h3>录播</h3>
-      <TableLive :list="reviewList" :isCol="isCol"/>
+      <TableLive :list="reviewList" :isLive="false" :isCol="GLOBAL.config.isCol"/>
     </div>
   </div>
 </template>
@@ -26,10 +26,8 @@ export default {
   data() {
     return {
       reviewList: [],
-      liveList: [],
+      liveList: []
     };
-  },computed:{
-    isCol(){return this.GLOBAL.config.isCol}
   },
   props: {
     dLive: {
@@ -52,6 +50,8 @@ export default {
         groupId: 0
       }
     ) {
+      /* 统计live */
+      this.GLOBAL.sta('liveREQ',req);
       /* 提交表单 获取直播 */
       axios({
         url: this.GLOBAL.api.live,

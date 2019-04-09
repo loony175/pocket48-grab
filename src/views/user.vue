@@ -11,6 +11,8 @@
       </el-form-item>
     </el-form>
     <cDivider/>
+    
+    <!-- 用户信息 -->
     <InfoUser :item="userInfo"/>
   </div>
 </template>

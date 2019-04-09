@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>xxx的直播间 - 成员直播播放器</title>
+    <link rel="stylesheet" href="./css/liveplay.css">
+</head>
+<body>
+    <div class="c-container">
+        <div class="c-container-in">
+                <div class="c-content">
+                        <div id="c-video">
+                            <video id="c-flv-player" autoplay="autoplay" controls="controls">
+                            
+                            </video>
+                        </div>
+                        <div id="c-danmu">
+                            <div class="c-danmu-content" timestamp="1543376727919" style="display:none">
+                                <span class="c-danmu-text"><b>Test</b>
+                                The quick fox jumps over a lazy dog.</span>
+                            </div>
+                        </div>
+                        <div id="c-send">
+                            <form style= "height: 100%;" onsubmit="return c.pocket48.liveplay.sendSubmit();">
+                                <div class="c-send-name">
+                                    <input type="text" id="c-name" placeholder="输入id..."></input>
+                                </div>
+                                <div class="c-send-text">
+                                    <input type="text" id="c-text" placeholder="文明用语...回车发送"></input>
+                                </div>
+                                <div class="c-send-submit">
+                                    <input type="submit" id="c-submit"></input>
+                                </div>
+                            </form>
+                        </div>
+                    </div>  
+        </div>
+    </div>
+    
+    <script src="https://cdn.bootcss.com/flv.js/1.4.2/flv.min.js"></script>
+    <script src="https://live.48.cn/Public/js/Web_SDK_Base_v2.8.0.js"></script>
+    <script src="https://live.48.cn/Public/js/Web_SDK_NIM_v2.8.0.js"></script>
+    <script src="https://live.48.cn/Public/js/Web_SDK_Chatroom_v2.8.0.js"></script>
+    <script src="./js/c.pocket48.cr.js"></script>
+    <script src="./js/c.pocket48.liveplay.js"></script>
+</body>
+</html>

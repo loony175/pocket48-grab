@@ -21,11 +21,15 @@ tr.c-table-live td,
 tr.c-table-live td a {
   color: var(--teamcolor);
 }
+div.c-is-col td.c-switch-width {
+  max-width: 10rem;
+}
 </style>
+
 
 <template>
   <div class="mdui-table-fluid mdui-shadow-0">
-    <div class="c-table">
+    <div class="c-table" :class="{'c-is-col': isCol}">
       <table class="mdui-table mdui-table-hoverable">
         <thead>
           <tr>
@@ -47,17 +51,24 @@ tr.c-table-live td a {
             class="c-table-live"
           >
             <td>{{ GLOBAL.memberId2name(row.memberId) }}</td>
-            <td class="c-cwidth">{{ row.subTitle }}</td>
-            <td>{{ row.liveType == 1 ? "视频" : "电台" }}</td>
-            <td>{{ new Date(row.startTime).Format("yyyy-MM-dd HH:mm:ss") }}</td>
-            <td :class="{'c-cwidth': isCol}">
-              <img :src="GLOBAL.getPicPath(pic)" v-for="pic in row.picPath.split(',')">
+            <td class="c-switch-width">{{ row.subTitle }}</td>
+            <td>
+              {{ row.liveType == 1 ? "视频" : "电台" }}
+              <span v-if="isLive">
+                <a href @click.prevent="livePlay(row)">
+                  <i class="el-icon-view"></i>
+                </a>
+              </span>
             </td>
-            <td :class="{'c-cwidth': isCol}">
+            <td>{{ new Date(row.startTime).Format("yyyy-MM-dd HH:mm:ss") }}</td>
+            <td class="c-switch-width">
+              <img v-lazy="GLOBAL.getPicPath(pic)" v-for="pic in row.picPath.split(',')">
+            </td>
+            <td class="c-switch-width">
               <a :href="GLOBAL.liveUrl + row.liveId" target="_blank">{{GLOBAL.liveUrl + row.liveId}}</a>
             </td>
-            <td :class="{'c-cwidth': isCol}">
-              <!-- 被更正时，显示被更正的原地址 -->
+            <td class="c-switch-width">
+              <!-- 被更正时，可能错误的原地址 -->
               <div>
                 <el-tooltip v-if="renderStreamPath(row)!=row.streamPath" effect="light">
                   <i class="el-icon-info"/>
@@ -69,8 +80,11 @@ tr.c-table-live td a {
                 <a :href="renderStreamPath(row)" target="_blank">{{renderStreamPath(row)}}</a>
               </div>
             </td>
-            <td :class="{'c-cwidth': isCol}">
-              <a :href="GLOBAL.getPicPath(row.lrcPath)" target="_blank">{{GLOBAL.getPicPath(row.lrcPath)}}</a>
+            <td class="c-switch-width">
+              <a
+                :href="GLOBAL.getPicPath(row.lrcPath)"
+                target="_blank"
+              >{{GLOBAL.getPicPath(row.lrcPath)}}</a>
             </td>
           </tr>
         </tbody>
@@ -83,11 +97,31 @@ tr.c-table-live td a {
 export default {
   data() {
     return {
-      tableData: []
+      tableData: [],
+      isColNative: true,
     };
   },
 
   methods: {
+    livePlay(row) {
+      var live = {
+        type: row.liveType, //1视频 2电台
+        room: row.roomId, //roomId
+        url: this.renderStreamPath(row), //flvUrl
+        name: row.title, //直播间名
+        isLive: true //是否直播
+      };
+      console.log("liveplay@TableLive.vue", live);
+      var url = `./static/liveplay.html?${window.btoa(
+        encodeURIComponent(JSON.stringify(live))
+      )}`;
+      window.open(
+        url,
+        "_blank",
+        "height=660, width=375, top=0, left=0, toolbar=no, menubar=no, scrollbars=no, resizable=no,location=no, status=no"
+      );
+    },
+
     renderStreamPath(row) {
       var dateObj = new Date(row.startTime);
       var actualDate = `${dateObj.getFullYear()}${dateObj.getMonth() +
@@ -126,10 +160,11 @@ export default {
   },
   props: {
     list: Array, //列表
-    isCol: Boolean //是否收起
+    isCol: Boolean, //是否收起
+    isLive: Boolean //是否为直播
   },
   updated() {
-    this.GLOBAL.mdui.updateTables();
+    //this.GLOBAL.mdui.updateTables();
   }
 };
 </script>

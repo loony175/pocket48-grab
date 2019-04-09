@@ -59,6 +59,8 @@ export default {
   },
   methods: {
     getAll(req = { lastTime: 1532695747872, limit: 20, memberId: 5777248 }) {
+      /* 统计room */
+      this.GLOBAL.sta('roomREQ',req);
       this.getInfo({ friends: [req.memberId] }, (res2, req2) => {
         if (this.dMain) {
           this.getMain({

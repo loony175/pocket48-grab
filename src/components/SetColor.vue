@@ -11,13 +11,15 @@ export default {
   name: "SetColor",
   data() {
     return {
-      isColor: this.GLOBAL.config.isColor
+      sharedState: {GLOBAL: this.GLOBAL}
     };
   },
-  methods: {},
-  watch: {
+  computed: {
     isColor: {
-      handler: function(newVal, oldVal) {
+      get(){
+        return this.sharedState.GLOBAL.config.isColor
+      },
+      set(newVal) {
         this.GLOBAL.config.isColor = newVal;
         this.GLOBAL.saveConfig();
       }

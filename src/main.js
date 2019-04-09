@@ -4,6 +4,10 @@ import Vue from 'vue'
 import App from './App'
 import router from './router'
 
+/* 延迟加载图片 */
+import VueLazyload from 'vue-lazyload'
+Vue.use(VueLazyload)
+
 /* element-ui */
 import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'

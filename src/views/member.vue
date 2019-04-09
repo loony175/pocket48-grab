@@ -11,16 +11,22 @@
     <!-- 成员选择器 -->
     <ChooseMember ref="chooseMember" @changemember="change"/>
     <el-button type="primary" @click="submit">查询近期房间/录播</el-button>
+
     <cDivider/>
+
+    <!-- 成员信息 -->
     <InfoMember :member-id="memberId"/>
-    <cDivider/>
+    <cDivider v-show="memberId"/>
+
     <el-row :gutter="10">
       <el-col :xs="24" :md="12">
+        <!-- 房间 -->
         <RoomCtr ref="RoomCtr" :d-board="false"/>
       </el-col>
       <el-col :xs="24" :md="12">
+        <!-- 录播 -->
         <div class="c-layout-p">
-        <TableLiveCtr :d-live="false" ref="TableLiveCtr"/>
+          <TableLiveCtr :d-live="false" ref="TableLiveCtr"/>
         </div>
       </el-col>
       <!-- 以后加入: 动态 -->

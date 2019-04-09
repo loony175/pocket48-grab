@@ -16,7 +16,7 @@
       <img src="static/img/xsaiting.jpg" style="width: 80px" />
       <h3>点击左侧菜单来使用...</h3>
       <p>
-        <span>当前版本: v{{ GLOBAL.version }}</span>
+        <span>当前版本: v{{ sharedState.version }}</span>
         <span>
           稳定版:
           <a href="https://xsaiting.com/pocket48">点此</a>
@@ -68,6 +68,11 @@
 import cDivider from "@/components/cDivider";
 export default {
   name: "readme",
+  data() {
+    return {
+      sharedState: this.GLOBAL
+    }
+  },
   components: { cDivider }
 };
 </script>
