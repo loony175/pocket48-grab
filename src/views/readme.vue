@@ -31,7 +31,7 @@
         <span>联系方式: xsaiting@qq.com</span>
         <span>
           GitHub项目:
-          <a target="_blank" href="http://github.com/xsaiting/pocket48">pocket48-grab</a>
+          <a target="_blank" href="http://github.com/xsaiting/pocket48-grab">pocket48-grab</a>
         </span>
       </p>
     <cDivider/>
