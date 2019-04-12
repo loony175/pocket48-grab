@@ -8,6 +8,7 @@
   display: flex;
   align-items: center;
   flex: 0 1;
+  max-width: 40vw;
 }
 .c-member-avatar img {
   max-height: 18rem;
