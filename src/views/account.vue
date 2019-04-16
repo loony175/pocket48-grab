@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h1># 账户</h1>
+    <h1># 账户 (暂不可用)</h1>
     <cDivider/>
     <div>
       <p>

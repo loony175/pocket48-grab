@@ -29,42 +29,42 @@ export default {
     },
     data() {
       var info = this.info;
-      var data = [];
+      var data = [{value: 0, label: '全团'}];
       try {
         /* group */
-        info.group.forEach(group => {
+        info.groupInfo.forEach(group => {
           data.push({
-            value: group.group_id,
-            label: group.group_name,
+            value: group.groupId,
+            label: group.groupName,
             children: (function() {
               /* team */
               var teams = [];
-              info.team.forEach(team => {
-                if (team.group_id == group.group_id) {
+              info.teamInfo.forEach(team => {
+                if (team.groupId == group.groupId) {
                   teams.push({
-                    value: team.team_id,
-                    label: team.team_name,
+                    value: team.teamId,
+                    label: team.teamName,
                     children: (function() {
                       /* member */
                       var members = [];
-                      info.memberInfo.forEach(member => {
+                      info.starInfo.forEach(member => {
                         if (
-                          member.team == team.team_id &&
-                          member.city == group.group_id
+                          member.teamId == team.teamId &&
+                          member.groupId == group.groupId
                         ) {
                           members.push({
-                            value: member.member_id,
+                            value: member.userId,
                             label:
-                              member.real_name +
-                              " " +
-                              (function() {
+                              member.realName +
+                              " " + member.abbr
+/*                               (function() {
                                 var t = member.pinyin.match(/[A-Z]/g);
                                 if (t) {
                                   return t.join("").toLowerCase();
                                 } else {
                                   return "";
                                 }
-                              })()
+                              })() */
                           });
                         }
                       });

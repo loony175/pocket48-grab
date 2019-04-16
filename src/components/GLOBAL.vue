@@ -2,7 +2,7 @@
 <script>
 import axios from "axios";
 var GLOBAL = {};
-GLOBAL.version = "2.6.0.10";
+GLOBAL.version = "2.6.1.0 抢先版";
 GLOBAL.debug = false;
 
 //配置缓存
@@ -12,8 +12,10 @@ GLOBAL.debug = false;
     isCol: true, //是否收起表格
     isColor: true, //是否开启队伍颜色
     isAutoSync: true, //是否自动更新数据
-    version: GLOBAL.version //版本号
+    version: GLOBAL.version, //版本号
+    isShowTip: false //是否查看过提示
   };
+  // console.log('init')
 })();
 (GLOBAL.readConfig = function() {
   try {
@@ -30,6 +32,7 @@ GLOBAL.debug = false;
   if (GLOBAL.config.version != GLOBAL.version) {
     GLOBAL.configInit();
   }
+  // console.log(GLOBAL.config);
 })();
 GLOBAL.saveConfig = function() {
   localStorage.setItem("config", JSON.stringify(GLOBAL.config));
@@ -54,7 +57,7 @@ GLOBAL.saveConfig = function() {
     GLOBAL.account.token == "" ||
     typeof GLOBAL.account.token === "undefined"
   ) {
-    GLOBAL.configInit();
+    GLOBAL.accountInit();
   }
 })();
 GLOBAL.accountSave = function() {
@@ -81,31 +84,36 @@ GLOBAL.api = {
 
 //生产环境api
 GLOBAL.apiProd = {
-  sync: "./static/proxy.php?f=sync",
-  live: "./static/proxy.php?f=live",
-  liveOpen: "./static/proxy.php?f=liveOpen",
-  liveInfo: "./static/proxy.php?f=liveInfo",
-  login: "./static/proxy.php?f=login",
-  roomId: "./static/proxy.php?f=roomId",
-  roomMain: "./static/proxy.php?f=roomMain",
-  roomBoard: "./static/proxy.php?f=roomBoard",
-  flip: "./static/proxy.php?f=flip",
-  checkIn: "./static/proxy.php?f=checkIn",
-  userInfo: "./static/proxy.php?f=userInfo&i="
+  update: "http://xsaiting.cn/pocket48/proxydev.php?f=update",
+  livelist: "http://xsaiting.cn/pocket48/proxydev.php?f=livelist",
+  openlivelist: "http://xsaiting.cn/pocket48/proxydev.php?f=openlivelist",
+  liveone: "http://xsaiting.cn/pocket48/proxydev.php?f=liveone",
+  openliveone: "http://xsaiting.cn/pocket48/proxydev.php?f=openliveone",
+
+  flip: "http://xsaiting.cn/pocket48/proxydev.php?f=flip",
+  roomid: "http://xsaiting.cn/pocket48/proxydev.php?f=roomid",
+  roomlio: "http://xsaiting.cn/pocket48/proxydev.php?f=roomlio",
+  roomlia: "http://xsaiting.cn/pocket48/proxydev.php?f=roomlia",
+
+  login: "http://xsaiting.cn/pocket48/proxydev.php?f=login",
+  userhome: "http://xsaiting.cn/pocket48/proxydev.php?f=userhome"
 };
+
 //开发环境api
 GLOBAL.apiDev = {
-  sync: "http://xsaiting.cn/pocket48/proxy.php?f=sync",
-  live: "http://xsaiting.cn/pocket48/proxy.php?f=live",
-  liveOpen: "http://xsaiting.cn/pocket48/proxy.php?f=liveOpen",
-  liveInfo: "http://xsaiting.cn/pocket48/proxy.php?f=liveInfo",
-  login: "http://xsaiting.cn/pocket48/proxy.php?f=login",
-  roomId: "http://xsaiting.cn/pocket48/proxy.php?f=roomId",
-  roomMain: "http://xsaiting.cn/pocket48/proxy.php?f=roomMain",
-  roomBoard: "http://xsaiting.cn/pocket48/proxy.php?f=roomBoard",
-  flip: "http://xsaiting.cn/pocket48/proxy.php?f=flip",
-  checkIn: "http://xsaiting.cn/pocket48/proxy.php?f=checkIn",
-  userInfo: "http://xsaiting.cn/pocket48/proxy.php?f=userInfo&i="
+  update: "http://xsaiting.cn/pocket48/proxydev.php?f=update",
+  livelist: "http://xsaiting.cn/pocket48/proxydev.php?f=livelist",
+  openlivelist: "http://xsaiting.cn/pocket48/proxydev.php?f=openlivelist",
+  liveone: "http://xsaiting.cn/pocket48/proxydev.php?f=liveone",
+  openliveone: "http://xsaiting.cn/pocket48/proxydev.php?f=openliveone",
+
+  flip: "http://xsaiting.cn/pocket48/proxydev.php?f=flip",
+  roomid: "http://xsaiting.cn/pocket48/proxydev.php?f=roomid",
+  roomlio: "http://xsaiting.cn/pocket48/proxydev.php?f=roomlio",
+  roomlia: "http://xsaiting.cn/pocket48/proxydev.php?f=roomlia",
+
+  login: "http://xsaiting.cn/pocket48/proxydev.php?f=login",
+  userhome: "http://xsaiting.cn/pocket48/proxydev.php?f=userhome"
 };
 
 //使用代理
@@ -117,11 +125,9 @@ if (process.env.NODE_ENV == "development") {
 
 //headers设置
 GLOBAL.headers = function() {
-  this.version = "5.3.2";
-  this.os = "Android";
-  this.build = 0;
-  this.token = GLOBAL.account.token;
-  this.imei = Math.ceil(Math.random() * 1e6);
+  if (GLOBAL.account.token) {
+    this.token = GLOBAL.account.token;
+  }
 };
 
 //基本信息缓存
@@ -142,23 +148,10 @@ GLOBAL.saveInfo = function() {
 };
 //更新数据
 GLOBAL.getInfo = function() {
-  var req = {
-    videoTypeUtime: "2010-03-24 15:59:11",
-    musicAlbumUtime: "2010-04-18 14:45:37",
-    functionUtime: "2010-10-17 15:00:00",
-    groupUtime: "2010-10-17 17:27:00",
-    memberInfoUtime: "2010-10-20 11:55:09",
-    talkUtime: "2010-05-05 18:04:52",
-    videoUtime: "2010-05-17 18:36:32",
-    musicUtime: "2010-05-05 15:56:11",
-    urlUtime: "2010-07-19 12:10:59",
-    teamUtime: "2010-10-20 10:39:00",
-    memberPropertyUtime: "2010-02-20 18:57:48",
-    periodUtime: "2010-10-14 14:45:00"
-  };
-  /* 请求 获取同步信息 */
+  var req = {};
+  /* 请求 获取同步信息 update */
   axios({
-    url: GLOBAL.api.sync,
+    url: GLOBAL.api.update,
     method: "post",
     headers: new GLOBAL.headers(),
     data: req
@@ -182,10 +175,10 @@ if (GLOBAL.config.isAutoSync) {
 /**
  * 成员id转成员名
  */
-GLOBAL.memberId2name = function(memberId) {
-  for (var i in GLOBAL.info.memberInfo) {
-    if (GLOBAL.info.memberInfo[i].member_id == memberId) {
-      return GLOBAL.info.memberInfo[i].real_name;
+GLOBAL.memberId2name = function(userId) {
+  for (var i in GLOBAL.info.starInfo) {
+    if (GLOBAL.info.starInfo[i].userId == userId) {
+      return GLOBAL.info.starInfo[i].realName;
     }
   }
   return false;
@@ -194,9 +187,9 @@ GLOBAL.memberId2name = function(memberId) {
  * 队伍id转队伍名
  */
 GLOBAL.teamId2name = function(teamId) {
-  for (var i in GLOBAL.info.team) {
-    if (GLOBAL.info.team[i].team_id == teamId) {
-      return GLOBAL.info.team[i].team_name;
+  for (var i in GLOBAL.info.teamInfo) {
+    if (GLOBAL.info.teamInfo[i].teamId == teamId) {
+      return GLOBAL.info.teamInfo[i].teamName;
     }
   }
   return false;
@@ -205,9 +198,9 @@ GLOBAL.teamId2name = function(teamId) {
  * 团体id转团体名
  */
 GLOBAL.groupId2name = function(groupId) {
-  for (var i in GLOBAL.info.group) {
-    if (GLOBAL.info.group[i].group_id == groupId) {
-      return GLOBAL.info.group[i].group_name;
+  for (var i in GLOBAL.info.groupInfo) {
+    if (GLOBAL.info.groupInfo[i].groupId == groupId) {
+      return GLOBAL.info.groupInfo[i].groupName;
     }
   }
   return false;
@@ -216,9 +209,9 @@ GLOBAL.groupId2name = function(groupId) {
  * 期数id转期数名
  */
 GLOBAL.periodId2name = function(periodId) {
-  for (var i in GLOBAL.info.period) {
-    if (GLOBAL.info.period[i].period_id == periodId) {
-      return GLOBAL.info.period[i].period_name;
+  for (var i in GLOBAL.info.periodInfo) {
+    if (GLOBAL.info.periodInfo[i].periodId == periodId) {
+      return GLOBAL.info.periodInfo[i].periodName;
     }
   }
   return false;
@@ -227,10 +220,10 @@ GLOBAL.periodId2name = function(periodId) {
 /**
  * 成员id转队伍id
  */
-GLOBAL.memberId2teamId = function(memberId) {
-  for (var i in GLOBAL.info.memberInfo) {
-    if (GLOBAL.info.memberInfo[i].member_id == memberId) {
-      return GLOBAL.info.memberInfo[i].team;
+GLOBAL.memberId2teamId = function(userId) {
+  for (var i in GLOBAL.info.starInfo) {
+    if (GLOBAL.info.starInfo[i].userId == userId) {
+      return GLOBAL.info.starInfo[i].teamId;
     }
   }
   return false;
@@ -240,12 +233,12 @@ GLOBAL.memberId2teamId = function(memberId) {
  * 团体id转首个队伍id
  */
 GLOBAL.groupId2firstTeamId = function(groupId) {
-  for (var i in GLOBAL.info.team) {
+  for (var i in GLOBAL.info.teamInfo) {
     if (
-      GLOBAL.info.team[i].team_id != 0 &&
-      GLOBAL.info.team[i].group_id == groupId
+      GLOBAL.info.teamInfo[i].teamId != 0 &&
+      GLOBAL.info.teamInfo[i].groupId == groupId
     ) {
-      return GLOBAL.info.team[i].team_id;
+      return GLOBAL.info.teamInfo[i].teamId;
     }
   }
   return 0;
@@ -255,9 +248,9 @@ GLOBAL.groupId2firstTeamId = function(groupId) {
  * 队伍id转颜色
  */
 GLOBAL.teamId2color = function(teamId) {
-  for (var i in GLOBAL.info.team) {
-    if (GLOBAL.info.team[i].team_id == teamId) {
-      return GLOBAL.info.team[i].color;
+  for (var i in GLOBAL.info.teamInfo) {
+    if (GLOBAL.info.teamInfo[i].teamId == teamId) {
+      return GLOBAL.info.teamInfo[i].teamColor;
     }
   }
   return false;
@@ -355,7 +348,7 @@ GLOBAL.sta = function(name, data) {
 };
 
 GLOBAL.source = "https://source.48.cn"; //图片及资源前缀
-GLOBAL.liveUrl = "https://h5.48.cn/2017appshare/memberLiveShare/index.html?id="; //直播在线观看前缀
+GLOBAL.liveUrl = "https://h5.48.cn/2019appshare/liveshare/?id="; //直播在线观看前缀
 GLOBAL.getPicPath = function(picUrl) {
   return (picUrl.slice(0, 4) == "http" ? "" : GLOBAL.source) + picUrl;
 };

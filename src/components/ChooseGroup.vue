@@ -18,10 +18,10 @@ export default {
       var data = [];
       try {
         /* group */
-        info.group.forEach(group => {
+        info.groupInfo.forEach(group => {
           data.push({
-            value: group.group_id,
-            label: group.group_name
+            value: group.groupId,
+            label: group.groupName
           });
         });
       } catch (e) {

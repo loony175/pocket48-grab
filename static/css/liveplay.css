@@ -79,6 +79,9 @@ video#c-flv-player {
     width: 20%;
     height: 100%;
 }
+.c-danmu-top {
+    color: #ff9100
+}
 input {
     height: 80%;
     max-width: 90%;

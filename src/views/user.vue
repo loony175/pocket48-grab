@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h1># 用户查询</h1>
+    <h1># 用户查询 (暂不可用)</h1>
     <cDivider/>
     <el-form :style="{display:'inline-block'}" @submit.native.prevent="submit" :inline="true">
       <el-form-item>

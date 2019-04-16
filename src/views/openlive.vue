@@ -14,13 +14,13 @@
 
     <el-alert v-if="GLOBAL.debug" type="success" :closable="false">
       最终提交:
-      timeChoose: {{ timeChoose }}
+      next: {{ next }}
       <br>
-      timestring: {{ timestring }}
-      <br>
-      limit: {{ limit }}
+      teamId: {{ teamId }}
       <br>
       groupId: {{ groupId }}
+      <br>
+      memberId: {{ memberId }}
       <br>
     </el-alert>
   </div>
@@ -34,10 +34,10 @@ export default {
   name: "live",
   data() {
     return {
-      timeChoose: "0",
-      timestring: 0,
-      limit: 50,
-      groupId: 0
+      next: "",
+      groupId: 0,
+      teamId: 0,
+      memberId: 0,
     };
   },
   methods: {
@@ -48,27 +48,23 @@ export default {
           ? this.$refs.choosePram.time.getTime()
           : 0;
       this.limit = this.$refs.choosePram.limit;
+      this.teamId = 0;
+      this.memberId = 0;
       this.groupId = this.$refs.chooseGroup.value || 0;
       /* 向TableOpenliveCtr组件提交表单 */
       this.$refs.TableOpenliveCtr.getLive({
-        isReview: 1,
-        groupId: this.groupId,
-        userId: 0,
-        lastGroupId: 0,
-        lastTime: this.timestring,
-        type: 0,
-        giftUpdTime: 1498211389003,
-        limit: this.limit
+        next: this.next,
+        record: "false",
+        teamId: this.teamId,
+        userId: this.memberId,
+        groupId: this.groupId
       });
       this.$refs.TableOpenliveCtr.getLive({
-        isReview: 0,
-        groupId: this.groupId,
-        userId: 0,
-        lastGroupId: 0,
-        lastTime: 0,
-        type: 0,
-        giftUpdTime: 1498211389003,
-        limit: this.limit
+        next: this.next,
+        record: "true",
+        teamId: this.teamId,
+        userId: this.memberId,
+        groupId: this.groupId
       });
     }
   },

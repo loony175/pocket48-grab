@@ -13,6 +13,7 @@
     <div v-show="reviewList.length>0&&dReview">
       <h3>录播</h3>
       <TableLive :list="reviewList" :isLive="false" :isCol="GLOBAL.config.isCol"/>
+      <el-button v-show="reviewNext" @click="getLiveMore(true)" size="small">加载更多</el-button>
     </div>
   </div>
 </template>
@@ -26,7 +27,11 @@ export default {
   data() {
     return {
       reviewList: [],
-      liveList: []
+      liveList: [],
+      reviewNext: "",
+      liveNext: "",
+      reviewReq: {},
+      liveReq: {}
     };
   },
   props: {
@@ -44,20 +49,33 @@ export default {
   methods: {
     getLive(
       req = {
-        lastTime: 0,
-        limit: 50,
-        memberId: 0,
-        groupId: 0
+        next: "0",
+        record: "false",
+        groupId: "0",
+        teamId: "0",
+        userId: "0",
+        loadMore: true
       }
     ) {
       /* 统计live */
-      this.GLOBAL.sta('liveREQ',req);
+      //this.GLOBAL.sta("liveREQ", req);
       /* 提交表单 获取直播 */
+      if (req.record == "false" || req.record == false) {
+        this.liveReq = req;
+      } else {
+        this.reviewReq = req;
+      }
       axios({
-        url: this.GLOBAL.api.live,
+        url: this.GLOBAL.api.livelist,
         method: "post",
         headers: new this.GLOBAL.headers(),
-        data: req
+        data: {
+          next: req.next || "0" + "",
+          record: req.record || "false" + "",
+          groupId: req.groupId || "0" + "",
+          teamId: req.teamId || "0" + "",
+          userId: req.userId || "0" + ""
+        }
       })
         .then(response => {
           this.upLive(response.data, req);
@@ -68,9 +86,81 @@ export default {
     },
     upLive(res, req) {
       /* 获取的回调 */
-      this.reviewList = res.content.reviewList;
-      this.liveList = res.content.liveList;
+      /* 插入表格 */
+      //判断种类
+      if (req.record == "true" || req.record == true) {
+        //录播
+        //判断是否加载更多
+        if (req.loadMore) {
+          this.reviewList = this.reviewList.concat(res.content.liveList);
+        } else {
+          this.reviewList = res.content.liveList;
+        }
+        this.reviewNext = res.content.next;
+      } else {
+        //直播
+        //判断是否加载更多
+        if (req.loadMore) {
+          this.liveList = this.liveList.concat(res.content.liveList);
+        } else {
+          this.liveList = res.content.liveList;
+        }
+      }
+      /* 获取详情(roomId和streamPath) */
+      res.content.liveList.forEach(row => {
+        this.getLiveOne({ liveId: row.liveId });
+      });
       console.log(res, req);
+    },
+    getLiveOne(
+      req = {
+        liveId: "324482120818692098"
+      }
+    ) {
+      axios({
+        url: this.GLOBAL.api.liveone,
+        method: "post",
+        headers: {},
+        data: {
+          liveId: req.liveId || "0" + ""
+        }
+      })
+        .then(response => {
+          this.upLiveOne(response.data, req);
+        })
+        .catch(e => {
+          console.log(e);
+        });
+    },
+    upLiveOne(res, req) {
+      console.debug(res, req);
+      //将单条数据添加至list中
+      for (var i in this.liveList) {
+        if (this.liveList[i].liveId == res.content.liveId) {
+          this.liveList[i].playStreamPath = res.content.playStreamPath;
+          this.liveList[i].msgFilePath = res.content.msgFilePath;
+          this.$set(this.liveList[i], "roomId", res.content.roomId);
+          return;
+        }
+      }
+      for (var i in this.reviewList) {
+        if (this.reviewList[i].liveId == res.content.liveId) {
+          this.reviewList[i].playStreamPath = res.content.playStreamPath;
+          this.reviewList[i].msgFilePath = res.content.msgFilePath;
+          this.$set(this.reviewList[i], "roomId", res.content.roomId);
+          return;
+        }
+      }
+    },
+    getLiveMore(isRecord) {
+      if (isRecord) {
+        if (this.reviewNext) {
+          this.reviewReq.loadMore = true;
+          this.reviewReq.next = this.reviewNext;
+          this.getLive(this.reviewReq);
+        }
+      } else {
+      }
     }
   },
   components: { TableLive, cDivider }

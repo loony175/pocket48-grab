@@ -13,8 +13,11 @@
     <h1># 关于&说明</h1>
     <cDivider/>
     <div class="c-readme">
-      <img src="static/img/xsaiting.jpg" style="width: 80px" />
-      <h3>点击左侧菜单来使用...</h3>
+      <img src="static/img/xsaiting.jpg" style="width: 80px">
+      <h3>
+        点击左侧菜单来使用...
+        <a href @click.prevent="outerVisible = true">新版提示</a>
+      </h3>
       <p>
         <span>当前版本: v{{ sharedState.version }}</span>
         <span>
@@ -34,7 +37,7 @@
           <a target="_blank" href="http://github.com/xsaiting/pocket48-grab">pocket48-grab</a>
         </span>
       </p>
-    <cDivider/>
+      <cDivider/>
       <p>1. 使用遇到任何问题/有任何建议请联系xsaiting@qq.com</p>
       <p>
         2. 成员直播可以使用本站播放器播放(对于xiaoka.tv的视频源不可播放，Chrome解决方法：
@@ -50,7 +53,9 @@
         <a target="_blank" href="./barrage.html">点此</a>。
       </p>
       <p>
-        3. 在线播放说明：任何格式均可使用VLC media player【<a target="_blank" href="http://www.videolan.org/">下载</a>】或KMPlayer【<a target="_blank" href="http://kmplayer.com/">下载</a>】在线播放，移动端可以使用MXPlayer的网络串流功能播放。
+        3. 在线播放说明：任何格式均可使用VLC media player【
+        <a target="_blank" href="http://www.videolan.org/">下载</a>】或KMPlayer【
+        <a target="_blank" href="http://kmplayer.com/">下载</a>】在线播放，移动端可以使用MXPlayer的网络串流功能播放。
       </p>
       <p>
         4. 下载说明：mp4格式或flv格式可以直接用下载工具(迅雷、idm、浏览器)下载/录制，公演回放和小部分成员直播为m3u8格式，下载/录制m3u8视频的方法参考：
@@ -62,6 +67,26 @@
       <p>5. 口袋房间功能需要token，可通过账号密码获取，本程序保证不会储存您的账号、密码及token，但也不保证您的账户安全问题，建议使用小号</p>
     </div>
     <cDivider/>
+
+    <el-dialog title="新版本开发提示" :visible.sync="outerVisible">
+      <p>[ 2019-04-16 23:50 ] 时间有限，暂且只做出抢先版。</p>
+      <p>成员直播、公演直播、成员信息、屏蔽词 功能可用</p>
+      <p>口袋房间、查用户、弹幕转换、账户 功能暂不可用</p>
+      <el-dialog width="40%" title="微信扫码" :visible.sync="innerVisible" append-to-body>
+        <img
+          style="{
+          width: 100%;
+          max-width: 260px;
+        }"
+          src="https://xsaiting.com/resources/wechatpay.png"
+          alt
+        >
+      </el-dialog>
+      <div slot="footer" class="dialog-footer">
+        <el-button type="primary" @click="closeTip()">明白</el-button>
+        <el-button @click="innerVisible = true">喜欢的话可以赞助此项目</el-button>
+      </div>
+    </el-dialog>
   </div>
 </template>
 <script>
@@ -70,8 +95,19 @@ export default {
   name: "readme",
   data() {
     return {
-      sharedState: this.GLOBAL
+      sharedState: this.GLOBAL,
+      outerVisible: !this.GLOBAL.config.isShowTip,
+      innerVisible: false
+    };
+  },
+  methods: {
+    closeTip() {
+      this.outerVisible = false;
+      this.GLOBAL.config.isShowTip = true;
+      this.GLOBAL.saveConfig();
     }
+  },
+  mounted() {
   },
   components: { cDivider }
 };

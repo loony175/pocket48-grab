@@ -23,8 +23,7 @@ c.pocket48.cr.connect = function (crId,crPrint,crStatus) {
         token: c.pocket48.cr.token,
         chatroomId: crId,
         chatroomAddresses: [
-            'weblink03.netease.im:443',
-            'weblink04.netease.im:443'
+            'weblink03.netease.im:443'
         ],
         onconnect: function(obj){ //连接成功
             chatroom.getChatroom({

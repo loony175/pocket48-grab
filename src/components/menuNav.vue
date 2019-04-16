@@ -67,9 +67,11 @@ export default {
           children: [
             { title: "成员信息(支持缩写)", link: "/member" },
             { title: "用户查询", link: "/user" },
-            { title: "屏蔽词查询", link: "/banlist" }
+            { title: "屏蔽词查询", link: "/banlist" },
+            { title: "弹幕转字幕", link: "/barrage" }
           ]
-        }, {
+        },
+        {
           title: "配置",
           icon: "settings",
           children: [
@@ -77,7 +79,6 @@ export default {
             { title: "账户", link: "/account" },
             { title: "关于&说明", link: "/readme" }
           ]
-
         }
       ]
     };

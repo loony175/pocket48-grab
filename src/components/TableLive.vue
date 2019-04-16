@@ -34,35 +34,41 @@ div.c-is-col td.c-switch-width {
         <thead>
           <tr>
             <th>成员</th>
-            <th>直播副标题</th>
+            <th>直播标题</th>
             <th>类型</th>
             <th>开播时间</th>
             <th>配图</th>
             <th>在线观看</th>
             <th>视频源地址</th>
-            <th>弹幕源地址</th>
+            <th v-if="!isLive">弹幕源地址</th>
           </tr>
         </thead>
         <tbody>
           <tr
             v-for="row in list"
             :key="row.liveId"
-            :style="{'--teamcolor': GLOBAL.renderColor(row.memberId)}"
+            :style="{'--teamcolor': GLOBAL.renderColor(row.userInfo.userId)}"
             class="c-table-live"
           >
-            <td>{{ GLOBAL.memberId2name(row.memberId) }}</td>
-            <td class="c-switch-width">{{ row.subTitle }}</td>
+            <td>{{ GLOBAL.memberId2name(row.userInfo.userId) }}</td>
+            <td class="c-switch-width">{{ row.title }}</td>
             <td>
               {{ row.liveType == 1 ? "视频" : "电台" }}
-              <span v-if="isLive">
+              <!-- 在线播放 -->
+              <span v-if="isLive&&row.roomId">
                 <a href @click.prevent="livePlay(row)">
-                  <i class="el-icon-view"></i>
+                  <i v-if="row.liveType == 1" class="mdui-icon material-icons">live_tv</i>
+                  <i v-else class="mdui-icon material-icons">radio</i>
                 </a>
               </span>
             </td>
-            <td>{{ new Date(row.startTime).Format("yyyy-MM-dd HH:mm:ss") }}</td>
-            <td class="c-switch-width">
+            <td>{{ new Date(parseInt(row.ctime)).Format("yyyy-MM-dd HH:mm:ss") }}</td>
+<!--             <td class="c-switch-width">
               <img v-lazy="GLOBAL.getPicPath(pic)" v-for="pic in row.picPath.split(',')">
+            </td> -->
+            
+            <td class="c-switch-width">
+              <img v-lazy="GLOBAL.getPicPath(row.coverPath)">
             </td>
             <td class="c-switch-width">
               <a :href="GLOBAL.liveUrl + row.liveId" target="_blank">{{GLOBAL.liveUrl + row.liveId}}</a>
@@ -70,21 +76,22 @@ div.c-is-col td.c-switch-width {
             <td class="c-switch-width">
               <!-- 被更正时，可能错误的原地址 -->
               <div>
-                <el-tooltip v-if="renderStreamPath(row)!=row.streamPath" effect="light">
+                <el-tooltip v-if="renderStreamPath(row)!=row.playStreamPath" effect="light">
                   <i class="el-icon-info"/>
                   <span slot="content" style="white-space: normal;">
                     可能错误的原地址:
-                    <a :href="row.streamPath" target="_blank">{{row.streamPath}}</a>
+                    <a :href="row.playStreamPath" target="_blank">{{row.playStreamPath}}</a>
                   </span>
                 </el-tooltip>
                 <a :href="renderStreamPath(row)" target="_blank">{{renderStreamPath(row)}}</a>
               </div>
             </td>
-            <td class="c-switch-width">
+            <td v-if="!isLive" class="c-switch-width">
+              <div v-if="row.msgFilePath">
               <a
-                :href="GLOBAL.getPicPath(row.lrcPath)"
+                :href="GLOBAL.getPicPath(row.msgFilePath)"
                 target="_blank"
-              >{{GLOBAL.getPicPath(row.lrcPath)}}</a>
+              >{{GLOBAL.getPicPath(row.msgFilePath)}}</a></div>
             </td>
           </tr>
         </tbody>
@@ -98,17 +105,18 @@ export default {
   data() {
     return {
       tableData: [],
-      isColNative: true,
+      isColNative: true
     };
   },
 
   methods: {
     livePlay(row) {
       var live = {
+        liveId: row.liveId, //liveId
         type: row.liveType, //1视频 2电台
         room: row.roomId, //roomId
         url: this.renderStreamPath(row), //flvUrl
-        name: row.title, //直播间名
+        name: row.title + '|' + row.userInfo.nickname, //直播间名
         isLive: true //是否直播
       };
       console.log("liveplay@TableLive.vue", live);
@@ -123,7 +131,8 @@ export default {
     },
 
     renderStreamPath(row) {
-      var dateObj = new Date(row.startTime);
+      if (!row.playStreamPath) {return;}
+      var dateObj = new Date(row.ctime);
       var actualDate = `${dateObj.getFullYear()}${dateObj.getMonth() +
         1}${dateObj.getDate()}`;
       // 修复一直播链接
@@ -131,7 +140,7 @@ export default {
       function isYizhiboHost(host) {
         return host.toLowerCase() === "alcdn.hls.xiaoka.tv";
       }
-      var streamPath = row.streamPath.replace(
+      var streamPath = row.playStreamPath.replace(
         /^(http|https):\/\/([^\/]+)\/(\d+)/,
         function(pathPrefix, protocol, host, date) {
           // 不是一直播或者日期正确则直接使用给的链接
@@ -142,19 +151,6 @@ export default {
           return `${protocol}://${host}/${actualDate}`;
         }
       );
-      /*       var nodeInner = [
-        `<a href="${row.streamPath}" target="_blank">${row.streamPath}</a>`
-      ];
-
-      if (streamPath !== row.streamPath) {
-        // 需要修正url
-        nodeInner.push(
-          `<p><a class="link-tip" href="https://github.com/xsaiting/pocket48-grab/issues/35" target="_blank">上方链接有误？请尝试使用下方链接</a></p>`
-        );
-        nodeInner.push(
-          `<a href="${streamPath}" target="_blank">${streamPath}</a>`
-        );
-      } */
       return streamPath;
     }
   },

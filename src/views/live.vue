@@ -14,11 +14,9 @@
     
     <el-alert v-if="GLOBAL.debug" type="success" :closable="false">
       最终提交:
-      timeChoose: {{ timeChoose }}
+      next: {{ next }}
       <br>
-      timestring: {{ timestring }}
-      <br>
-      limit: {{ limit }}
+      teamId: {{ teamId }}
       <br>
       groupId: {{ groupId }}
       <br>
@@ -36,43 +34,48 @@ export default {
   name: "live",
   data() {
     return {
-      timeChoose: "0",
-      timestring: 0,
-      limit: 50,
+      next: "",
       groupId: 0,
+      teamId: 0,
       memberId: 0,
     };
   },
   methods: {
     submit() {
-      this.timeChoose = this.$refs.choosePram.timeChoose;
-      this.timestring =
-        this.$refs.choosePram.timeChoose == "1"
-          ? this.$refs.choosePram.time.getTime()
-          : 0;
-      this.limit = this.$refs.choosePram.limit;
+      this.next = this.$refs.choosePram.next;
 
       /* 如果没有选择member, 删除team选择 */
-      if (
+/*       if (
         !this.$refs.chooseMember.value[2] &&
         this.$refs.chooseMember.value[1]
       ) {
         this.$refs.chooseMember.value.pop();
-      }
+      } */
 
-      /* 如果选择了member, 则设置groupId=0 */
+      /* 如果选择了member, 则设置groupId=0, teamId=0 */
       if (this.$refs.chooseMember.value[2]) {
         this.groupId = 0;
+        this.teamId = 0;
       } else {
         this.groupId = this.$refs.chooseMember.value[0] || 0;
+        this.teamId = this.$refs.chooseMember.value[1] || 0;
       }
       this.memberId = this.$refs.chooseMember.value[2] || 0;
 
       /* 向TableLiveCtr组件提交表单 */
       this.$refs.TableLiveCtr.getLive({
-        lastTime: this.timestring,
-        limit: this.limit,
-        memberId: this.memberId,
+        next: this.next,
+        record: "false",
+        teamId: this.teamId,
+        userId: this.memberId,
+        groupId: this.groupId
+      });
+      
+      this.$refs.TableLiveCtr.getLive({
+        next: this.next,
+        record: "true",
+        teamId: this.teamId,
+        userId: this.memberId,
         groupId: this.groupId
       });
     }

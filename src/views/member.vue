@@ -57,9 +57,10 @@ export default {
       });
       /* 获取近期录播 */
       this.$refs.TableLiveCtr.getLive({
-        lastTime: 0,
-        limit: 50,
-        memberId: this.memberId,
+        next: 0,
+        record: "true",
+        teamId: 0,
+        userId: this.memberId,
         groupId: 0
       });
     },

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h1># 口袋房间</h1>
+    <h1># 口袋房间 (暂不可用)</h1>
     <cDivider/>
     <!-- 日期、数量选择器 -->
     <ChoosePram ref="choosePram" @submit="submit"/>

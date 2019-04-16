@@ -6,13 +6,13 @@
     <!-- OpenLive表格 -->
     <div v-show="reviewList.length>0&&dReview">
       <h3>录播</h3>
-      <TableOpenlive :list="reviewList" :isCol="GLOBAL.config.isCol"/>
+      <TableOpenlive :list="reviewList" :isRecord="true" :isCol="GLOBAL.config.isCol"/>
       <cDivider/>
     </div>
     <!-- OpenLiveReview表格 -->
     <div v-show="liveList.length>0&&dLive">
       <h3>直播</h3>
-      <TableOpenlive :list="liveList" :isCol="GLOBAL.config.isCol"/>
+      <TableOpenlive :list="liveList" :isRecord="false" :isCol="GLOBAL.config.isCol"/>
       <cDivider/>
     </div>
   </div>
@@ -45,24 +45,28 @@ export default {
   methods: {
     getLive(
       req = {
-        isReview: 1,
-        groupId: 0,
-        userId: 0,
-        lastGroupId: 0,
-        lastTime: 0,
-        type: 0,
-        giftUpdTime: 1498211389003,
-        limit: 50
+        next: "0",
+        record: "false",
+        groupId: "0",
+        teamId: "0",
+        userId: "0",
+        loadMore: true
       }
     ) {
       /* 统计openlive */
-      this.GLOBAL.sta('openREQ',req);
+      // this.GLOBAL.sta('openREQ',req);
       /* 请求 获取公演 */
       axios({
-        url: this.GLOBAL.api.liveOpen,
+        url: this.GLOBAL.api.openlivelist,
         method: "post",
         headers: new this.GLOBAL.headers(),
-        data: req
+        data: {
+          next: req.next || "0" + "",
+          record: req.record || "false" + "",
+          groupId: req.groupId || "0" + "",
+          teamId: req.teamId || "0" + "",
+          userId: req.userId || "0" + ""
+        }
       })
         .then(response => {
           this.upLive(response.data, req);
@@ -73,62 +77,67 @@ export default {
     },
     upLive(res, req) {
       /* 回调 获取公演 */
-      if (req.isReview == 1) {
-        this.reviewList = res.content.liveList;
+      /* 插入表格 */
+      //判断种类
+      if (req.record == "true" || req.record == true) {
+        //录播
+        //判断是否加载更多
+        if (req.loadMore) {
+          this.reviewList = this.reviewList.concat(res.content.liveList);
+        } else {
+          this.reviewList = res.content.liveList;
+        }
       } else {
-        this.liveList = res.content.liveList;
+        //直播
+        //判断是否加载更多
+        if (req.loadMore) {
+          this.liveList = this.liveList.concat(res.content.liveList);
+        } else {
+          this.liveList = res.content.liveList;
+        }
       }
-      res.content.liveList.forEach(item => {
-        this.getOne({
-          type: 0,
-          liveId: item.liveId
-        });
+      /* 获取详情(roomId和streamPath) */
+      res.content.liveList.forEach(row => {
+        this.getOpenLiveOne({ liveId: row.liveId });
       });
       console.log(res, req);
     },
-    getOne(
+    getOpenLiveOne(
       req = {
-        type: 0,
-        liveId: "59b68e240cf206c8d3b5b42e"
+        liveId: "0"
       }
     ) {
       /* 请求 单条直播 */
       axios({
-        url: this.GLOBAL.api.liveInfo,
+        url: this.GLOBAL.api.openliveone,
         method: "post",
-        headers: new this.GLOBAL.headers(),
-        data: req
+        headers: {},
+        data: {
+          liveId: req.liveId || "0" + ""
+        }
       })
         .then(response => {
-          this.upOne(response.data, req);
+          this.upOpenLiveOne(response.data, req);
         })
         .catch(e => {
           console.log(e);
         });
     },
-    upOne(res, req) {
-      /* 回调 单条直播 */
-      this.addOne(res.content, req.liveId);
-    },
-    addOne(liveOne, liveId) {
+    upOpenLiveOne(res, req) {
+      console.debug(res, req);
       //将单条数据添加至list中
       for (var i in this.liveList) {
-        if (this.liveList[i].liveId == liveId) {
-          this.liveList[i].streamPathLd = liveOne.streamPathLd;
-          this.liveList[i].streamPath = liveOne.streamPath;
-          this.$set(this.liveList[i],'streamPathHd',liveOne.streamPathHd)
+        if (this.liveList[i].liveId == res.content.liveId) {
+          this.$set(this.liveList[i], "playStreams", res.content.playStreams);
           return;
         }
       }
       for (var i in this.reviewList) {
-        if (this.reviewList[i].liveId == liveId) {
-          this.reviewList[i].streamPathLd = liveOne.streamPathLd;
-          this.reviewList[i].streamPath = liveOne.streamPath;
-          this.$set(this.reviewList[i],'streamPathHd',liveOne.streamPathHd)
+        if (this.reviewList[i].liveId == res.content.liveId) {
+          this.$set(this.reviewList[i], "playStreams", res.content.playStreams);
           return;
         }
       }
-      console.log(liveOne, liveId);
     }
   },
   components: { TableOpenlive, cDivider }

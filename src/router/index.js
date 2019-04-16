@@ -7,6 +7,7 @@ import room from '@/views/room'
 import member from '@/views/member'
 import user from '@/views/user'
 import banlist from '@/views/banlist'
+import barrage from '@/views/barrage'
 import setting from '@/views/setting'
 import account from '@/views/account'
 import readme from '@/views/readme'
@@ -16,13 +17,13 @@ Vue.use(Router)
 
 export default new Router({
   routes: [
-    
+
     {
       path: '/live',
       name: 'live',
       component: live
     },
-    
+
     {
       path: '/openlive',
       name: 'openlive',
@@ -48,6 +49,10 @@ export default new Router({
       path: '/banlist',
       name: 'banlist',
       component: banlist
+    }, {
+      path: '/barrage',
+      name: 'barrage',
+      component: barrage
     },
     {
       path: '/setting',
