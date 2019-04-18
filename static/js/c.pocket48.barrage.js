@@ -5,14 +5,14 @@
 var br = {};
 br.download = function (content, fileName = 'default') {
     var aEle = document.createElement("a"),
-    blob = new Blob([content]); 
+    blob = new Blob([content]); 
     aEle.download = fileName+'.ass';
     aEle.href = URL.createObjectURL(blob);
     aEle.click();
 }
 
 //将lrc文件转为ass
-br.lrc2ass = function (lrc, fileName = 'default', timeint=10) {
+br.lrc2ass = function (lrc, fileName = 'default') {
     var barrages = lrc.split('\n[');
     barrages[0] = barrages[0].slice(1);
     var assBarrages = [];
@@ -27,11 +27,9 @@ PlayResX: 544
 PlayResY: 960
 Timer: 10.0000
 WrapStyle：0
-
 [V4+ Styles]
 Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
 Style: Default,Microsoft YaHei, 30, &H00FFFFFF, &H00FFFFFF, &H28533B3B,&H500E0A00,0,0,0,0,100.0,100.0,0.0,0.0,1,1.0,1.0,1,30,20,20,134
-
 [Events]
 Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
 `;
@@ -140,7 +138,7 @@ Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
                 const x2 = 20;
                 const y1 = 900 - j*32 - sum(multiline_trick_sum.slice(0, j+1)) * 32;
                 const y2 = 900 - (j+1)*32 - sum(multiline_trick_sum.slice(0, j+1)) * 32;
-                ass += `Dialogue: 0, ${number2time(begin_time)}, ${number2time(end_time)}, Default,,0,0,0,,{{\\move(${x1}, ${y1}, ${x2}, ${y2})}} ${author_content}\n`;
+                ass += `Dialogue: 0, ${number2time(begin_time)}, ${number2time(end_time)}, Default,,0,0,0,,{\\move(${x1}, ${y1}, ${x2}, ${y2})} ${author_content}\n`;
             }
         }    
 
@@ -157,8 +155,6 @@ Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
     });
     danmu_maker(danmuLists);
     return ass;
-
-
 }
 
 br.submit = function () {
@@ -199,10 +195,9 @@ br.fileTrans = function(files) {
             reader.readAsText(file);
             reader.onload = function () {
                 var lrc = this.result;
-                var timeint = document.querySelector('#c-danmu-timeint').value;
                 var ass;
                 try {
-                    ass = br.lrc2ass(lrc,fileName,timeint);
+                    ass = br.lrc2ass(lrc,fileName);
                 } catch (e) {
                     console.log('出错',e);
                     return false;
