@@ -1,11 +1,11 @@
 <template>
   <div>
-    <h1># 账户 (暂不可用)</h1>
+    <h1># 账户</h1>
     <cDivider/>
     <div>
       <p>
         当前状态: {{status?('已登录'):('未登录')}}
-        <el-button v-show="status" type="success" @click="getPunch" round>打卡签到</el-button>
+        <!-- <el-button v-show="status" type="success" @click="getPunch" round>打卡签到</el-button> -->
         <el-tooltip :content="account.token" placement="bottom" effect="light">
           <el-button v-show="status" type="primary" round>显示token</el-button>
         </el-tooltip>
@@ -81,12 +81,7 @@ export default {
       this.upAccount();
     },
     getToken() {
-      var req = {
-        password: this.password,
-        account: this.username,
-        longitude: 0,
-        latitude: 0
-      };
+      var req = {"mobile": this.username+"","pwd": this.password+""};
       /* 请求 登录获取token */
       axios({
         url: this.GLOBAL.api.login,
@@ -113,9 +108,10 @@ export default {
       this.account = {};
       this.upAccount();
     },
+    /* 
     getPunch() {
       var req = {};
-      /* 请求 打卡 */
+      // 请求 打卡
       axios({
         url: this.GLOBAL.api.checkIn,
         method: "post",
@@ -130,7 +126,7 @@ export default {
         });
     },
     upPunch(res) {
-      /* 回调 打卡 */
+      // 回调 打卡
       if (res.status == 1001006) {
         this.$message.warning(`${res.message}`);
       } else if (res.status == 200) {
@@ -143,7 +139,7 @@ export default {
         this.$message.error(`${res.status}: ${res.message}`);
       }
       console.log(res, req);
-    }
+    } */
   },
   components: { cDivider, InfoUser }
 };

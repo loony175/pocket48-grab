@@ -7,12 +7,22 @@
     <div v-show="reviewList.length>0&&dReview">
       <h3>录播</h3>
       <TableOpenlive :list="reviewList" :isRecord="true" :isCol="GLOBAL.config.isCol"/>
+      <div style="display: flex; justify-content:center">
+        <el-tooltip class="item" effect="light" :content="reviewNext" placement="bottom">
+          <el-button style v-show="reviewNext" @click="getLiveMore(true)" size="small">加载更多</el-button>
+        </el-tooltip>
+      </div>
       <cDivider/>
     </div>
     <!-- OpenLiveReview表格 -->
     <div v-show="liveList.length>0&&dLive">
       <h3>直播</h3>
       <TableOpenlive :list="liveList" :isRecord="false" :isCol="GLOBAL.config.isCol"/>
+      <div style="display: flex; justify-content:center">
+        <el-tooltip class="item" effect="light" :content="reviewNext" placement="bottom">
+          <el-button style v-show="liveNext" @click="getLiveMore(false)" size="small">加载更多</el-button>
+        </el-tooltip>
+      </div>
       <cDivider/>
     </div>
   </div>
@@ -27,7 +37,11 @@ export default {
   data() {
     return {
       reviewList: [],
-      liveList: []
+      liveList: [],
+      liveNext: "0",
+      reviewNext: "0",
+      liveReq: {},
+      reviewReq: {}
     };
   },
   props: {
@@ -54,8 +68,13 @@ export default {
       }
     ) {
       /* 统计openlive */
-      // this.GLOBAL.sta('openREQ',req);
+      this.GLOBAL.sta('openREQ',req);
       /* 请求 获取公演 */
+      if (req.record == "false" || req.record == false) {
+        this.liveReq = req;
+      } else {
+        this.reviewReq = req;
+      }
       axios({
         url: this.GLOBAL.api.openlivelist,
         method: "post",
@@ -83,18 +102,36 @@ export default {
         //录播
         //判断是否加载更多
         if (req.loadMore) {
-          this.reviewList = this.reviewList.concat(res.content.liveList);
+          if (res.content.liveList.length == 0) {
+            // 无更多数据
+            this.$message("已无更多数据...");
+          }
+          this.reviewList = this.GLOBAL.concatuni(
+            [this.reviewList, res.content.liveList],
+            "liveId"
+          );
         } else {
           this.reviewList = res.content.liveList;
         }
+        //记录Next
+        this.reviewNext = res.content.next;
       } else {
         //直播
         //判断是否加载更多
         if (req.loadMore) {
-          this.liveList = this.liveList.concat(res.content.liveList);
+          if (res.content.liveList.length == 0) {
+            // 无更多数据
+            this.$message("已无更多数据...");
+          }
+          this.liveList = this.GLOBAL.concatuni(
+            [this.liveList, res.content.liveList],
+            "liveId"
+          );
         } else {
           this.liveList = res.content.liveList;
         }
+        //记录Next
+        this.liveNext = res.content.next;
       }
       /* 获取详情(roomId和streamPath) */
       res.content.liveList.forEach(row => {
@@ -136,6 +173,21 @@ export default {
         if (this.reviewList[i].liveId == res.content.liveId) {
           this.$set(this.reviewList[i], "playStreams", res.content.playStreams);
           return;
+        }
+      }
+    },
+    getLiveMore(isRecord) {
+      if (isRecord) {
+        if (this.reviewNext) {
+          this.reviewReq.loadMore = true;
+          this.reviewReq.next = this.reviewNext;
+          this.getLive(this.reviewReq);
+        }
+      } else {
+        if (this.liveNext) {
+          this.liveReq.loadMore = true;
+          this.liveReq.next = this.liveNext;
+          this.getLive(this.liveReq);
         }
       }
     }

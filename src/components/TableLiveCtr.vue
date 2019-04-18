@@ -13,7 +13,9 @@
     <div v-show="reviewList.length>0&&dReview">
       <h3>录播</h3>
       <TableLive :list="reviewList" :isLive="false" :isCol="GLOBAL.config.isCol"/>
-      <el-button v-show="reviewNext" @click="getLiveMore(true)" size="small">加载更多</el-button>
+      <div style="display: flex; justify-content:center">
+        <el-button style="" v-show="reviewNext" @click="getLiveMore(true)" size="small">加载更多</el-button>
+      </div>
     </div>
   </div>
 </template>
@@ -58,7 +60,7 @@ export default {
       }
     ) {
       /* 统计live */
-      //this.GLOBAL.sta("liveREQ", req);
+      this.GLOBAL.sta("liveREQ", req);
       /* 提交表单 获取直播 */
       if (req.record == "false" || req.record == false) {
         this.liveReq = req;

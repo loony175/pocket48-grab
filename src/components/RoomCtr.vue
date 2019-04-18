@@ -14,9 +14,12 @@
   <el-row :gutter="10">
     <el-col :xs="24" :md="dBoard?(12):(24)">
       <!-- main内容 -->
-      <div v-if="main.roominfo.creatorName&&dMain">
+      <div v-if="main.roominfo.roomId&&dMain">
         <h3>房间</h3>
         <ConMain :roominfo="main.roominfo" :list="main.list"/>
+        <div style="display: flex; justify-content:center">
+          <el-button style v-show="boardNext" @click="getMore(true)" size="small">加载更多</el-button>
+        </div>
       </div>
     </el-col>
     <el-col :xs="24" :md="dMain?(12):(24)">
@@ -24,6 +27,9 @@
       <div v-if="boardList.length>0&&dBoard">
         <h3>留言</h3>
         <ConBoard :list="boardList"/>
+        <div style="display: flex; justify-content:center">
+          <el-button style v-show="boardNext" @click="getMore(false)" size="small">加载更多</el-button>
+        </div>
       </div>
     </el-col>
   </el-row>
@@ -42,7 +48,11 @@ export default {
         roominfo: {},
         list: []
       },
-      boardList: []
+      boardList: [],
+      mainNext: "0",
+      mainReq: {},
+      boardNext: "0",
+      boardReq: {}
     };
   },
   props: {
@@ -58,32 +68,32 @@ export default {
     }
   },
   methods: {
-    getAll(req = { lastTime: 1532695747872, limit: 20, memberId: 5777248 }) {
+    getAll(req = { nextTime: 20, memberId: 5777248 }) {
       /* 统计room */
-      this.GLOBAL.sta('roomREQ',req);
-      this.getInfo({ friends: [req.memberId] }, (res2, req2) => {
+      this.GLOBAL.sta("roomREQ", req);
+      this.getInfo({ sourceId: req.memberId + "", type: "0" }, (res2, req2) => {
         if (this.dMain) {
           this.getMain({
-            roomId: res2.content[0].roomId,
-            chatType: 0,
-            lastTime: req.lastTime,
-            limit: req.limit
+            ownerId: req.memberId + "",
+            needTop1Msg: "false",
+            nextTime: req.nextTime + "",
+            roomId: res2.content.roomInfo.roomId + ""
           });
         }
         if (this.dBoard) {
           this.getBoard({
-            roomId: res2.content[0].roomId,
-            lastTime: req.lastTime,
-            limit: req.limit,
-            isFirst: false
+            ownerId: req.memberId + "",
+            needTop1Msg: "false",
+            nextTime: req.nextTime + "",
+            roomId: res2.content.roomInfo.roomId + ""
           });
         }
       });
     },
-    getInfo(req = { friends: [407126] }, callback) {
+    getInfo(req = { sourceId: "63558", type: "0" }, callback) {
       /* 请求 获取房间信息 */
       axios({
-        url: this.GLOBAL.api.roomId,
+        url: this.GLOBAL.api.roomid,
         method: "post",
         headers: new this.GLOBAL.headers(),
         data: req
@@ -97,27 +107,40 @@ export default {
     },
     upInfo(res, req, callback) {
       /* 回调 获取房间信息 */
-      if (res.status == 401) {
+      if (res.status == 401004) {
         this.$message.error(`登录口袋失败,请重新登录账户!`);
       } else if (res.status == 400) {
         this.$message.error(`需要登录才能访问房间!${res.message}`);
-      } else if (req.friends[0] != res.content[0].creatorId) {
+      } else if (res.status == 404) {
         this.$message.error(`未获取到房间!`);
       } else {
-        this.main.roominfo = res.content[0];
+        //写入main.roominfo
+        this.main.roominfo = res.content.roomInfo;
         callback(res, req);
       }
       console.log(res, req);
     },
     getMain(
-      req = { roomId: 5777248, chatType: 0, lastTime: 1532695747872, limit: 20 }
+      req = {
+        ownerId: "63558",
+        needTop1Msg: "false",
+        nextTime: "0",
+        roomId: "67313743",
+        loadMore: false
+      }
     ) {
       /* 请求 获取房间内容 */
+      this.mainReq = req;
       axios({
-        url: this.GLOBAL.api.roomMain,
+        url: this.GLOBAL.api.roomlio,
         method: "post",
         headers: new this.GLOBAL.headers(),
-        data: req
+        data: {
+          ownerId: req.ownerId + "",
+          needTop1Msg: req.needTop1Msg + "",
+          nextTime: req.nextTime || "0" + "",
+          roomId: req.roomId + ""
+        }
       })
         .then(response => {
           this.upMain(response.data, req);
@@ -131,19 +154,46 @@ export default {
       if (res.status == 400) {
         this.$message.error(`需要登录才能访问房间!${res.message}`);
       } else {
-        this.main.list = res.content.data;
+        //是否加载更多
+        if (req.loadMore) {
+          if (res.content.message.length == 0) {
+            // 无更多数据
+            this.$message("已无更多数据...");
+          }
+          //去重合并
+          this.main.list = this.GLOBAL.concatuni(
+            [this.main.list, res.content.message],
+            "serverId"
+          );
+        } else {
+          this.main.list = res.content.message;
+        }
+        //记录NextTime
+        this.mainNext = res.content.nextTime + "";
       }
       console.log(res, req);
     },
     getBoard(
-      req = { roomId: 5777242, lastTime: 0, limit: 10, isFirst: false }
+      req = {
+        ownerId: "63558",
+        needTop1Msg: "false",
+        nextTime: "0",
+        roomId: "67313743",
+        loadMore: false
+      }
     ) {
-      /* 请求 获取房间留言 */
+      /* 请求 获取房间all */
+      this.boardReq = req;
       axios({
-        url: this.GLOBAL.api.roomBoard,
+        url: this.GLOBAL.api.roomlia,
         method: "post",
         headers: new this.GLOBAL.headers(),
-        data: req
+        data: {
+          ownerId: req.ownerId + "",
+          needTop1Msg: req.needTop1Msg + "",
+          nextTime: req.nextTime || "0" + "",
+          roomId: req.roomId + ""
+        }
       })
         .then(response => {
           this.upBoard(response.data, req);
@@ -157,9 +207,39 @@ export default {
       if (res.status == 400) {
         this.$message.error(`需要登录才能访问房间!${res.message}`);
       } else {
-        this.boardList = res.content.data;
+        //是否加载更多
+        if (req.loadMore) {
+          if (res.content.message.length == 0) {
+            // 无更多数据
+            this.$message("已无更多数据...");
+          }
+          //去重合并
+          this.boardList = this.GLOBAL.concatuni(
+            [this.boardList, res.content.message],
+            "serverId"
+          );
+        } else {
+          this.boardList = res.content.message;
+        }
+        //记录NextTime
+        this.boardNext = res.content.nextTime + "";
       }
       console.log(res, req);
+    },
+    getMore(isMain) {
+      if (isMain) {
+        if (this.mainNext) {
+          this.mainReq.loadMore = true;
+          this.mainReq.nextTime = this.mainNext;
+          this.getMain(this.mainReq);
+        }
+      } else {
+        if (this.boardNext) {
+          this.boardReq.loadMore = true;
+          this.boardReq.nextTime = this.boardNext;
+          this.getBoard(this.boardReq);
+        }
+      }
     }
   },
   components: { ConBoard, ConMain, cDivider }

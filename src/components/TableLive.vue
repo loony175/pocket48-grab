@@ -1,4 +1,7 @@
 /* 成员直播表格 */
+/*
+  感谢 @dbFlower(https://github.com/dbFlower) 的贡献
+ */
 <style scoped>
 img {
   max-width: 20px;
@@ -37,7 +40,7 @@ div.c-is-col td.c-switch-width {
             <th>直播标题</th>
             <th>类型</th>
             <th>开播时间</th>
-            <th>配图</th>
+            <th>封面</th>
             <th>在线观看</th>
             <th>视频源地址</th>
             <th v-if="!isLive">弹幕源地址</th>
@@ -66,12 +69,13 @@ div.c-is-col td.c-switch-width {
 <!--             <td class="c-switch-width">
               <img v-lazy="GLOBAL.getPicPath(pic)" v-for="pic in row.picPath.split(',')">
             </td> -->
-            
+
+            <!-- 配图 -->
             <td class="c-switch-width">
               <img v-lazy="GLOBAL.getPicPath(row.coverPath)">
             </td>
             <td class="c-switch-width">
-              <a :href="GLOBAL.liveUrl + row.liveId" target="_blank">{{GLOBAL.liveUrl + row.liveId}}</a>
+              <a :href="GLOBAL.memberLiveUrl + row.liveId" target="_blank">{{GLOBAL.memberLiveUrl + row.liveId}}</a>
             </td>
             <td class="c-switch-width">
               <!-- 被更正时，可能错误的原地址 -->

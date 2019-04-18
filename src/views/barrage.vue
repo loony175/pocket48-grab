@@ -1,7 +1,14 @@
 /* barrage 弹幕转字幕工具 */
+<style>
+.c-barrage-iframe {
+  border: 2px solid greenyellow;
+  width: 100%;
+}
+</style>
+
 <template>
   <div>
-    <h1># 弹幕转字幕工具 lrc转ass (暂不可用)</h1>
+    <h1># 弹幕转字幕工具 lrc转ass</h1>
     <cDivider/>
     <p>说明: 在此页面你可以将官方弹幕的lrc文件转换成ass，ass字幕文件可以使用视频播放器加载，便可以观看弹幕。</p>
     <p>
@@ -9,6 +16,7 @@
       <a target="_blank" href="https://space.bilibili.com/1295688">b站: 辣椒调味粉</a>，感谢
       <a href="https://github.com/h12345jack" target="_blank" rel="noopener noreferrer">@h12345jack</a>的贡献
     </p>
+    <iframe class="c-barrage-iframe" src="./static/barrage.html"></iframe>
   </div>
 </template>
 

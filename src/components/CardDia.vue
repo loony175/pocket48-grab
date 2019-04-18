@@ -56,89 +56,86 @@ img {
   <div class="c-card-dia">
     <div class="c-card-avatar">
       <div class="c-card-avatar-img">
-        <img :src="GLOBAL.getPicPath(extInfo.senderAvatar)">
+        <img :src="GLOBAL.getPicPath(extInfo.user.avatar)">
       </div>
     </div>
     <div class="c-card-main">
       <div class="c-card-header">
-        {{ extInfo.senderName }} {{ new Date(item.msgTime).Format("yyyy-MM-dd HH:mm:ss")}}
-        {{ extInfo.phoneName?('@'+extInfo.phoneName):('') }}
+        {{ extInfo.user.nickName }} {{ new Date(item.msgTime).Format("yyyy-MM-dd HH:mm:ss")}}
+        {{ extInfo.config?('@'+extInfo.config.phoneName):('') }}
       </div>
       <div class="c-card-content">
-        <!-- 文本信息 -->
-        <div v-if="item.msgType==0">
+        <!-- 文本信息 TEXT -->
+        <div v-if="item.msgType=='TEXT'">
           <!-- 消息墙 -->
-          <div
+          <!-- <div
             v-if="extInfo.messageObject=='messageBoard'"
-          >{{(extInfo.text)?(extInfo.text):(extInfo.content)}}</div>
+          >{{(extInfo.text)?(extInfo.text):(item.bodys)}}</div>-->
           <!-- 普通文本 -->
-          <div v-else-if="extInfo.messageObject=='text'">{{extInfo.text}}</div>
+          <div v-if="extInfo.messageType=='TEXT'">{{extInfo.text}}</div>
           <!-- 普通翻牌信息 -->
-          <div v-else-if="extInfo.messageObject=='faipaiText'">
+          <div v-else-if="extInfo.messageType=='REPLY'">
             <div class="c-card-reply">
-              {{extInfo.faipaiContent}}
-              <div class="c-card-replyid">#{{extInfo.faipaiUserId}}</div>
+              <div class="c-card-replyid" :rid="extInfo.replyMessageId">{{extInfo.replyName}}</div>
+              {{extInfo.replyText}}
             </div>
-            {{extInfo.messageText}}
+            {{extInfo.text}}
           </div>
           <!-- 视频直播信息 -->
-          <div v-else-if="extInfo.messageObject=='live'">
+          <div v-else-if="extInfo.messageType=='LIVEPUSH'">
             <img
               style="max-width:30px; max-height:30px"
-              :src="GLOBAL.getPicPath(extInfo.referencecoverImage)"
-            >【视频直播】
+              :src="GLOBAL.getPicPath(extInfo.liveCover)"
+            >
+            【视频直播】{{extInfo.liveTitle}}
             <a
-              :href="GLOBAL.liveUrl+extInfo.referenceObjectId"
+              :href="GLOBAL.memberLiveUrl+extInfo.liveId"
               target="_blank"
-            >{{GLOBAL.liveUrl+extInfo.referenceObjectId}}</a>
+            >{{GLOBAL.memberLiveUrl+extInfo.liveId}}</a>
           </div>
           <!-- 电台直播信息 -->
-          <div v-else-if="extInfo.messageObject=='diantai'">
+          <div v-else-if="extInfo.messageType=='diantai'">
             <img
               style="max-width:30px; max-height:30px"
               :src="GLOBAL.getPicPath(extInfo.referencecoverImage)"
             >【电台直播】
             <a
-              :href="GLOBAL.liveUrl+extInfo.referenceObjectId"
+              :href="GLOBAL.memberLiveUrl+extInfo.referenceObjectId"
               target="_blank"
-            >{{GLOBAL.liveUrl+extInfo.referenceObjectId}}</a>
+            >{{GLOBAL.memberLiveUrl+extInfo.referenceObjectId}}</a>
           </div>
           <!-- 翻牌问题 -->
-          <div v-else-if="extInfo.messageObject=='idolFlip'">
-            <p>{{ extInfo.idolFlipTitle }}:</p>
-            <p>Q:{{ extInfo.idolFlipContent }}</p>
-            <div v-if="answer">
-              <p>A:{{ answer }}</p>
-            </div>
-            <div v-else>
-              <el-button type="primary" @click="openflip">打开翻牌</el-button>
-            </div>
+          <div v-else-if="extInfo.messageType=='FLIPCARD'">
+            <p>Q:{{ extInfo.question }}</p>
+            <p>A:{{ extInfo.answer }}</p>
           </div>
           <!-- 礼物信息 -->
-          <div v-else-if="extInfo.messageObject=='jujuLive'">
+          <div v-else-if="extInfo.messageType=='PRESENT_TEXT'">
             送出
-            {{extInfo.giftCount}}个
-            {{extInfo.giftName}}
+            {{extInfo.giftInfo.giftNum}}个
+            {{extInfo.giftInfo.giftName}}
             <img
               style="max-width: 1rem;"
-              :src="GLOBAL.getPicPath(extInfo.giftPic)"
+              :src="GLOBAL.getPicPath(extInfo.giftInfo.picPath)"
             >
           </div>
           <!-- 其他信息 -->
           <div v-else>未知文本: {{ JSON.stringify(item) }}</div>
         </div>
         <!-- 图片信息 -->
-        <div v-else-if="item.msgType==1">
+        <div v-else-if="item.msgType=='IMAGE'">
           <img :src="GLOBAL.getPicPath(JSON.parse(item.bodys).url)">
         </div>
         <!-- 语音信息 -->
-        <div v-else-if="item.msgType==2">
+        <div v-else-if="item.msgType=='AUDIO'">
           <a :href="GLOBAL.getPicPath(JSON.parse(item.bodys).url)">语音</a>
         </div>
         <!-- 视频信息 -->
-        <div v-else-if="item.msgType==3">
+        <div v-else-if="item.msgType=='VIDEO'">
           <a :href="GLOBAL.getPicPath(JSON.parse(item.bodys).url)">视频</a>
         </div>
+        <!-- 表情 -->
+        <div v-else-if="item.msgType=='EXPRESS'">【暂不支持的表情: {{ extInfo.emotionName }}】</div>
         <!-- 其它信息 -->
         <div v-else>未知信息: {{ JSON.stringify(item) }}</div>
       </div>
@@ -152,7 +149,6 @@ export default {
   name: "CardDia",
   data() {
     return {
-      answer: ""
     };
   },
   props: {
@@ -166,31 +162,7 @@ export default {
       type: Number
     }
   },
-  methods: {
-    openflip() {
-      var req = {
-        idolFlipSource: 2,
-        questionId: this.extInfo.idolFlipQuestionId,
-        answerId: this.extInfo.idolFlipAnswerId
-      };
-      /* 请求 获取翻牌 */
-      axios({
-        url: this.GLOBAL.api.flip,
-        method: "post",
-        headers: new this.GLOBAL.headers(),
-        data: req
-      })
-        .then(response => {
-          this.upFlip(response.data, req);
-        })
-        .catch(e => {
-          console.log(e);
-        });
-    },
-    upFlip(res, req) {
-      this.answer = res.content.answer;
-    }
-  },
+  methods: {  },
   computed: {
     extInfo() {
       return JSON.parse(this.item.extInfo);

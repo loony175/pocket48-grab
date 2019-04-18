@@ -34,7 +34,7 @@ export default {
   name: "live",
   data() {
     return {
-      next: "",
+      next: "0",
       groupId: 0,
       teamId: 0,
       memberId: 0,

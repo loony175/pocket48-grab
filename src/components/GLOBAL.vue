@@ -2,7 +2,7 @@
 <script>
 import axios from "axios";
 var GLOBAL = {};
-GLOBAL.version = "2.6.1.0 抢先版";
+GLOBAL.version = "2.6.1.2";
 GLOBAL.debug = false;
 
 //配置缓存
@@ -66,54 +66,38 @@ GLOBAL.accountSave = function() {
 
 //api设置
 GLOBAL.api = {
-  sync: "https://psync.48.cn/syncsystem/api/cache/v1/update/overview",
-  live: "https://plive.48.cn/livesystem/api/live/v1/memberLivePage",
-  liveOpen: "https://plive.48.cn/livesystem/api/live/v1/openLivePage",
-  liveInfo: "https://plive.48.cn/livesystem/api/live/v1/getLiveOne",
-  login: "https://puser.48.cn/usersystem/api/user/v1/login/phone",
-  roomId: "https://pjuju.48.cn/imsystem/api/im/room/v1/login/user/list",
-  roomMain:
-    "https://pjuju.48.cn/imsystem/api/im/v1/member/room/message/mainpage",
-  roomBoard:
-    "https://pjuju.48.cn/imsystem/api/im/v1/member/room/message/boardpage",
-  flip:
-    "https://ppayqa.48.cn/idolanswersystem/api/idolanswer/v1/question_answer/detail",
-  checkIn: "https://puser.48.cn/usersystem/api/user/v1/check/in",
-  userInfo: "https://puser.48.cn/usersystem/api/user/v1/show/info/"
 };
 
 //生产环境api
 GLOBAL.apiProd = {
-  update: "http://xsaiting.cn/pocket48/proxydev.php?f=update",
-  livelist: "http://xsaiting.cn/pocket48/proxydev.php?f=livelist",
-  openlivelist: "http://xsaiting.cn/pocket48/proxydev.php?f=openlivelist",
-  liveone: "http://xsaiting.cn/pocket48/proxydev.php?f=liveone",
-  openliveone: "http://xsaiting.cn/pocket48/proxydev.php?f=openliveone",
+  update: "./static/proxy.php?f=update",
+  livelist: "https://pocketapi.48.cn/live/api/v1/live/getLiveList",
+  openlivelist: "https://pocketapi.48.cn/live/api/v1/live/getOpenLiveList",
+  liveone: "https://pocketapi.48.cn/live/api/v1/live/getLiveOne",
+  openliveone: "https://pocketapi.48.cn/live/api/v1/live/getOpenLiveOne",
 
-  flip: "http://xsaiting.cn/pocket48/proxydev.php?f=flip",
-  roomid: "http://xsaiting.cn/pocket48/proxydev.php?f=roomid",
-  roomlio: "http://xsaiting.cn/pocket48/proxydev.php?f=roomlio",
-  roomlia: "http://xsaiting.cn/pocket48/proxydev.php?f=roomlia",
+  roomid: "https://pocketapi.48.cn/im/api/v1/im/room/info/type/source",
+  roomlio: "https://pocketapi.48.cn/im/api/v1/chatroom/msg/list/homeowner",
+  roomlia: "https://pocketapi.48.cn/im/api/v1/chatroom/msg/list/all",
 
-  login: "http://xsaiting.cn/pocket48/proxydev.php?f=login",
-  userhome: "http://xsaiting.cn/pocket48/proxydev.php?f=userhome"
+  login: "./static/proxy.php?f=login",
+  userhome: "https://pocketapi.48.cn/user/api/v1/user/info/home"
 };
 
 //开发环境api
 GLOBAL.apiDev = {
   update: "http://xsaiting.cn/pocket48/proxydev.php?f=update",
-  livelist: "http://xsaiting.cn/pocket48/proxydev.php?f=livelist",
-  openlivelist: "http://xsaiting.cn/pocket48/proxydev.php?f=openlivelist",
-  liveone: "http://xsaiting.cn/pocket48/proxydev.php?f=liveone",
-  openliveone: "http://xsaiting.cn/pocket48/proxydev.php?f=openliveone",
+  livelist: "https://pocketapi.48.cn/live/api/v1/live/getLiveList",
+  openlivelist: "https://pocketapi.48.cn/live/api/v1/live/getOpenLiveList",
+  liveone: "https://pocketapi.48.cn/live/api/v1/live/getLiveOne",
+  openliveone: "https://pocketapi.48.cn/live/api/v1/live/getOpenLiveOne",
 
-  flip: "http://xsaiting.cn/pocket48/proxydev.php?f=flip",
-  roomid: "http://xsaiting.cn/pocket48/proxydev.php?f=roomid",
-  roomlio: "http://xsaiting.cn/pocket48/proxydev.php?f=roomlio",
-  roomlia: "http://xsaiting.cn/pocket48/proxydev.php?f=roomlia",
+  roomid: "https://pocketapi.48.cn/im/api/v1/im/room/info/type/source",
+  roomlio: "https://pocketapi.48.cn/im/api/v1/chatroom/msg/list/homeowner",
+  roomlia: "https://pocketapi.48.cn/im/api/v1/chatroom/msg/list/all",
 
   login: "http://xsaiting.cn/pocket48/proxydev.php?f=login",
-  userhome: "http://xsaiting.cn/pocket48/proxydev.php?f=userhome"
+  userhome: "https://pocketapi.48.cn/user/api/v1/user/info/home"
 };
 
 //使用代理
@@ -304,53 +288,73 @@ GLOBAL.renderColorG = function(groupId) {
 GLOBAL.sta = function(name, data) {
   if (_hmt) {
     /* 百度事件统计
-    _hmt.push(['_trackEvent', category, action, opt_label, opt_value]);
+    _hmt.push(["_trackEvent", name, action, value]);
     */
-    var index, value, action;
+   /**
+    * action memberId(memberName) / groupId(groupName) / userId(userName)
+    * value groupId|teamId|userId|record|next
+    */
+    var action, value;
     if (name == "liveREQ") {
-      index = 1;
-      value = `${data.groupId}(${GLOBAL.groupId2name(data.groupId)});${
-        data.memberId
-      }(${GLOBAL.memberId2name(data.memberId)});${data.lastTime};${data.limit}`;
       if (data.memberId == 0) {
         action = `${data.groupId}(${GLOBAL.groupId2name(data.groupId)})`;
       } else {
-        action = `${data.memberId}(${GLOBAL.memberId2name(data.memberId)})`;
+        action = `${data.userId}(${GLOBAL.memberId2name(data.userId)})`;
       }
+      value = `${data.groupId}(${GLOBAL.groupId2name(data.groupId)}) | ${data.teamId}(${GLOBAL.teamId2name(data.teamId)}) | ${data.userId}(${GLOBAL.memberId2name(data.userId)}) | ${data.record} | ${data.next}`;
     }
     if (name == "openREQ") {
-      index = 2;
-      value = `${data.groupId}(${GLOBAL.groupId2name(data.groupId)});${
-        data.isReview
-      };${data.lastTime};${data.limit}`;
       action = `${data.groupId}(${GLOBAL.groupId2name(data.groupId)})`;
+      value = `${data.groupId}(${GLOBAL.groupId2name(data.groupId)}) | ${data.teamId}(${GLOBAL.teamId2name(data.teamId)}) | ${data.userId}(${GLOBAL.memberId2name(data.userId)}) | ${data.record} | ${data.next}`;
     }
     if (name == "roomREQ") {
-      index = 3;
-      value = `${data.memberId}(${GLOBAL.memberId2name(data.memberId)});${
-        data.lastTime
-      };${data.limit}`;
       action = `${data.memberId}(${GLOBAL.memberId2name(data.memberId)})`;
+      value = `${data.groupId}(${GLOBAL.groupId2name(data.groupId)}) | ${data.teamId}(${GLOBAL.teamId2name(data.teamId)}) | ${data.memberId}(${GLOBAL.memberId2name(data.memberId)}) | ${data.nextTime}`;
     }
     if (name == "loginRES") {
-      index = 4;
-      value = `${data.content.userInfo.userId}(${
-        data.content.userInfo.nickName
-      });${data.content.userInfo.experience}`;
       action = `${data.content.userInfo.userId}(${
-        data.content.userInfo.nickName
+        data.content.userInfo.nickname
       })`;
+      value = `${data.content.userInfo.userId}(${
+        data.content.userInfo.nickname
+      }) | ${data.content.userInfo.exp}`;
     }
-    //console.log(index, name, value, opt_scope);
+    //console.log(name, action, value);
     //_hmt.push(['_trackEvent', category, action, opt_label, opt_value]);
     _hmt.push(["_trackEvent", name, action, value]);
   }
 };
 
+/**
+ * 去重合并
+ */
+GLOBAL.concatuni = function(arrs = [], id) {
+  var temp = {}, //用于id判断重复
+    result = [], //最后的新数组
+    isU = false; //返回是否有重复
+  //去重(唯一id: id)
+  arrs.forEach(arr => {
+    arr.map((item, index) => {
+      if (!temp[item[id]]) {
+        result.push(item);
+        temp[item[id]] = true;
+      } else {
+        isU = true;
+      }
+    });
+  });
+  return result;
+};
+
 GLOBAL.source = "https://source.48.cn"; //图片及资源前缀
-GLOBAL.liveUrl = "https://h5.48.cn/2019appshare/liveshare/?id="; //直播在线观看前缀
+GLOBAL.liveUrl = "https://h5.48.cn/2019appshare/liveshare/?id="; //公演直播在线观看前缀
+GLOBAL.memberLiveUrl = "https://h5.48.cn/2019appshare/memberLiveShare/?id="; //
 GLOBAL.getPicPath = function(picUrl) {
-  return (picUrl.slice(0, 4) == "http" ? "" : GLOBAL.source) + picUrl;
+  try {
+    return (picUrl.slice(0, 4) == "http" ? "" : GLOBAL.source) + picUrl;
+  } catch (e) {
+    console.log(picUrl,e);
+  }
 };
 
 Date.prototype.Format = function(fmt) {

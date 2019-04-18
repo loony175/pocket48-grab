@@ -22,6 +22,9 @@ tr.c-table-live td,
 tr.c-table-live td a {
   color: var(--teamcolor);
 }
+div.c-is-col td.c-switch-width {
+  max-width: 10rem;
+}
 </style>
 
 <template>
@@ -49,8 +52,8 @@ tr.c-table-live td a {
           >
             <!-- 标题 -->
             <td>{{ row.title }}</td>
-            <!-- 副标题 -->
-            <td class="c-cwidth">
+            <!-- 队伍 -->
+            <td class="c-switch-width">
               <span v-for="team in row.teamList" :key="team.teamId">{{ team.teamName+' ' }}</span>
             </td>
             <!-- 类型 -->
@@ -59,7 +62,7 @@ tr.c-table-live td a {
             <td>{{ new Date(parseInt(row.stime)).Format("yyyy-MM-dd HH:mm:ss") }}</td>
             <!-- 配图 -->
             <td class="c-switch-width">
-              <img :src="GLOBAL.getPicPath(row.coverPath)">
+              <img v-lazy="GLOBAL.getPicPath(row.coverPath)">
             </td>
             <!-- 在线观看 -->
             <td class="c-switch-width">

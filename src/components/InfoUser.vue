@@ -24,19 +24,19 @@
 </style>
 
 <template>
-  <div v-if="item.userInfo">
-    <div class="c-member-content">
+  <div>
+    <div class="c-member-content" v-if="item.userInfo">
       <div class="c-member-avatar">
         <img :src="GLOBAL.getPicPath(item.userInfo.avatar) ">
       </div>
       <div class="c-member-info">
         <div class="c-member-info-in">
-          <p>{{ item.userInfo.nickName }} id:{{ item.userInfo.userId }}</p>
+          <p>{{ item.userInfo.nickname }} id:{{ item.userInfo.userId }}</p>
           <p>
-            【等级】 {{item.userInfo.level}} 【经验】 {{item.userInfo.experience}}
+            【等级】 {{item.userInfo.level}} 【经验】 {{item.userInfo.exp}}
             <span
-              v-if="item.friendsNum"
-            >【关注】 {{item.friendsNum}}</span>
+              v-show="item.userInfo.friends"
+            >【关注】 {{item.userInfo.friends}}</span>
           </p>
           <p>【性别】 {{item.userInfo.gender==0?('保密'):(item.userInfo.gender==1?('女'):('男'))}} 【生日】 {{item.userInfo.birthday}} 【地区】 {{item.userInfo.city}}</p>
           <div v-if="item.userReconmmend">

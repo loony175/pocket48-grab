@@ -15,7 +15,7 @@ export default {
   computed: {
     data() {
       var info = this.GLOBAL.info;
-      var data = [];
+      var data = [{value: 0, label: '全团'}];
       try {
         /* group */
         info.groupInfo.forEach(group => {

@@ -51,8 +51,7 @@ export default {
     submit() {
       /* 获取近期房间 */
       this.$refs.RoomCtr.getAll({
-        lastTime: 0,
-        limit: 50,
+        nextTime: 0,
         memberId: this.memberId
       });
       /* 获取近期录播 */
