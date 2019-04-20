@@ -5,7 +5,7 @@
 var br = {};
 br.download = function (content, fileName = 'default') {
     var aEle = document.createElement("a"),
-    blob = new Blob([content]); 
+    blob = new Blob([content]); 
     aEle.download = fileName+'.ass';
     aEle.href = URL.createObjectURL(blob);
     aEle.click();
@@ -27,9 +27,11 @@ PlayResX: 544
 PlayResY: 960
 Timer: 10.0000
 WrapStyle：0
+
 [V4+ Styles]
 Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
 Style: Default,Microsoft YaHei, 30, &H00FFFFFF, &H00FFFFFF, &H28533B3B,&H500E0A00,0,0,0,0,100.0,100.0,0.0,0.0,1,1.0,1.0,1,30,20,20,134
+
 [Events]
 Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
 `;
@@ -85,16 +87,14 @@ Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
             if (lengs >= 1) {
                 let lengs2 = content.length;
                 lengs2 = parseInt(lengs2/line_limit);
-                let content_tmp = [];
+                let content_tmp = [''];
                 let content_array = content.split("")
-                console.log(lengs2);
+
                 for(let i=0; i<lengs2+1; ++i){
                     content_tmp.push(content_array.slice(i*line_limit, (i+1)*line_limit).join(""));
                 }
                 lengs += lengs2;
-                console.log(content_tmp);
                 tmp = content_tmp.join('\\N \\h \\h');
-                console.log(tmp)
                 author_content = `【${author}】${tmp}`;
             };
             danmu_list.push({
@@ -111,7 +111,7 @@ Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
             const item_time = danmu_list[i].time_ms; 
             danmu_display_list.push({
                 ...danmu_list[i],
-                'multiline_trick_sum': danmu_lines.slice(i, i + item_number),
+                'multiline_trick_sum': danmu_lines.slice( i+1, i+1+item_number),
                 'time_list': []
             })
             danmu_display_list.forEach(item=>{
@@ -136,11 +136,11 @@ Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
                 const end_time = time_list[j+1];
                 const x1 = 20;
                 const x2 = 20;
-                const y1 = 900 - j*32 - sum(multiline_trick_sum.slice(0, j+1)) * 32;
-                const y2 = 900 - (j+1)*32 - sum(multiline_trick_sum.slice(0, j+1)) * 32;
+                const y1 = 900 - j*32 - sum(multiline_trick_sum.slice(0, j)) * 32;
+                const y2 = 900 - (j+1)*32 - sum(multiline_trick_sum.slice(0, j)) * 32;
                 ass += `Dialogue: 0, ${number2time(begin_time)}, ${number2time(end_time)}, Default,,0,0,0,,{\\move(${x1}, ${y1}, ${x2}, ${y2})} ${author_content}\n`;
             }
-        }    
+        }
 
     }
     let danmuLists = barrages.map(barrage => {
