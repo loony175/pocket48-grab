@@ -6,7 +6,7 @@
 }
 </style>
 <template>
-  <div class="c-layout-80">
+  <div>
     <div class="c-room-board">
       <div class="c-room-cardlayout">
         <CardDia v-for="item in list" :item="item" :key="item.msgidClient+item.msgTime"/>

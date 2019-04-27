@@ -71,6 +71,7 @@ c.pocket48.liveplay.playVideo = function () {
         c.pocket48.liveplay.flvPlayer = flvjs.createPlayer({
             type: 'flv',
             isLive: true,
+            hasVideo: c.pocket48.liveplay.video.type==1,
             url: c.pocket48.liveplay.video.url,
         });
         c.pocket48.liveplay.flvPlayer.attachMediaElement(c.pocket48.liveplay.videoEle);
