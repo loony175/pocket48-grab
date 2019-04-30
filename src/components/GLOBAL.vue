@@ -2,7 +2,7 @@
 <script>
 import axios from "axios";
 var GLOBAL = {};
-GLOBAL.version = "2.6.1.2";
+GLOBAL.version = "2.6.1.4";
 GLOBAL.debug = false;
 
 //配置缓存
@@ -13,7 +13,8 @@ GLOBAL.debug = false;
     isColor: true, //是否开启队伍颜色
     isAutoSync: true, //是否自动更新数据
     version: GLOBAL.version, //版本号
-    isShowTip: false //是否查看过提示
+    isShowTip: false, //是否查看过提示
+    isAutoLoad: true //是否自动加载更多
   };
   // console.log('init')
 })();
@@ -86,7 +87,7 @@ GLOBAL.apiProd = {
 
 //开发环境api
 GLOBAL.apiDev = {
-  update: "http://xsaiting.cn/pocket48/proxydev.php?f=update",
+  update: "http://xsaiting.cn/pocket48dev/proxydev.php?f=update",
   livelist: "https://pocketapi.48.cn/live/api/v1/live/getLiveList",
   openlivelist: "https://pocketapi.48.cn/live/api/v1/live/getOpenLiveList",
   liveone: "https://pocketapi.48.cn/live/api/v1/live/getLiveOne",
@@ -96,7 +97,7 @@ GLOBAL.apiDev = {
   roomlio: "https://pocketapi.48.cn/im/api/v1/chatroom/msg/list/homeowner",
   roomlia: "https://pocketapi.48.cn/im/api/v1/chatroom/msg/list/all",
 
-  login: "http://xsaiting.cn/pocket48/proxydev.php?f=login",
+  login: "http://xsaiting.cn/pocket48dev/proxydev.php?f=login",
   userhome: "https://pocketapi.48.cn/user/api/v1/user/info/home"
 };
 

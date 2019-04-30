@@ -5,6 +5,7 @@
     <el-form ref="form" label-width="80px">
       <SetCol/>
       <SetColor/>
+      <SetAutoLoad/>
     </el-form>
   </div>
 </template>
@@ -12,6 +13,7 @@
 import cDivider from "@/components/cDivider";
 import SetCol from "@/components/SetCol";
 import SetColor from "@/components/SetColor";
+import SetAutoLoad from "@/components/SetAutoLoad";
 export default {
   name: "setting",
   data() {
@@ -19,6 +21,6 @@ export default {
   },
   methods: {},
   watch: {},
-  components: { cDivider, SetCol, SetColor }
+  components: { cDivider, SetCol, SetColor, SetAutoLoad }
 };
 </script>

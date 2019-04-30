@@ -16,9 +16,9 @@
       <!-- main内容 -->
       <div v-if="main.roominfo.roomId&&dMain">
         <h3>房间</h3>
-        <ConMain :roominfo="main.roominfo" :list="main.list"/>
-        <div style="display: flex; justify-content:center">
-          <el-button style v-show="boardNext" @click="getMore(true)" size="small">加载更多</el-button>
+        <div class="c-layout-80">
+          <ConMain :roominfo="main.roominfo" :list="main.list"/>
+          <ButtonMore v-if="mainNext" :disable="true" :ling="mainLoading" @loadmore="getMore(true)"></ButtonMore>
         </div>
       </div>
     </el-col>
@@ -26,9 +26,9 @@
       <!-- board内容 -->
       <div v-if="boardList.length>0&&dBoard">
         <h3>留言</h3>
-        <ConBoard :list="boardList"/>
-        <div style="display: flex; justify-content:center">
-          <el-button style v-show="boardNext" @click="getMore(false)" size="small">加载更多</el-button>
+        <div class="c-layout-80">
+          <ConBoard :list="boardList"/>
+          <ButtonMore v-if="boardNext" :disable="true" :ling="boardLoading" @loadmore="getMore(false)"></ButtonMore>
         </div>
       </div>
     </el-col>
@@ -39,6 +39,7 @@
 import ConBoard from "@/components/ConBoard";
 import ConMain from "@/components/ConMain";
 import cDivider from "@/components/cDivider";
+import ButtonMore from "@/components/ButtonMore";
 import axios from "axios";
 export default {
   name: "RoomCtr",
@@ -52,7 +53,9 @@ export default {
       mainNext: "0",
       mainReq: {},
       boardNext: "0",
-      boardReq: {}
+      boardReq: {},
+      mainLoading: false,
+      boardLoading: false
     };
   },
   props: {
@@ -131,6 +134,7 @@ export default {
     ) {
       /* 请求 获取房间内容 */
       this.mainReq = req;
+      this.mainLoading = true;
       axios({
         url: this.GLOBAL.api.roomlio,
         method: "post",
@@ -151,6 +155,7 @@ export default {
     },
     upMain(res, req) {
       /* 回调 获取房间内容 */
+      this.mainLoading = false;
       if (res.status == 400) {
         this.$message.error(`需要登录才能访问房间!${res.message}`);
       } else {
@@ -184,6 +189,7 @@ export default {
     ) {
       /* 请求 获取房间all */
       this.boardReq = req;
+      this.boardLoading = true;
       axios({
         url: this.GLOBAL.api.roomlia,
         method: "post",
@@ -204,6 +210,7 @@ export default {
     },
     upBoard(res, req) {
       /* 回调 获取房间留言 */
+      this.boardLoading = false;
       if (res.status == 400) {
         this.$message.error(`需要登录才能访问房间!${res.message}`);
       } else {
@@ -242,6 +249,6 @@ export default {
       }
     }
   },
-  components: { ConBoard, ConMain, cDivider }
+  components: { ConBoard, ConMain, ButtonMore }
 };
 </script>

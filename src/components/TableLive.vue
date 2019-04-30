@@ -54,11 +54,13 @@ div.c-is-col td.c-switch-width {
             class="c-table-live"
           >
             <td>{{ GLOBAL.memberId2name(row.userInfo.userId) }}</td>
+            <!-- 标题 -->
             <td class="c-switch-width">{{ row.title }}</td>
+            <!-- 类型 -->
             <td>
               {{ row.liveType == 1 ? "视频" : "电台" }}
               <!-- 在线播放 -->
-              <span v-if="isLive&&row.roomId">
+              <span v-if="isLive&&row.liveone.roomId">
                 <a href @click.prevent="livePlay(row)">
                   <i v-if="row.liveType == 1" class="mdui-icon material-icons">live_tv</i>
                   <i v-else class="mdui-icon material-icons">radio</i>
@@ -66,36 +68,50 @@ div.c-is-col td.c-switch-width {
               </span>
             </td>
             <td>{{ new Date(parseInt(row.ctime)).Format("yyyy-MM-dd HH:mm:ss") }}</td>
-<!--             <td class="c-switch-width">
-              <img v-lazy="GLOBAL.getPicPath(pic)" v-for="pic in row.picPath.split(',')">
-            </td> -->
 
             <!-- 配图 -->
             <td class="c-switch-width">
               <img v-lazy="GLOBAL.getPicPath(row.coverPath)">
+              <span v-if="row.liveone">
+                <span v-if="row.liveone.carousels">
+                  <img
+                    v-for="(v,i) in row.liveone.carousels.carousels"
+                    v-lazy="GLOBAL.getPicPath(v)"
+                    :key="i"
+                  >
+                </span>
+              </span>
             </td>
             <td class="c-switch-width">
-              <a :href="GLOBAL.memberLiveUrl + row.liveId" target="_blank">{{GLOBAL.memberLiveUrl + row.liveId}}</a>
+              <a
+                :href="GLOBAL.memberLiveUrl + row.liveId"
+                target="_blank"
+              >{{GLOBAL.memberLiveUrl + row.liveId}}</a>
             </td>
             <td class="c-switch-width">
               <!-- 被更正时，可能错误的原地址 -->
-              <div>
-                <el-tooltip v-if="renderStreamPath(row)!=row.playStreamPath" effect="light">
+              <div v-if="row.liveone">
+                <el-tooltip v-if="renderStreamPath(row)!=row.liveone.playStreamPath" effect="light">
                   <i class="el-icon-info"/>
                   <span slot="content" style="white-space: normal;">
                     可能错误的原地址:
-                    <a :href="row.playStreamPath" target="_blank">{{row.playStreamPath}}</a>
+                    <a
+                      :href="row.liveone.playStreamPath"
+                      target="_blank"
+                    >{{row.liveone.playStreamPath}}</a>
                   </span>
                 </el-tooltip>
                 <a :href="renderStreamPath(row)" target="_blank">{{renderStreamPath(row)}}</a>
               </div>
             </td>
             <td v-if="!isLive" class="c-switch-width">
-              <div v-if="row.msgFilePath">
-              <a
-                :href="GLOBAL.getPicPath(row.msgFilePath)"
-                target="_blank"
-              >{{GLOBAL.getPicPath(row.msgFilePath)}}</a></div>
+              <div v-if="row.liveone">
+                <a
+                  v-if="row.liveone.msgFilePath"
+                  :href="GLOBAL.getPicPath(row.liveone.msgFilePath)"
+                  target="_blank"
+                >{{GLOBAL.getPicPath(row.liveone.msgFilePath)}}</a>
+              </div>
             </td>
           </tr>
         </tbody>
@@ -118,9 +134,9 @@ export default {
       var live = {
         liveId: row.liveId, //liveId
         type: row.liveType, //1视频 2电台
-        room: row.roomId, //roomId
+        room: row.liveone.roomId, //roomId
         url: this.renderStreamPath(row), //flvUrl
-        name: row.title + '|' + row.userInfo.nickname, //直播间名
+        name: row.title + "|" + row.userInfo.nickname, //直播间名
         isLive: true //是否直播
       };
       console.log("liveplay@TableLive.vue", live);
@@ -135,7 +151,9 @@ export default {
     },
 
     renderStreamPath(row) {
-      if (!row.playStreamPath) {return;}
+      if (!row.liveone.playStreamPath) {
+        return;
+      }
       var dateObj = new Date(row.ctime);
       var actualDate = `${dateObj.getFullYear()}${dateObj.getMonth() +
         1}${dateObj.getDate()}`;
@@ -144,7 +162,7 @@ export default {
       function isYizhiboHost(host) {
         return host.toLowerCase() === "alcdn.hls.xiaoka.tv";
       }
-      var streamPath = row.playStreamPath.replace(
+      var streamPath = row.liveone.playStreamPath.replace(
         /^(http|https):\/\/([^\/]+)\/(\d+)/,
         function(pathPrefix, protocol, host, date) {
           // 不是一直播或者日期正确则直接使用给的链接
@@ -161,7 +179,8 @@ export default {
   props: {
     list: Array, //列表
     isCol: Boolean, //是否收起
-    isLive: Boolean //是否为直播
+    isLive: Boolean, //是否为直播
+    //loading: Boolean //是否加载中
   },
   updated() {
     //this.GLOBAL.mdui.updateTables();

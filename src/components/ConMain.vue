@@ -12,7 +12,7 @@
 </style>
 
 <template>
-  <div class="c-layout-80">
+  <div>
     <div class="c-room-info">
       <p>{{ roominfo.ownerName }} #{{ roominfo.roomName }}</p>
       <small>{{ roominfo.roomTopic }}</small>

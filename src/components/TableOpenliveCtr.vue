@@ -3,26 +3,18 @@
  */
 <template>
   <div>
-    <!-- OpenLive表格 -->
-    <div v-show="reviewList.length>0&&dReview">
-      <h3>录播</h3>
-      <TableOpenlive :list="reviewList" :isRecord="true" :isCol="GLOBAL.config.isCol"/>
-      <div style="display: flex; justify-content:center">
-        <el-tooltip class="item" effect="light" :content="reviewNext" placement="bottom">
-          <el-button style v-show="reviewNext" @click="getLiveMore(true)" size="small">加载更多</el-button>
-        </el-tooltip>
-      </div>
-      <cDivider/>
-    </div>
     <!-- OpenLiveReview表格 -->
     <div v-show="liveList.length>0&&dLive">
       <h3>直播</h3>
       <TableOpenlive :list="liveList" :isRecord="false" :isCol="GLOBAL.config.isCol"/>
-      <div style="display: flex; justify-content:center">
-        <el-tooltip class="item" effect="light" :content="reviewNext" placement="bottom">
-          <el-button style v-show="liveNext" @click="getLiveMore(false)" size="small">加载更多</el-button>
-        </el-tooltip>
-      </div>
+      <!-- <ButtonMore v-if="liveNext" :ling="liveLoading" @loadmore="getLiveMore(false)"></ButtonMore> -->
+      <cDivider/>
+    </div>
+    <!-- OpenLive表格 -->
+    <div v-show="reviewList.length>0&&dReview">
+      <h3>录播</h3>
+      <TableOpenlive :list="reviewList" :isRecord="true" :isCol="GLOBAL.config.isCol"/>
+      <ButtonMore v-if="reviewNext" :ling="reviewLoading" @loadmore="getLiveMore(true)"></ButtonMore>
       <cDivider/>
     </div>
   </div>
@@ -31,6 +23,7 @@
 <script>
 import TableOpenlive from "@/components/TableOpenlive";
 import cDivider from "@/components/cDivider";
+import ButtonMore from "@/components/ButtonMore";
 import axios from "axios";
 export default {
   name: "TableOpenliveCtr",
@@ -41,7 +34,10 @@ export default {
       liveNext: "0",
       reviewNext: "0",
       liveReq: {},
-      reviewReq: {}
+      reviewReq: {},
+      reviewLoading: 0,
+      liveLoading: 0,
+      sharedState: { GLOBAL: this.GLOBAL }
     };
   },
   props: {
@@ -68,12 +64,14 @@ export default {
       }
     ) {
       /* 统计openlive */
-      this.GLOBAL.sta('openREQ',req);
+      this.GLOBAL.sta("openREQ", req);
       /* 请求 获取公演 */
       if (req.record == "false" || req.record == false) {
         this.liveReq = req;
+        this.liveLoading += 1;
       } else {
         this.reviewReq = req;
+        this.reviewLoading += 1;
       }
       axios({
         url: this.GLOBAL.api.openlivelist,
@@ -100,6 +98,7 @@ export default {
       //判断种类
       if (req.record == "true" || req.record == true) {
         //录播
+        this.reviewLoading -= 1;
         //判断是否加载更多
         if (req.loadMore) {
           if (res.content.liveList.length == 0) {
@@ -117,6 +116,7 @@ export default {
         this.reviewNext = res.content.next;
       } else {
         //直播
+        this.liveLoading -= 1;
         //判断是否加载更多
         if (req.loadMore) {
           if (res.content.liveList.length == 0) {
@@ -145,6 +145,9 @@ export default {
       }
     ) {
       /* 请求 单条直播 */
+
+      this.liveLoading += 1;
+      this.reviewLoading += 1;
       axios({
         url: this.GLOBAL.api.openliveone,
         method: "post",
@@ -161,7 +164,10 @@ export default {
         });
     },
     upOpenLiveOne(res, req) {
+      /* 回调 单条直播 */
       console.debug(res, req);
+      this.liveLoading -= 1;
+      this.reviewLoading -= 1;
       //将单条数据添加至list中
       for (var i in this.liveList) {
         if (this.liveList[i].liveId == res.content.liveId) {
@@ -192,6 +198,6 @@ export default {
       }
     }
   },
-  components: { TableOpenlive, cDivider }
+  components: { TableOpenlive, cDivider, ButtonMore }
 };
 </script>
