@@ -45,7 +45,7 @@
 
 1、使用遇到任何问题/有任何建议请联系xsaiting@qq.com
 
-2、成员直播可以使用本站播放器播放(电台和部分视频播放不了，解决中...)，支持弹幕互动。**请勿滥用！** 成员录播+弹幕播放方法参考：[点此](https://github.com/xsaiting/pocket48-grab/wiki/%E5%A6%82%E4%BD%95%E6%92%AD%E6%94%BE%E5%BD%95%E6%92%AD%E8%A7%86%E9%A2%91-%E5%BC%B9%E5%B9%95%EF%BC%9F)。弹幕lrc文件可以转ass视频字幕，在左侧功能区。
+2、成员直播可以使用本站播放器播放(部分视频播放不了，解决中...)，支持弹幕互动。**请勿滥用！** 成员录播+弹幕播放方法参考：[点此](https://github.com/xsaiting/pocket48-grab/wiki/%E5%A6%82%E4%BD%95%E6%92%AD%E6%94%BE%E5%BD%95%E6%92%AD%E8%A7%86%E9%A2%91-%E5%BC%B9%E5%B9%95%EF%BC%9F)。弹幕lrc文件可以转ass视频字幕，在左侧功能区。
 
 3、在线播放说明：任何格式均可使用VLC media player【[下载](http://www.videolan.org/)】或KMPlayer【[下载](http://kmplayer.com/)】在线播放，移动端可以使用MXPlayer的网络串流功能播放。
 

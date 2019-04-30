@@ -45,7 +45,7 @@ export default {
   name: "room",
   data() {
     return {
-      timeChoose: '0',
+      timeChoose: "0",
       time: new Date(),
       groupId: 0,
       teamId: 0,
@@ -65,9 +65,9 @@ export default {
         this.teamId = this.$refs.chooseMember.value[1] || 0;
       }
       this.memberId = this.$refs.chooseMember.value[2] || 0;
-
       this.$refs.RoomCtr.getAll({
-        nextTime: this.time.getTime(),
+        //如果截止时间是当前，nextTime就设为0
+        nextTime: this.timeChoose == 0 ? 0 : this.time.getTime(),
         groupId: this.groupId,
         teamId: this.teamId,
         memberId: this.memberId
