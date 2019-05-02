@@ -60,11 +60,13 @@ div.c-is-col td.c-switch-width {
             <td>
               {{ row.liveType == 1 ? "视频" : "电台" }}
               <!-- 在线播放 -->
-              <span v-if="isLive&&row.liveone.roomId">
-                <a href @click.prevent="livePlay(row)">
-                  <i v-if="row.liveType == 1" class="mdui-icon material-icons">live_tv</i>
-                  <i v-else class="mdui-icon material-icons">radio</i>
-                </a>
+              <span v-if="isLive">
+                <span v-if="row.liveone&&row.liveone.roomId">
+                  <a href @click.prevent="livePlay(row)">
+                    <i v-if="row.liveType == 1" class="mdui-icon material-icons">live_tv</i>
+                    <i v-else class="mdui-icon material-icons">radio</i>
+                  </a>
+                </span>
               </span>
             </td>
             <td>{{ new Date(parseInt(row.ctime)).Format("yyyy-MM-dd HH:mm:ss") }}</td>
@@ -179,7 +181,7 @@ export default {
   props: {
     list: Array, //列表
     isCol: Boolean, //是否收起
-    isLive: Boolean, //是否为直播
+    isLive: Boolean //是否为直播
     //loading: Boolean //是否加载中
   },
   updated() {
