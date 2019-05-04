@@ -2,7 +2,7 @@
 <script>
 import axios from "axios";
 var GLOBAL = {};
-GLOBAL.version = "2.6.1.4";
+GLOBAL.version = "2.6.1.6";
 GLOBAL.debug = false;
 
 //配置缓存
@@ -66,8 +66,7 @@ GLOBAL.accountSave = function() {
 };
 
 //api设置
-GLOBAL.api = {
-};
+GLOBAL.api = {};
 
 //生产环境api
 GLOBAL.apiProd = {
@@ -109,9 +108,14 @@ if (process.env.NODE_ENV == "development") {
 }
 
 //headers设置
-GLOBAL.headers = function() {
+GLOBAL.headers = function(a=false) {
   if (GLOBAL.account.token) {
+    //加入token
     this.token = GLOBAL.account.token;
+  }
+  if (a) {
+    //加入appInfo
+    this.appInfo = `{"vendor":"a","appType":"POCKET48","deviceName":"b","deviceId":"c","appVersion":"d","appBuild":"e","osType":"android","osVersion":"g"}`;
   }
 };
 
@@ -161,6 +165,11 @@ if (GLOBAL.config.isAutoSync) {
  * 成员id转成员名
  */
 GLOBAL.memberId2name = function(userId) {
+  for (var i in GLOBAL.info.officialInfo) {
+    if (GLOBAL.info.officialInfo[i].userId == userId) {
+      return GLOBAL.info.officialInfo[i].realName;
+    }
+  }
   for (var i in GLOBAL.info.starInfo) {
     if (GLOBAL.info.starInfo[i].userId == userId) {
       return GLOBAL.info.starInfo[i].realName;
@@ -215,6 +224,23 @@ GLOBAL.memberId2teamId = function(userId) {
 };
 
 /**
+ * 成员id转团体id
+ */
+GLOBAL.memberId2groupId = function(memberId) {
+  for (var i in GLOBAL.info.officialInfo) {
+    if (GLOBAL.info.officialInfo[i].userId == memberId) {
+      return GLOBAL.info.officialInfo[i].groupId;
+    }
+  }
+  for (var i in GLOBAL.info.starInfo) {
+    if (GLOBAL.info.starInfo[i].userId == memberId) {
+      return GLOBAL.info.starInfo[i].groupId;
+    }
+  }
+  return false;
+};
+
+/**
  * 团体id转首个队伍id
  */
 GLOBAL.groupId2firstTeamId = function(groupId) {
@@ -245,7 +271,16 @@ GLOBAL.teamId2color = function(teamId) {
  * 成员id转颜色
  */
 GLOBAL.memberId2color = function(memberId) {
-  return GLOBAL.teamId2color(GLOBAL.memberId2teamId(memberId));
+  var teamId = GLOBAL.memberId2teamId(memberId);
+  if (teamId == 0) {
+    // 如果不存在队伍，则返回其团体的颜色
+    return GLOBAL.teamId2color(
+      GLOBAL.groupId2firstTeamId(GLOBAL.memberId2groupId(memberId))
+    );
+  } else {
+    // 如果队伍存在，直接返回队伍的颜色
+    return GLOBAL.teamId2color(teamId);
+  }
 };
 
 /**
@@ -255,6 +290,10 @@ GLOBAL.memberId2color = function(memberId) {
 GLOBAL.renderColor = function(memberId) {
   if (GLOBAL.config.isColor) {
     var color = GLOBAL.memberId2color(memberId);
+    if (!color) {
+      console.log("unexcepted memberId:", memberId);
+      return "#000000";
+    }
     //避免白色
     if (color.toUpperCase() == "FFFFFF") {
       color = "000000";
@@ -291,10 +330,10 @@ GLOBAL.sta = function(name, data) {
     /* 百度事件统计
     _hmt.push(["_trackEvent", name, action, value]);
     */
-   /**
-    * action memberId(memberName) / groupId(groupName) / userId(userName)
-    * value groupId|teamId|userId|record|next
-    */
+    /**
+     * action memberId(memberName) / groupId(groupName) / userId(userName)
+     * value groupId|teamId|userId|record|next
+     */
     var action, value;
     if (name == "liveREQ") {
       if (data.memberId == 0) {
@@ -302,15 +341,27 @@ GLOBAL.sta = function(name, data) {
       } else {
         action = `${data.userId}(${GLOBAL.memberId2name(data.userId)})`;
       }
-      value = `${data.groupId}(${GLOBAL.groupId2name(data.groupId)}) | ${data.teamId}(${GLOBAL.teamId2name(data.teamId)}) | ${data.userId}(${GLOBAL.memberId2name(data.userId)}) | ${data.record} | ${data.next}`;
+      value = `${data.groupId}(${GLOBAL.groupId2name(data.groupId)}) | ${
+        data.teamId
+      }(${GLOBAL.teamId2name(data.teamId)}) | ${
+        data.userId
+      }(${GLOBAL.memberId2name(data.userId)}) | ${data.record} | ${data.next}`;
     }
     if (name == "openREQ") {
       action = `${data.groupId}(${GLOBAL.groupId2name(data.groupId)})`;
-      value = `${data.groupId}(${GLOBAL.groupId2name(data.groupId)}) | ${data.teamId}(${GLOBAL.teamId2name(data.teamId)}) | ${data.userId}(${GLOBAL.memberId2name(data.userId)}) | ${data.record} | ${data.next}`;
+      value = `${data.groupId}(${GLOBAL.groupId2name(data.groupId)}) | ${
+        data.teamId
+      }(${GLOBAL.teamId2name(data.teamId)}) | ${
+        data.userId
+      }(${GLOBAL.memberId2name(data.userId)}) | ${data.record} | ${data.next}`;
     }
     if (name == "roomREQ") {
       action = `${data.memberId}(${GLOBAL.memberId2name(data.memberId)})`;
-      value = `${data.groupId}(${GLOBAL.groupId2name(data.groupId)}) | ${data.teamId}(${GLOBAL.teamId2name(data.teamId)}) | ${data.memberId}(${GLOBAL.memberId2name(data.memberId)}) | ${data.nextTime}`;
+      value = `${data.groupId}(${GLOBAL.groupId2name(data.groupId)}) | ${
+        data.teamId
+      }(${GLOBAL.teamId2name(data.teamId)}) | ${
+        data.memberId
+      }(${GLOBAL.memberId2name(data.memberId)}) | ${data.nextTime}`;
     }
     if (name == "loginRES") {
       action = `${data.content.userInfo.userId}(${
@@ -354,7 +405,7 @@ GLOBAL.getPicPath = function(picUrl) {
   try {
     return (picUrl.slice(0, 4) == "http" ? "" : GLOBAL.source) + picUrl;
   } catch (e) {
-    console.log(picUrl,e);
+    console.log(picUrl, e);
   }
 };
 

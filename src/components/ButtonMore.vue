@@ -8,7 +8,7 @@ methods: loadmore 加载更多
 <style>
 </style>
 <template>
-  <div ref="loadmore" style="display: flex; justify-content:center">
+  <div ref="loadmore" style="display: inline-flex; justify-content:center;">
     <el-button :disabled="Boolean(ling)" @click="$emit('loadmore')" size="small">
       <i class="el-icon-loading" v-show="Boolean(ling)"></i>
       加载更多

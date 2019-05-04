@@ -15,20 +15,26 @@
     <el-col :xs="24" :md="dBoard?(12):(24)">
       <!-- main内容 -->
       <div v-if="main.roominfo.roomId&&dMain">
-        <h3>房间</h3>
+        <h3 style="display: inline-flex">房间</h3>
+        <ButtonMore v-if="mainNext" :disable="true" :ling="mainLoading" @loadmore="getMore(true)"></ButtonMore>
+
         <div class="c-layout-80">
           <ConMain :roominfo="main.roominfo" :list="main.list"/>
-          <ButtonMore v-if="mainNext" :disable="true" :ling="mainLoading" @loadmore="getMore(true)"></ButtonMore>
         </div>
       </div>
     </el-col>
     <el-col :xs="24" :md="dMain?(12):(24)">
       <!-- board内容 -->
       <div v-if="boardList.length>0&&dBoard">
-        <h3>留言</h3>
+        <h3 style="display: inline-flex">留言</h3>
+        <ButtonMore
+          v-if="boardNext"
+          :disable="true"
+          :ling="boardLoading"
+          @loadmore="getMore(false)"
+        ></ButtonMore>
         <div class="c-layout-80">
           <ConBoard :list="boardList"/>
-          <ButtonMore v-if="boardNext" :disable="true" :ling="boardLoading" @loadmore="getMore(false)"></ButtonMore>
         </div>
       </div>
     </el-col>
@@ -98,7 +104,7 @@ export default {
       axios({
         url: this.GLOBAL.api.roomid,
         method: "post",
-        headers: new this.GLOBAL.headers(),
+        headers: new this.GLOBAL.headers(true),
         data: req
       })
         .then(response => {
