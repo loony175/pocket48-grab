@@ -53,7 +53,7 @@ export default {
   methods: {
     notBg(roominfo) {
       /* 背景图片链接提示 */
-      var url = this.GLOBAL.getPicPath(roominfo.bgPath);
+      var url = this.GLOBAL.getPicPath(roominfo.bgImg);
       this.$notify.info({
         title: "背景图地址",
         dangerouslyUseHTMLString: true,

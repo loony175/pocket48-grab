@@ -2,7 +2,7 @@
 <script>
 import axios from "axios";
 var GLOBAL = {};
-GLOBAL.version = "2.6.1.5";
+GLOBAL.version = "2.6.1.6";
 GLOBAL.debug = false;
 
 //配置缓存
@@ -108,9 +108,14 @@ if (process.env.NODE_ENV == "development") {
 }
 
 //headers设置
-GLOBAL.headers = function() {
+GLOBAL.headers = function(a=false) {
   if (GLOBAL.account.token) {
+    //加入token
     this.token = GLOBAL.account.token;
+  }
+  if (a) {
+    //加入appInfo
+    this.appInfo = `{"vendor":"a","appType":"POCKET48","deviceName":"b","deviceId":"c","appVersion":"d","appBuild":"e","osType":"android","osVersion":"g"}`;
   }
 };
 
