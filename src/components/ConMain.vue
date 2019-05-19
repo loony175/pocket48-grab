@@ -22,7 +22,7 @@
       class="c-room-main"
       :style="{background:`url('${roominfo.bgImg?GLOBAL.getPicPath(roominfo.bgImg):''}')`}"
     >
-      <div class="c-room-cardlayout">
+      <div class="c-room-cardlayout" :style="{'--direction': GLOBAL.config.isReverse?('column'):('column-reverse')}">
         <CardDia
           v-for="(item, index) in list"
           :item="item"
@@ -38,7 +38,8 @@ import CardDia from "@/components/CardDia";
 export default {
   name: "ConMain",
   data() {
-    return {};
+    return {
+      sharedState: {GLOBAL: this.GLOBAL}};
   },
   props: {
     roominfo: {

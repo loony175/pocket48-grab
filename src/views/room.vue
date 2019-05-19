@@ -1,6 +1,7 @@
 <template>
   <div>
     <h1># 口袋房间</h1>
+    <p>提示：双击背景获得背景图地址</p>
     <cDivider/>
     <!-- 日期、时间选择器 -->
     <el-form @submit.native.prevent="submit" :style="{display:'inline-block'}" :inline="true">

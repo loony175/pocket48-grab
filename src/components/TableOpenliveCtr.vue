@@ -95,6 +95,10 @@ export default {
     upLive(res, req) {
       /* 回调 获取公演 */
       /* 插入表格 */
+      if (res.status==500) {
+        // 500错误
+        this.$message.error(`账户token过期，请删除token或重新登录。\n${res.status}: ${res.message}`);
+      }
       //判断种类
       if (req.record == "true" || req.record == true) {
         //录播

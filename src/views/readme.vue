@@ -64,23 +64,14 @@
     <cDivider/>
 
     <el-dialog title="新版本开发提示" :visible.sync="outerVisible">
-      <p>[ 2019-04-27 16:00 ] 感谢反馈，已解决部分问题</p>
-      <p>除了跨域直播源，都可以使用本站播放器播放，跨域插件调试中</p>
-      <p>房间可以使用时间选择了</p>
-      <p>公演和成员录播可以自动加载更多，可以在设置中关闭，房间的自动加载开发中</p>
-      <el-dialog width="40%" title="微信扫码" :visible.sync="innerVisible" append-to-body>
-        <img
-          style="{
-          width: 100%;
-          max-width: 260px;
-        }"
-          src="https://xsaiting.com/resources/wechatpay.png"
-          alt
-        >
-      </el-dialog>
+      <p>[ 2019-05-19 18:00 ] 小更新</p>
+      <p>1 优化了性能，加载更快</p>
+      <p>2 房间可以切换正序/倒序显示了</p>
+      <p>3 部分视频源(地址中含eastmoney)不支持播放</p>
+      <p>4 直播弹幕发送功能已修复</p>
+      <p>5 缩写功能修复，部分缩写官方给得有误</p>
       <div slot="footer" class="dialog-footer">
-        <el-button type="primary" @click="closeTip()">明白</el-button>
-        <el-button @click="innerVisible = true">喜欢的话可以点此赞助~</el-button>
+        <el-button @click="closeTip()">明白</el-button>
       </div>
     </el-dialog>
   </div>

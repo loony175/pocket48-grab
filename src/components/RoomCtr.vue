@@ -7,7 +7,8 @@
 }
 .c-room-cardlayout {
   display: flex;
-  flex-direction: column;
+  flex-direction: column-reverse;
+  flex-direction: var(--direction);
 }
 </style>
 <template>
