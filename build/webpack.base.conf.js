@@ -73,7 +73,11 @@ module.exports = {
     /* 引入cdn资源减小体积 */
     mdui: 'mdui',
     'vue': 'Vue',
-    'vue-router': 'VueRouter'
+    'vue-router': 'VueRouter',
+    'vue-lazyload': 'VueLazyload',
+    'axios': 'axios',
+    'element-ui': 'ELEMENT',
+
   },
   node: {
     // prevent webpack from injecting useless setImmediate polyfill because Vue

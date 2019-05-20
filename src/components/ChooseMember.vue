@@ -29,7 +29,31 @@ export default {
     },
     data() {
       var info = this.info;
-      var data = [{value: 0, label: '全团'}];
+      var data = [{ value: 0, label: "全团" }];
+      try {
+        data.push({
+          value: -1,
+          label: "官方",
+          children: [
+            {
+              value: -1,
+              label: "官方",
+              children: (() => {
+                var members = [];
+                info.officialInfo.forEach(member => {
+                  members.push({
+                    value: member.userId,
+                    label: member.realName
+                  });
+                });
+                return members;
+              })()
+            }
+          ]
+        });
+      } catch (e) {
+        console.log(e);
+      }
       try {
         /* group */
         info.groupInfo.forEach(group => {
@@ -56,15 +80,15 @@ export default {
                             value: member.userId,
                             label:
                               member.realName +
-                              " " + member.abbr
-/*                               (function() {
+                              " " /* member.abbr 因为官方缩写有误 回滚 */ +
+                              (function() {
                                 var t = member.pinyin.match(/[A-Z]/g);
                                 if (t) {
                                   return t.join("").toLowerCase();
                                 } else {
                                   return "";
                                 }
-                              })() */
+                              })()
                           });
                         }
                       });
@@ -80,6 +104,7 @@ export default {
       } catch (e) {
         console.log(e);
       }
+      console.log(data);
       return data;
     }
   }

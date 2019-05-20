@@ -5,7 +5,7 @@
     <div>
       <p>
         当前状态: {{status?('已登录'):('未登录')}}
-        <!-- <el-button v-show="status" type="success" @click="getPunch" round>打卡签到</el-button> -->
+        <el-button v-show="status" type="success" @click="getPunch" round>打卡签到</el-button>
         <el-tooltip :content="account.token" placement="bottom" effect="light">
           <el-button v-show="status" type="primary" round>显示token</el-button>
         </el-tooltip>
@@ -108,18 +108,17 @@ export default {
       this.account = {};
       this.upAccount();
     },
-    /* 
     getPunch() {
       var req = {};
       // 请求 打卡
       axios({
-        url: this.GLOBAL.api.checkIn,
+        url: this.GLOBAL.api.checkin,
         method: "post",
         headers: new this.GLOBAL.headers(),
         data: req
       })
         .then(response => {
-          this.upPunch(response.data, req);
+          this.upPunch(response.data);
         })
         .catch(e => {
           console.log(e);
@@ -132,14 +131,14 @@ export default {
       } else if (res.status == 200) {
         this.$message.success(
           `打卡成功, 连续打卡${res.content.days}天, 经验+${
-            res.content.addEx
-          }, 鸡腿+${res.content.addMoney}`
+            res.content.addExp
+          }, 应援力+${res.content.addSupport}`
         );
       } else {
         this.$message.error(`${res.status}: ${res.message}`);
       }
       console.log(res, req);
-    } */
+    }
   },
   components: { cDivider, InfoUser }
 };

@@ -6,6 +6,7 @@
       <SetCol/>
       <SetColor/>
       <SetAutoLoad/>
+      <SetReverse/>
     </el-form>
   </div>
 </template>
@@ -14,6 +15,7 @@ import cDivider from "@/components/cDivider";
 import SetCol from "@/components/SetCol";
 import SetColor from "@/components/SetColor";
 import SetAutoLoad from "@/components/SetAutoLoad";
+import SetReverse from "@/components/SetReverse";
 export default {
   name: "setting",
   data() {
@@ -21,6 +23,6 @@ export default {
   },
   methods: {},
   watch: {},
-  components: { cDivider, SetCol, SetColor, SetAutoLoad }
+  components: { cDivider, SetCol, SetColor, SetAutoLoad, SetReverse }
 };
 </script>

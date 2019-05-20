@@ -2,7 +2,7 @@
 <script>
 import axios from "axios";
 var GLOBAL = {};
-GLOBAL.version = "2.6.1.6";
+GLOBAL.version = "2.6.1.7";
 GLOBAL.debug = false;
 
 //配置缓存
@@ -14,7 +14,8 @@ GLOBAL.debug = false;
     isAutoSync: true, //是否自动更新数据
     version: GLOBAL.version, //版本号
     isShowTip: false, //是否查看过提示
-    isAutoLoad: true //是否自动加载更多
+    isAutoLoad: true, //是否自动加载更多
+    isReverse: true //房间是否与app相反的方向显示(最新的在最上)
   };
   // console.log('init')
 })();
@@ -81,6 +82,7 @@ GLOBAL.apiProd = {
   roomlia: "https://pocketapi.48.cn/im/api/v1/chatroom/msg/list/all",
 
   login: "./static/proxy.php?f=login",
+  checkin: "https://pocketapi.48.cn/user/api/v1/checkin",
   userhome: "https://pocketapi.48.cn/user/api/v1/user/info/home"
 };
 
@@ -97,6 +99,7 @@ GLOBAL.apiDev = {
   roomlia: "https://pocketapi.48.cn/im/api/v1/chatroom/msg/list/all",
 
   login: "http://xsaiting.cn/pocket48dev/proxydev.php?f=login",
+  checkin: "https://pocketapi.48.cn/user/api/v1/checkin",
   userhome: "https://pocketapi.48.cn/user/api/v1/user/info/home"
 };
 
@@ -108,7 +111,7 @@ if (process.env.NODE_ENV == "development") {
 }
 
 //headers设置
-GLOBAL.headers = function(a=false) {
+GLOBAL.headers = function(a = false) {
   if (GLOBAL.account.token) {
     //加入token
     this.token = GLOBAL.account.token;
@@ -165,7 +168,8 @@ if (GLOBAL.config.isAutoSync) {
  * 成员id转成员名
  */
 GLOBAL.memberId2name = function(userId) {
-  for (var i in GLOBAL.info.officialInfo) {
+  // 优化性能
+  /*   for (var i in GLOBAL.info.officialInfo) {
     if (GLOBAL.info.officialInfo[i].userId == userId) {
       return GLOBAL.info.officialInfo[i].realName;
     }
@@ -174,8 +178,18 @@ GLOBAL.memberId2name = function(userId) {
     if (GLOBAL.info.starInfo[i].userId == userId) {
       return GLOBAL.info.starInfo[i].realName;
     }
+  } */
+  var find = GLOBAL.info.starInfo.find(v => v.userId == userId);
+  if (find) {
+    return find.realName;
+  } else {
+    find = GLOBAL.info.officialInfo.find(v => v.userId == userId);
+    if (find) {
+      return find.realName;
+    } else {
+      return false;
+    }
   }
-  return false;
 };
 /**
  * 队伍id转队伍名
@@ -215,12 +229,17 @@ GLOBAL.periodId2name = function(periodId) {
  * 成员id转队伍id
  */
 GLOBAL.memberId2teamId = function(userId) {
-  for (var i in GLOBAL.info.starInfo) {
+  // 执行过慢
+  /*   for (var i in GLOBAL.info.starInfo) {
     if (GLOBAL.info.starInfo[i].userId == userId) {
       return GLOBAL.info.starInfo[i].teamId;
-    }
+    } */
+  var find = GLOBAL.info.starInfo.find(v => v.userId == userId);
+  if (find) {
+    return find.teamId;
+  } else {
+    return false;
   }
-  return false;
 };
 
 /**

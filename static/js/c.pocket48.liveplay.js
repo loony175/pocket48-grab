@@ -209,7 +209,7 @@ c.pocket48.liveplay.sendText = function (name, text) {
         "inTop": isBarrage
     } */
 
-    let content = {
+/*      let content = {
         "sourceId":  c.pocket48.liveplay.video.liveId,
         "sessionRole": 0,
         "messageType": "BARRAGE_NORMAL",
@@ -222,6 +222,18 @@ c.pocket48.liveplay.sendText = function (name, text) {
         "user": { "gender": 0, "sessionRole": 0, "level": 2, "nickName": name, "roleId": 1, "avatar": "/mediasource/avatar/20181203/1543794435621s90c95F844.png", "badgeCount": 0, "userId": 0, "friends": 0, "badge": [], "followers": 0, "isStar": false, "money": 0, "isOwener": false, "exp": 0, "vip": true, "support": 0, "card": 0, "verification": false },
         "config": { "build": "190415", "phoneName": "Row b7", "version": "6.0.0", "mobileOperators": "中国电信", "ip": "10.10.10.10", "phoneSystemVersion": "9.0.1" },
         "roomId": c.pocket48.liveplay.video.room + ""
+    } */
+
+    let content = {
+        "module":"live",
+        "config":{ "build": "190415", "phoneName": "Row b7", "version": "6.0.1", "mobileOperators": "中国电信", "ip": "10.10.10.10", "phoneSystemVersion": "9.0.1" },
+        "roomId":c.pocket48.liveplay.video.room + "",
+        "inTop": isBarrage,
+        "sourceId": c.pocket48.liveplay.video.liveId,
+        "text":text + "",
+        "messageType":"BARRAGE_NORMAL",
+        "fromApp":"201811",
+        "user":{"roleId":1,"userId":0,"badge":["/mediasource/badge/small/mzsnh_1_s.png"],"avatar":"/mediasource/avatar/20181203/1543794435621s90c95F844.png","level":"2","vip":isBarrage,"nickName":name}
     }
 
     try {

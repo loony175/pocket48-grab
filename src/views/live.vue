@@ -1,6 +1,7 @@
 <template>
   <div>
     <h1># 成员直播&录播</h1>
+    <p>点击"视频"或"电台"旁边的小图标可以使用本站播放器播放(存在播放不了的可能)</p>
     <cDivider/>
     <!-- 日期、数量选择器 -->
     <ChoosePram ref="choosePram" @submit="submit"/>

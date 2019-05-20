@@ -10,7 +10,8 @@ Vue.use(VueLazyload)
 
 /* element-ui */
 import ElementUI from 'element-ui'
-import 'element-ui/lib/theme-chalk/index.css'
+// 已在index.html中引入cdn
+// import 'element-ui/lib/theme-chalk/index.css'
 Vue.use(ElementUI);
 
 /* GLOBAL value */
