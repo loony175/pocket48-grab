@@ -4,14 +4,22 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1.0">
-  <meta http-equiv="cache-control" content="no-cache" />
-  <meta http-equiv="Pragma" content="no-cache" />
+  <!-- no-cache for index.html -->
+  <meta http-equiv="Expires" content="0">
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Cache-control" content="no-cache">
+  <meta http-equiv="Cache" content="no-cache">
+  <!-- no-cache end -->
   <meta http-equiv="expires" content="0" />
   <title>口袋48视频、房间、信息获取工具 - 成员直播|公演|视频源地址|口袋房间|屏蔽词 - 小赛艇</title>
   <!-- mdui.css -->
   <link href="https://cdn.bootcss.com/mdui/0.4.2/css/mdui.min.css" rel="stylesheet">
   <!-- vue.js -->
+  <% if (htmlWebpackPlugin.options.isProduction) {%>
+  <script src="https://cdn.bootcss.com/vue/2.6.8/vue.min.js"></script>
+  <% } else { %>
   <script src="https://cdn.bootcss.com/vue/2.6.8/vue.js"></script>
+  <% }%>
   <!-- vue-router -->
   <script src="https://cdn.bootcss.com/vue-router/3.0.2/vue-router.min.js"></script>
   <!-- vue-lazyload -->

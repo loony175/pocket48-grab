@@ -2,7 +2,7 @@
 <script>
 import axios from "axios";
 var GLOBAL = {};
-GLOBAL.version = "2.6.1.7";
+GLOBAL.version = "2.6.1.8";
 GLOBAL.debug = false;
 
 //配置缓存
