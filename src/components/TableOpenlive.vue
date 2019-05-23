@@ -73,7 +73,7 @@ div.c-is-col td.c-switch-width {
               <span v-if="row.playStreams">
                 <i v-show="!row.playStreams.length" class="el-icon-loading"></i>
                 <a
-                  v-if="row.playStreams.length"
+                  v-if="row.playStreams.length>1"
                   :href="row.playStreams[1].streamPath"
                   target="_blank"
                 >{{row.playStreams[1].streamPath}}</a>

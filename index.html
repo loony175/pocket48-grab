@@ -11,7 +11,11 @@
   <!-- mdui.css -->
   <link href="https://cdn.bootcss.com/mdui/0.4.2/css/mdui.min.css" rel="stylesheet">
   <!-- vue.js -->
+  <% if (htmlWebpackPlugin.options.isProduction) {%>
+  <script src="https://cdn.bootcss.com/vue/2.6.8/vue.min.js"></script>
+  <% } else { %>
   <script src="https://cdn.bootcss.com/vue/2.6.8/vue.js"></script>
+  <% }%>
   <!-- vue-router -->
   <script src="https://cdn.bootcss.com/vue-router/3.0.2/vue-router.min.js"></script>
   <!-- vue-lazyload -->
