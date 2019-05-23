@@ -2,12 +2,6 @@
 
 口袋48视频、房间、信息获取工具。
 
-# 测试地址
-
-稳定版 https://xsaiting.com/pocket48/
-
-开发版 http://xsaiting.cn/pocket48/
-
 # 功能
 
 1. 成员直播/回放
